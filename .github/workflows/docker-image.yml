@@ -16,25 +16,34 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: master
-    
+
     # JDK 17 설치 (원하는 버전 및 배포판 지정)
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
-    
+
+    # 현재 작업 디렉토리와 파일 목록 출력
+    - name: List directory structure
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Directory contents:"
+        ls -la
+
     # Gradle 실행 권한 부여
-    - name: List files for debugging
-      run: ls -l
-
-    - name: Grant permission for gradlew
-      run: chmod +x ./gradlew
-
+    - name: Change directory and grant permission for gradlew
+      run: |
+        cd up-down/upProject
+        chmod +x ./gradlew || echo "gradlew file not found"
+    
     # Gradle Build (테스트 생략)
     - name: Build with Gradle
-      run: ./gradlew clean build -x test
-    
+      run: |
+        cd up-down/upProject
+        ./gradlew clean build -x test
+
     # 빌드된 jar 파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
     - name: Docker build and publish
       env:
@@ -43,7 +52,7 @@ jobs:
         APP_NAME: ${{ secrets.APP_NAME }}
       run: |
         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        docker build -t "$DOCKER_USERNAME/$APP_NAME" .
+        docker build -t "$DOCKER_USERNAME/$APP_NAME" up-down/upProject
         docker push "$DOCKER_USERNAME/$APP_NAME"
 
   # 2. CD 배포
