@@ -35,6 +35,7 @@ jobs:
     # 빌드된 jar파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
     - name: Docker build and publish
       run: |
+        cd up-down/upProject
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }} .
         docker push ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
