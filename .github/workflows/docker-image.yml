@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    # 저장소의 커밋된 master브랜치 내려받
+    # 저장소의 커밋된 master브랜치 내려받기
     - name : Checkout
       uses: actions/checkout@v3
       with:
