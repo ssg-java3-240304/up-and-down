@@ -7,47 +7,37 @@ on:
     branches: [ "master" ]
 
 jobs:
-  # 1. CI - 통합(build)
+  # 1. CI - 통합(build) 
   build:
     runs-on: ubuntu-latest
     steps:
     # 저장소의 커밋된 master브랜치 내려받기
-    - name: Checkout
+    - name : Checkout
       uses: actions/checkout@v3
       with:
         ref: master
-    
-    # JDK 17 설치 (원하는 버전 및 배포판 지정)
+    # JDK 17 설치 (원하는 버젼 및 배포판 (corretto | zulu | temurin 지정)
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
-    
     # Gradle 실행 권한 부여
-    - name: List files for debugging
-      run: ls -l
-
     - name: Grant permission for gradlew
       run: chmod +x ./gradlew
-
     # Gradle Build (테스트 생략)
     - name: Build with Gradle
       run: ./gradlew clean build -x test
-    
-    # 빌드된 jar 파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
+    # 빌드된 jar파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
     - name: Docker build and publish
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        APP_NAME: ${{ secrets.APP_NAME }}
       run: |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        docker build -t "$DOCKER_USERNAME/$APP_NAME" .
-        docker push "$DOCKER_USERNAME/$APP_NAME"
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }} .
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
 
   # 2. CD 배포
   deploy:
+    # needs를 통해 build job이 수행성공시에만 작업하도록 설정
     needs: build
     runs-on: ubuntu-latest
 
@@ -62,9 +52,9 @@ jobs:
         key: ${{ secrets.NCP_KEY }}
         port: ${{ secrets.NCP_PORT }}
         script: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          sudo docker stop $(sudo docker ps -a -q) || true
-          sudo docker rm -f $(sudo docker ps -a -q) || true
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.APP_NAME }}
-          sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.APP_NAME }}
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          sudo docker stop $(sudo docker ps -a -q)
+          sudo docker rm -f $(sudo docker ps -a -q)
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
+          sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
           sudo docker image prune -f
