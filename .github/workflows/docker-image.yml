@@ -1,22 +1,22 @@
-//workflow : 이름 
+# workflow : 이름 
 name: up - and down 
 
-//이벤트
+# 이벤트
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-//이벤트 여기까지 
+# 이벤트 여기까지 
 
-//job : 여러가지 step으로 구성 
+# job : 여러가지 step으로 구성 
 jobs:
   # 1. CI - 통합(build) 
   build:
     runs-on: ubuntu-latest
     steps:
     # 저장소의 커밋된 master브랜치 내려받기
-    //소스코드를 clone하는 코드 
+    # 소스코드를 clone하는 코드 
     - name : Checkout
       uses: actions/checkout@v3
       with:
@@ -36,7 +36,7 @@ jobs:
     # 빌드된 jar파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
     - name: Docker build and publish
       run: |
-      //docker hub의 user 이름 , docker hub의 token
+      # docker hub의 user 이름 , docker hub의 token
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         //docker file에 적힌대로 build
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }} .
@@ -45,7 +45,7 @@ jobs:
   # 2. CD 배포
   deploy:
     # needs를 통해 build job이 수행성공시에만 작업하도록 설정
-    // build 성공시에 뒤에 작업 수행 
+    # build 성공시에 뒤에 작업 수행 
     needs: build
     runs-on: ubuntu-latest
 
