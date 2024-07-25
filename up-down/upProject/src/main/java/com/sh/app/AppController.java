@@ -13,8 +13,15 @@ public class AppController {
     @GetMapping("/")
     @ResponseBody
     public String index() {
-
         return "Welcome to Up Down : version " + appVersion;
-    }
-
+        }
+//    @GetMapping("/")
+//    public String index(){
+//
+//        return
+//        "index";
+//    }
 }
+
+
+
