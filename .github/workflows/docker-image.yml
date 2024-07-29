@@ -24,15 +24,15 @@ jobs:
         distribution: 'temurin'
     # Gradle 실행 권한 부여
     - name: Grant permission for gradlew
-      run: 
+      run: |
         chmod +x ./gradlew || echo "gradlew file not found"
     # Gradle Build (테스트 생략)
     - name: Build with Gradle
-      run: 
+      run: |
         ./gradlew clean build -x test
     # 빌드된 jar파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
     - name: Docker build and publish
-      run: 
+      run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }} .
         docker push ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
