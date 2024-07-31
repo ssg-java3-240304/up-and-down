@@ -9,7 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 
 public class ImageDelete {
-    public static void main(String[] args) {
+    public  void delete() {
         final String endPoint = "https://kr.object.ncloudstorage.com";
         final String regionName = "kr-standard";
         final String accessKey = "ncp_iam_BPASKR1pd5uElFPzv8hI";
