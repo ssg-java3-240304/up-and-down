@@ -15,7 +15,7 @@ public class MainController {
     private final MainService mainService;
 
     @GetMapping
-    private String index(){
+    public String index(){
         log.info("GET index");
 
         // 검색창
@@ -24,11 +24,5 @@ public class MainController {
 
         // 테마별 상품
         return "index";
-    }
-
-    @GetMapping("/search")
-    private String search(){
-        log.info("GET search");
-        return "search/searchList";
     }
 }
