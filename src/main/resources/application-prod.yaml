@@ -1,6 +1,7 @@
 # 사용자 정의 속성
 profile:
   value: 'prod'
+
 spring:
   datasource:
     url: ${PROD_DB_URL}
