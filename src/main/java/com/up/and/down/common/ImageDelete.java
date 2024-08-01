@@ -1,4 +1,4 @@
-package com.sh.app.common;
+package com.up.and.down.common;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
