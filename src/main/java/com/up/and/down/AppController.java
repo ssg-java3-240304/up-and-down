@@ -1,4 +1,4 @@
-package com.sh.app;
+package com.up.and.down;
 
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,17 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AppController {
     @Value("${app.version}")
     private String appVersion;
+
     @GetMapping("/")
     @ResponseBody
     public String index() {
         return "Welcome to Up Down : version " + appVersion;
-        }
-//    @GetMapping("/")
-//    public String index(){
-//
-//        return
-//        "index";
-//    }
+    }
 }
 
 

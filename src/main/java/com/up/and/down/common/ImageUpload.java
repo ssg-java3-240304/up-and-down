@@ -1,4 +1,4 @@
-package com.sh.app.common;
+package com.up.and.down.common;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -20,7 +20,7 @@ public class ImageUpload {
         final String accessKey = "ncp_iam_BPASKR1pd5uElFPzv8hI";
         final String secretKey = "ncp_iam_BPKSKRElH5DqBGp5Rx33PxHvyCR6HHkxYK";
 
-// S3 client
+        // S3 client
         final AmazonS3 s3 = AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
@@ -28,7 +28,7 @@ public class ImageUpload {
 
         String bucketName = "up-bucket";
 
-// create folder
+        // create folder
         //내가 올리고싶은 폴더 이름 Package 하위에 올리고싶으면 -> folerName
         String folderName = "Package/";
 
@@ -46,7 +46,7 @@ public class ImageUpload {
             e.printStackTrace();
         }
 
-// upload local file
+        // upload local file
         //objectName에다가 저장하고 싶은 폴더 이름 / 내가 올리고 싶은 사진 이름을 입력해야됌.
         String objectName = "Package/패키지2.png";
         // 내가 올리고 싶은 파일의 절대경로 주소 입력 마지막엔 사진이름까지 입력
@@ -62,4 +62,3 @@ public class ImageUpload {
         }
     }
 }
-
