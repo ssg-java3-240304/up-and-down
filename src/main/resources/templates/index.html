@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,6 +9,17 @@
     <title>up-and-down</title>
 </head>
 <body>
-    <h1>위아래</h1>
+    <h1>메인페이지</h1>
+
+    <!--베너-->
+
+    <!--검색창-->
+    <form th:action="@{/main/search}" method="get">
+        <button type="submit">검색하기</button>
+    </form>
+
+    <!--실시간 최다 검색 상품-->
+
+    <!--테마별 상품-->
 </body>
 </html>
