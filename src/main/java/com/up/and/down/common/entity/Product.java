@@ -16,7 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class Product {
-    // 상품 정보
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,14 +27,17 @@ public class Product {
     private String travelAgency; // 여행사
     private String productDetailUrl; // 상품상세페이지
 
-    // 상태 정보
     private int viewCount;  // 조회수
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @ElementCollection(targetClass = TravelCategory.class)
+    @CollectionTable(
+            name = "tbl_product_travel_category",
+            joinColumns = @JoinColumn(name = "product_id")
+    )
+    @Column(name = "travel_category")
+    @Enumerated(EnumType.STRING)
     private Set<TravelCategory> travelCategorySet; // 여행 카테고리
     private boolean isVisible; // 페이지 노출 가능 여부
 
-    // 상품 댓글
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private List<ProductComment> commentList; // 상품 댓글 목록
