@@ -1,6 +1,5 @@
-package com.up.and.down.common.entity;
+package com.up.and.down.product.entity;
 
-import com.up.and.down.product.entity.ProductComment;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +24,7 @@ public class Product {
     private int price; // 가격
     private String thumbnailUrl; // 여행지 이미지
     private String travelAgency; // 여행사
-    private String productDetailUrl; // 상품상세페이지
+    private String detailUrl; // 상품상세페이지
 
     private int viewCount;  // 조회수
     @ElementCollection(targetClass = TravelCategory.class)
