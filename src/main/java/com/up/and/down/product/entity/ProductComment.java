@@ -1,9 +1,6 @@
 package com.up.and.down.product.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -14,12 +11,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ProductComment extends Comment {
+    private Long productId;
     private int stars; // 별점
 
-    @OneToMany
-    @JoinColumn(name = "parent_comment_id")
-    private List<ProductCommentReply> replyList; // 답글 목록
+    public ProductComment(Long id, Long writerId, List<CommentHistory> commentHistoryList, CommentState state, Long productId, int stars) {
+        super(id, writerId, commentHistoryList, state);
+        this.productId = productId;
+        this.stars = stars;
+    }
 }

@@ -1,4 +1,4 @@
-package com.up.and.down.common.entity;
+package com.up.and.down.product.entity;
 
 import lombok.Getter;
 
