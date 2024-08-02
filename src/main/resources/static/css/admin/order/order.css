@@ -1,0 +1,10 @@
+.radio-frm {
+    margin-bottom: 15px;
+}
+
+.radio-btn-group label {
+    padding-right: 15px;
+}
+.radio-btn-group label:first-child {
+    padding-left: 15px;
+}
