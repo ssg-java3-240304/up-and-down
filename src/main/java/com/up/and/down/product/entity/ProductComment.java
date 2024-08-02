@@ -19,8 +19,7 @@ import java.util.List;
 public class ProductComment extends Comment {
     private int stars; // 별점
 
-    // 댓글 답글
     @OneToMany
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "parent_comment_id")
     private List<ProductCommentReply> replyList; // 답글 목록
 }
