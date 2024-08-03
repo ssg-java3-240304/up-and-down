@@ -33,4 +33,11 @@ public class ChatRoomController {
     public void regist(){
         log.info("GET /chatroom/regist");
     }
+
+    // 수정페이지
+    @GetMapping("/update")
+    public String update(){
+        log.info("GET /chatroom/update");
+        return "chatroom/update";
+    }
 }
