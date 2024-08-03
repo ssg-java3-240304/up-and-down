@@ -27,4 +27,10 @@ public class ChatRoomController {
         log.info("GET /chatroom/detail");
         return "chatroom/detail";
     }
+
+    // 등록페이지
+    @GetMapping("/regist")
+    public void regist(){
+        log.info("GET /chatroom/regist");
+    }
 }
