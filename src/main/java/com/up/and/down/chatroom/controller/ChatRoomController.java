@@ -20,4 +20,11 @@ public class ChatRoomController {
         log.info("GET /chatroom/list");
         return "chatroom/list";
     }
+
+    // 상세페이지
+    @GetMapping("/detail")
+    public String detail(){
+        log.info("GET /chatroom/detail");
+        return "chatroom/detail";
+    }
 }
