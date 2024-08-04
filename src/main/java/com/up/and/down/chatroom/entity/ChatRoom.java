@@ -44,10 +44,12 @@ public class ChatRoom {
     )
     private Set<Long> members; // 채팅방에 속한 사람
 
+    private Long memberId; // 채팅방을 만든 사람
+
     // aggregate
-//    @CreatedDate
+    @CreatedDate
     private LocalDateTime createAt; // 등록일시
-//    @LastModifiedDate
+    @LastModifiedDate
     private LocalDateTime updatedAt; // 수정일시
 
     @Transient // 컬럼이 생기지 않는 어노테이션
