@@ -20,7 +20,8 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long chatRoomId; // 채팅방 id(fk)
-    private String memberId; // 채팅 멤버 id(fk)
+    private Long memberId; // 채팅 멤버 id(fk)
+    private String nickname; // 닉네임
     private String message; // 메시지 내용
     @CreatedDate
     private LocalDateTime createdAt; // 생성시간
