@@ -15,11 +15,11 @@
     <link rel="stylesheet" th:href="@{/css/layout-default.css}">
 </head>
 <body>
+    <header th:replace="~{/fragments/header::headerFragment}"></header>
     <div class="layout">
-        <header th:replace="~{/fragments/header::headerFragment}"></header>
         <aside th:replace="~{/fragments/left-side-nav::leftSideNav}"></aside>
-        <aside th:replace="~{/fragments/right-side-nav::rightSideNav}"></aside>
         <main layout:fragment="main"></main>
+        <aside th:replace="~{/fragments/right-side-nav::rightSideNav}"></aside>
     </div>
 </body>
 </html>

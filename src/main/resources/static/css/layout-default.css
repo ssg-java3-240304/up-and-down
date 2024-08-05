@@ -1,5 +1,6 @@
 @import "reset.css";
 @import "default.css";
+
 /*헤더*/
 header {
     box-sizing: border-box;
@@ -23,4 +24,44 @@ header .header-group h1 span:last-child {
 header .header-group ul {
     display: flex;
     gap: 20px;
+}
+
+/*레이아웃*/
+.layout {
+    min-width: 1400px;
+    display: flex;
+}
+/*좌측 사이드 네비*/
+.left-side-nav {
+    flex: 1;
+}
+.left-side-nav .product-category-menu {
+    float: right;
+    box-sizing: border-box;
+    width: 200px; height: 250px;
+    margin: 20px;
+    border-radius: 10px;
+    background-color: #265AB4;
+}
+.left-side-nav .ads-box {
+    float: left;
+    box-sizing: border-box;
+    width: 200px; height: 400px;
+    margin: 0 20px 20px;
+    background-color: #D9D9D9;
+}
+/*main*/
+.layout > main {
+    width: 1000px;
+}
+/*우측 사이드 네비*/
+.right-side-nav {
+    flex: 1;
+}
+.right-side-nav .ads-box {
+    float: left;
+    box-sizing: border-box;
+    width: 300px; height: 600px;
+    margin: 20px;
+    background-color: #D9D9D9;
 }
