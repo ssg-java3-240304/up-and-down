@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/header-n-side}">
 <head>
     <meta charset="UTF-8">
-    <title>up-and-down</title>
+    <title>결과목록</title>
 </head>
 <body>
-    <h1>검색결과페이지</h1>
+    <main layout:fragment="main" class="mt-50">
+        <!--검색창-->
 
-    <!--검색창-->
+        <!--정렬-->
 
-    <!--정렬-->
-
-    <!--검색 결과 리스트-->
-    <a th:href="@{/product}">상품</a>
+        <!--검색 결과 리스트-->
+        <a th:href="@{/product}">상품</a>
+    </main>
 </body>
 </html>
