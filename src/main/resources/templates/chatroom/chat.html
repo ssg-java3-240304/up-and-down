@@ -1,355 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Chat</title>
-</head>
-<style type="text/css">
-  body{margin-top:20px;}
+  <meta charset="UTF-8">
+  <title>Title</title>
 
-  /* WRAPPERS */
-  #wrapper {
-    width: 100%;
-    overflow-x: hidden;
-  }
-  .wrapper {
-    padding: 0 20px;
-  }
-  .wrapper-content {
-    padding: 20px 10px 40px;
-  }
-  #page-wrapper {
-    padding: 0 15px;
-    min-height: 568px;
-    position: relative !important;
-  }
-  @media (min-width: 768px) {
-    #page-wrapper {
-      position: inherit;
-      margin: 0 0 0 240px;
-      min-height: 2002px;
-    }
-  }
-
-
-  .message-input {
-    height: 90px !important;
-  }
-  .chat-avatar {
-    white: 36px;
-    height: 36px;
-    float: left;
-    margin-right: 10px;
-  }
-  .chat-user-name {
-    padding: 10px;
-  }
-  .chat-user {
-    padding: 8px 10px;
-    border-bottom: 1px solid #e7eaec;
-  }
-  .chat-user a {
-    color: inherit;
-  }
-  .chat-view {
-    z-index: 20012;
-  }
-  .chat-users,
-  .chat-statistic {
-    margin-left: -30px;
-  }
-  @media (max-width: 992px) {
-    .chat-users,
-    .chat-statistic {
-      margin-left: 0;
-    }
-  }
-  .chat-view .ibox-content {
-    padding: 0;
-  }
-  .chat-message {
-    padding: 10px 20px;
-  }
-  .message-avatar {
-    height: 48px;
-    width: 48px;
-    border: 1px solid #e7eaec;
-    border-radius: 4px;
-    margin-top: 1px;
-  }
-  .chat-discussion .chat-message.left .message-avatar {
-    float: left;
-    margin-right: 10px;
-  }
-  .chat-discussion .chat-message.right .message-avatar {
-    float: right;
-    margin-left: 10px;
-  }
-  .message {
-    background-color: #fff;
-    border: 1px solid #e7eaec;
-    text-align: left;
-    display: block;
-    padding: 10px 20px;
-    position: relative;
-    border-radius: 4px;
-  }
-  .chat-discussion .chat-message.left .message-date {
-    float: right;
-  }
-  .chat-discussion .chat-message.right .message-date {
-    float: left;
-  }
-  .chat-discussion .chat-message.left .message {
-    text-align: left;
-    margin-left: 55px;
-  }
-  .chat-discussion .chat-message.right .message {
-    text-align: right;
-    margin-right: 55px;
-  }
-  .message-date {
-    font-size: 10px;
-    color: #888888;
-  }
-  .message-content {
-    display: block;
-  }
-  .chat-discussion {
-    background: #eee;
-    padding: 15px;
-    height: 400px;
-    overflow-y: auto;
-  }
-  .chat-users {
-    overflow-y: auto;
-    height: 400px;
-  }
-  .chat-message-form .form-group {
-    margin-bottom: 0;
-  }
-  .ibox {
-    clear: both;
-    margin-bottom: 25px;
-    margin-top: 0;
-    padding: 0;
-  }
-  .ibox.collapsed .ibox-content {
-    display: none;
-  }
-  .ibox.collapsed .fa.fa-chevron-up:before {
-    content: "\f078";
-  }
-  .ibox.collapsed .fa.fa-chevron-down:before {
-    content: "\f077";
-  }
-  .ibox:after,
-  .ibox:before {
-    display: table;
-  }
-  .ibox-title {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #ffffff;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 3px 0 0;
-    color: inherit;
-    margin-bottom: 0;
-    padding: 14px 15px 7px;
-    min-height: 48px;
-  }
-  .ibox-content {
-    background-color: #ffffff;
-    color: inherit;
-    padding: 15px 20px 20px 20px;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px 0;
-  }
-  .ibox-footer {
-    color: inherit;
-    border-top: 1px solid #e7eaec;
-    font-size: 90%;
-    background: #ffffff;
-    padding: 10px 15px;
-  }
-
-  .message-input {
-    height: 90px !important;
-  }
-  .form-control, .single-line {
-    background-color: #FFFFFF;
-    background-image: none;
-    border: 1px solid #e5e6e7;
-    border-radius: 1px;
-    color: inherit;
-    display: block;
-    padding: 6px 12px;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 100%;
-    font-size: 14px;
-  }
-</style>
+  <style>
+      body {
+          margin: 0;
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #f0f0f0;
+      }
+      .chat-wrapper {
+          width: 100%;
+          max-width: 800px;
+          display: flex;
+          flex-direction: column;
+          height: 90vh;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .chat-header {
+          background: #fff;
+          border-bottom: 1px solid #e7eaec;
+          padding: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+      .chat-body {
+          flex: 1;
+          background: #ffffff;
+          padding: 15px;
+          overflow-y: auto;
+      }
+      .chat-footer {
+          background: #fff;
+          border-top: 1px solid #e7eaec;
+          padding: 15px;
+          display: flex;
+          align-items: center;
+      }
+      .chat-box {
+          display: flex;
+          flex-direction: column;
+          padding: 5px;
+          margin-top: 10px;
+      }
+      .chat-message{
+          color: white;
+          width: auto;
+          height: auto;
+          padding: 5px;
+      }
+      .chat-right {
+          text-align: right;
+          background: #66CDAA;
+          margin-left: auto;
+      }
+      .chat-left {
+          background: #D9D9D9;
+          margin-right: auto;
+      }
+      .message-author {
+          font-weight: bold;
+      }
+      .message-date {
+          font-size: 0.8em;
+          color: #888;
+      }
+      .message-content {
+          margin-top: 5px;
+      }
+      .form-control {
+          width: 100%;
+          height: 50px; /* 고정된 높이 */
+          padding: 10px;
+          border: 1px solid #e5e6e7;
+          border-radius: 4px;
+          box-sizing: border-box; /* 패딩과 경계를 포함한 너비 및 높이 조정 */
+          resize: none; /* 크기 조정 비활성화 */
+      }
+      .chat-footer input {
+          margin-right: 10px;
+      }
+  </style>
 </head>
 <body>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
-  <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-          <div class="ibox-content">
-            <strong>채팅방 이름</strong>
-          </div>
-        </div>
-      </div>
+<div style="display: flex;">
+<!--  <section style="width: 30%;">-->
+<!--    <ul>-->
+<!--      &lt;!&ndash; 채팅방 목록 버튼 &ndash;&gt;-->
+<!--      <li><button onclick="enterRoom(1)">1</button></li>-->
+<!--      <li><button onclick="enterRoom(2)">2</button></li>-->
+<!--      <li><button onclick="enterRoom(3)">3</button></li>-->
+<!--    </ul>-->
+<!--    <div>-->
+<!--      <p>현재 접속중인 방은 <span id="currentRoomNumber"></span></p>-->
+<!--    </div>-->
+<!--  </section>-->
+    <div class="chat-wrapper">
+        <header class="chat-header">
+            <strong id="chat-room-name">채팅방 이름</strong>
+        </header>
+        <main class="chat-body" id="chat-discussion">
+            <!-- 메시지가 여기에 추가됩니다. -->
+        </main>
+        <footer class="chat-footer">
+            <textarea id="message-input" class="form-control" placeholder="메시지를 입력하세요." onkeydown="sendMessageWithEnter(event)"></textarea>
+            <button type="button" id="send" onclick="sendMessage()">전송</button>
+        </footer>
     </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="ibox chat-view">
-          <div class="ibox-title">
-            <small class="pull-right text-muted">Last message: Mon Jan 26 2015 - 18:39:23</small> Chat room panel
-          </div>
-          <div class="ibox-content">
-            <div class="row">
-              <div class="col-md-9 ">
-                <div class="chat-discussion">
-                  <div class="chat-message left">
-                    <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>
-                    <div class="message">
-                      <a class="message-author" href="#"> Michael Smith </a>
-                      <span class="message-date"> Mon Jan 26 2015 - 18:39:23 </span>
-                      <span class="message-content">
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message right">
-                    <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                    <div class="message">
-                      <a class="message-author" href="#"> Karl Jordan </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message right">
-                    <!--                                        <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>-->
-                    <div class="message">
-                      <a class="message-author" href="#"> Michael Smith </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message left">
-                    <!--                                        <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>-->
-                    <div class="message">
-                      <a class="message-author" href="#"> Alice Jordan </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
-It uses a dictionary of over 200 Latin words.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message right">
-                    <!--                                        <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>-->
-                    <div class="message">
-                      <a class="message-author" href="#"> Mark Smith </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
-It uses a dictionary of over 200 Latin words.
-</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="chat-users">
-                  <div class="users-list">
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Karl Jordan</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Monica Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <span class="pull-right label label-primary">Online</span>
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Michael Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <span class="pull-right label label-primary">Online</span>
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Janet Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Alice Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Monica Cale</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Mark Jordan</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <span class="pull-right label label-primary">Online</span>
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar8.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Janet Smith</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="chat-message-form">
-                  <div class="form-group">
-                    <textarea class="form-control message-input" name="message" placeholder="Enter message text and press enter"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-
-</script>
 </body>
+
+<script src="https://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+
+<script>
+  let stompClient = null;
+  let currentRoomId = null;
+  let memberId = 1;
+  let subscription = null; //현재 구독하고 있는 topic
+
+  window.onload = () => {
+    connect();
+  }
+
+  //websocket 연결
+  function connect() {
+    const socket = new SockJS('/chat');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+      console.log('Connected: ' + frame);
+    });
+  }
+
+
+  function enterRoom(roomId) {
+    if (subscription) {
+      subscription.unsubscribe();
+    }
+    currentRoomId = roomId;
+    // unsubscribe
+    // 방들어갔을때 메시지는 얼마나 보여줄것인가?
+    // 채팅방 들어갔을 때 메시지 보여주는 거.
+    //Kakao 생각하시면 된다. 그 중간에 데이터를 어떻게 할 것인가. 싱크를 생각해야해요
+    document.getElementById("currentRoomNumber").innerText = currentRoomId;
+    subscription = stompClient.subscribe(`/sub/chat/room/${roomId}`, function (message) {
+      console.log("subscribe", {message})
+      showMessage(JSON.parse(message.body));
+    });
+  }
+
+  function sendMessageWithEnter(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.isComposing) {
+        return;
+      }
+      sendMessage();
+    }
+  }
+
+  function sendMessage() {
+    const message = document.getElementById("message");
+    const messageInput = message.value;
+
+    // 공백을 보낼 때 trim()없이 비교하면 된다.
+    if (messageInput.trim() === '') return;
+
+    const name = document.getElementById("name").value;
+    const sender = document.getElementById("entityId").value || entityId;
+
+    console.log({name}, {currentRoomId}, {message})
+    stompClient.send(`/pub/chat/room/${currentRoomId}`, {}, JSON.stringify({
+      entityId: sender,
+      name: name,
+      roomId: currentRoomId,
+      message: messageInput
+      // 메시지를 매번 저장해야할 때 데이터가 추가로 필요하다.
+    }));
+
+    message.value = "";
+  }
+
+  function showMessage(message) {
+    console.log("showMessage", {message});
+    const response = document.getElementById('messages');
+    const textBox = document.createElement('div');
+    const messageSpan = document.createElement("span");
+    const nameSpan = document.createElement("span");
+
+    textBox.appendChild(nameSpan);
+    textBox.appendChild(messageSpan);
+
+    textBox.classList.add("chat-box");
+
+    if (message.entityId === entityId) {
+      textBox.style.textAlign = "right";
+      messageSpan.classList.add("chat-right")
+    } else {
+      messageSpan.classList.add("chat-left")
+    }
+
+    textBox.innerHTML = `
+        <span class="message-author">${message.name}</span>
+        <span class="message-date">${new Date().toLocaleString()}</span>
+        <div class="message-content">${message.message}</div>
+    `;
+
+    messageSpan.classList.add("chat-message")
+
+    messageSpan.innerText = `${message.message}`;
+
+    response.appendChild(textBox);
+
+    setTimeout(() => {
+      response.scrollTop = response.scrollHeight; // 최신 메시지가 자동으로 스크롤됨
+    }, 50);
+
+
+  }
+
+  //unsubscribe
+  function unsubscribe() {
+    if (subscription) {
+      subscription.unsubscribe();
+      subscription = null;
+    }
+  }
+</script>
+
 </html>
