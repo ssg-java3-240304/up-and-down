@@ -20,10 +20,10 @@ public class ChatDto {
 
     public Chat toChat(){
         return Chat.builder()
-                .chatRoomId(this.chatRoomId)
-//                .memberId(this.)
-                .message(this.message)
-                .createdAt(this.now)
+                .chatRoomId(this.getChatRoomId())
+                .nickname(this.getNickname())
+                .message(this.getMessage())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 }

@@ -16,8 +16,8 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     // 메시지 db에 저장
-    public ChatDto saveMessage(ChatDto chatDto) {
-        chatRepository.findByChatRoomId(chatDto.getChatRoomId());
-        return null;
+    public Chat saveMessage(ChatDto chatDto) {
+        Chat chat = chatDto.toChat();
+        return chatRepository.save(chat);
     }
 }
