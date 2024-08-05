@@ -1,17 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/header-n-side}">
 <head>
     <meta charset="UTF-8">
-    <title>up-and-down</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>상품상세</title>
+
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/product.css}">
 </head>
 <body>
-    <h1>상품 상세</h1>
-<!--상품이미지-->
-<!--상품제목-->
-<!--좋아요-->
-<!--공유하기-->
-<!--가격비교-->
-<!--상품의견-->
-<!--연관상품-->
+    <main layout:fragment="main" class="mt-50">
+        <!--상품이미지-->
+        <!--상품제목-->
+        <!--좋아요-->
+        <!--공유하기-->
+        <!--가격비교-->
+        <!--상품의견-->
+        <!--연관상품-->
+    </main>
 </body>
 </html>

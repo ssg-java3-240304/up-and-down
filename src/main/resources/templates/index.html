@@ -1,25 +1,96 @@
 <!doctype html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/header-only}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>up-and-down</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>메인페이지</title>
+
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
-    <h1>메인페이지</h1>
+    <main layout:fragment="main" class="mt-50">
+        <!--베너-->
+        <div class="banner-box">
+            <!--베너 이미지-->
+            <div class="banner-image"></div>
+            <div class="layout">
+                <!--검색창-->
+                <div class="search-box">
+                    <h2>어디로 떠나고 싶으세요?</h2>
+                    <div class="button-group">
+                        <button type="button">제주</button>
+                        <button type="button">부산</button>
+                    </div>
+                    <form th:action="@{/search}" method="get">
+                        <input type="text" placeholder="여행지 입력">
+                        <input type="date" placeholder="출발예정일 입력">
+                        <button type="submit">검색하기</button>
+                    </form>
+                </div>
+                <div></div>
+            </div>
+        </div>
 
-    <!--베너-->
+        <!--실시간 최다 검색 상품-->
+        <div class="most-searched">
+            <header>
+                <h1>실시간 최다 검색</h1>
+            </header>
+            <div class="product-group">
+                <div class="product">
+                    <div class="product-image"></div>
+                    <p class="title">패키지 여행 제목</p>
+                    <p class="content">상세 내용</p>
+                    <p class="price-text">
+                        <span class="price">4,0000,000</span>원
+                    </p>
+                </div>
+                <div class="product">
+                    <div class="product-image"></div>
+                    <p class="title">패키지 여행 제목</p>
+                    <p class="content">상세 내용</p>
+                    <p class="price-text">
+                        <span class="price">4,0000,000</span>원
+                    </p>
+                </div>
+                <div class="product">
+                    <div class="product-image"></div>
+                    <p class="title">패키지 여행 제목</p>
+                    <p class="content">상세 내용</p>
+                    <p class="price-text">
+                        <span class="price">4,0000,000</span>원
+                    </p>
+                </div>
+                <div class="product">
+                    <div class="product-image"></div>
+                    <p class="title">패키지 여행 제목</p>
+                    <p class="content">상세 내용</p>
+                    <p class="price-text">
+                        <span class="price">4,0000,000</span>원
+                    </p>
+                </div>
+            </div>
+        </div>
 
-    <!--검색창-->
-    <form th:action="@{/search}" method="get">
-        <button type="submit">검색하기</button>
-    </form>
-
-    <!--실시간 최다 검색 상품-->
-
-    <!--테마별 상품-->
+        <!--테마별 상품-->
+        <div class="product-category-box">
+            <header>
+                <div class="header-group">
+                    <h1>테마 별로 재미나게 즐기자!</h1>
+                    <img th:src="@{/images/index/water-slide.png}" alt="워터슬라이드 아이콘">
+                </div>
+            </header>
+            <div class="product-category-group">
+                <div class="product-category">산</div>
+                <div class="product-category">바다</div>
+                <div class="product-category">힐링</div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
