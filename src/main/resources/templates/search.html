@@ -5,16 +5,103 @@
       layout:decorate="~{layout/header-n-side}">
 <head>
     <meta charset="UTF-8">
-    <title>결과목록</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>검색결과</title>
+
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/search.css}">
 </head>
 <body>
-    <main layout:fragment="main" class="mt-50">
+    <main layout:fragment="main" class="mt-20">
+        <h1 class="search-word mb-20">검색어</h1>
         <!--검색창-->
-
+        <div class="search-box">
+            <form action="">
+                <div class="input-field">
+                    <label for="travel-destination">여행지</label>
+                    <input type="text" id="travel-destination" placeholder="여행지입력">
+                </div>
+                <div class="input-field">
+                    <label for="travel-date">출발예정일</label>
+                    <input type="date" id="travel-date">
+                </div>
+                <button type="submit">검색하기</button>
+            </form>
+        </div>
         <!--정렬-->
+        <div class="list-header mt-20 mb-10">
+            <p>검색 결과 <span class="search-count">100</span>개</p>
+            <div class="sort">
+                <button type="button">인기순</button>
+                <button type="button">고객평점순</button>
+            </div>
+        </div>
 
         <!--검색 결과 리스트-->
-        <a th:href="@{/product}">상품</a>
+        <ul class="search-result-list">
+            <li>
+                <a th:href="@{/product}">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h2 class="title">패키지 여행 상품 제목</h2>
+                        <div class="info-main">
+                            <p class="description">패키지 여행 상품 설명</p>
+                            <div class="price-comparison-group">
+                                <div class="travel-agency">
+                                    <span class="travel-agency-name">인터파크 투어</span>
+                                    <span class="price">75,903원</span>
+                                </div>
+                                <div class="travel-agency">
+                                    <span class="travel-agency-name">인터파크 투어</span>
+                                    <span class="price">775,903원</span>
+                                </div>
+                                <div class="travel-agency">
+                                    <span class="travel-agency-name">인터파크 투어</span>
+                                    <span class="price">775,903원</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="rating">
+                            <span class="star">★ </span>
+                            <span class="rating-avg">4.5 </span>
+                            (<span class="rating-count">200</span>)
+                        </p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/product}">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <div class="badge"></div>
+                        <h2 class="title">패키지 여행 상품 제목</h2>
+                        <div class="info-main">
+                            <p class="description">패키지 여행 상품 설명</p>
+                            <div class="price-comparison-group">
+                                <div class="travel-agency">
+                                    <span class="travel-agency-name">인터파크 투어</span>
+                                    <span class="price">75,903원</span>
+                                </div>
+                                <div class="travel-agency">
+                                    <span class="travel-agency-name">인터파크 투어</span>
+                                    <span class="price">775,903원</span>
+                                </div>
+                                <div class="travel-agency">
+                                    <span class="travel-agency-name">인터파크 투어</span>
+                                    <span class="price">775,903원</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="rating">
+                            <span class="star">★ </span>
+                            <span class="rating-avg">4.5 </span>
+                            (<span class="rating-count">200</span>)
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
     </main>
 </body>
 </html>
