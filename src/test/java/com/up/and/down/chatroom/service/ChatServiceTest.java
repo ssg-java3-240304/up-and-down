@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -40,5 +42,28 @@ class ChatServiceTest {
         assertThat(foundChat.getChatRoomId()).isEqualTo(1L);
         assertThat(foundChat.getNickname()).isEqualTo("야호");
         assertThat(foundChat.getMessage()).isEqualTo("안녕하세여. 야호입니다");
+    }
+
+    @Test
+    @DisplayName("메시지 내역 불러오기")
+    void test2() {
+        // given
+        ChatDto chatDto1 = new ChatDto();
+        chatDto1.setChatRoomId(1L);
+        chatDto1.setNickname("전");
+        chatDto1.setMessage("현선입니다");
+
+        ChatDto chatDto2 = new ChatDto();
+        chatDto2.setChatRoomId(1L);
+        chatDto2.setNickname("야");
+        chatDto2.setMessage("호입니다");
+
+        chatService.saveMessage(chatDto1);
+        chatService.saveMessage(chatDto2);
+        // when
+        List<ChatDto> chatList = chatService.findChatMessageByChatRoomId(1L);
+        // then
+        assertThat(chatList).hasSize(2);
+        assertThat(chatList).extracting(ChatDto::getMessage).containsExactly("현선입니다", "호입니다");
     }
 }
