@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomMember {
-    private Long members; // 채팅방에 속한 사람
-    private Long creatorId; // 채팅방을 만든 사람
+    private Long chatRoomMemberId; // 채팅방에 속한 사람
+    private String nickname; // 채팅방 닉네임
 }

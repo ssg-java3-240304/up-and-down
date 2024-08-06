@@ -44,7 +44,7 @@ public class ChatRoom {
 //            joinColumns = @JoinColumn(name = "chat_room_id")
 //    )
 //    private Set<Long> members; // 채팅방에 속한 사람
-//    private Long creatorId; // 채팅방을 만든 사람
+    private Long creatorId; // 채팅방을 만든 사람
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "tbl_chat_room_members",
