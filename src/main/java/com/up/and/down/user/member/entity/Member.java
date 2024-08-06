@@ -19,10 +19,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class Member extends User {
-    private String memberId; // 아이디
     private String nickname; // 닉네임
     private Gender Gender; // 성별
     private LocalDate birth; // 생년월일
     private Marketing marketing; // 마케팅 정보 수신 동의 여부
-    private MemberRole memberRole; // 멤버 역할
 }
