@@ -1,10 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>privacyInfo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .step-indicators {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-left: 0;
+        }
+        .step-indicators div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            position: relative;
+        }
+        .step-indicators div.active {
+            border: 2px solid #007bff;
+            background-color: white;
+            color: #007bff;
+            margin-right: 70px;
+        }
+        .step-indicators div.active::after {
+            content: '정보 입력';
+            position: absolute;
+            left: 40px;
+            font-size: 14px;
+            color: black;
+            white-space: nowrap;
+        }
+        .form-section {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-section label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .form-section input[type="text"],
+        .form-section input[type="email"],
+        .form-section input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .form-section input[type="radio"] {
+            margin-right: 10px;
+        }
+        .form-section .inline {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .form-section .btn {
+            background-color: #ccc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-section .btn.active {
+            background-color: #007bff;
+        }
+        .form-section .btn:disabled {
+            background-color: #ccc;
+        }
+        .next-button-container {
+            text-align: right;
+        }
+        #nextButton {
+            background-color: #ccc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <div class="step-indicators">
+        <div>1</div>
+        <div class="active">2</div>
+        <div>3</div>
+        <div>4</div>
+    </div>
+    <div class="form-section">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" oninput="validateKorean(this)">
 
+        <label>성별</label>
+        <div class="inline">
+            <label for="male">남
+                <input type="radio" id="male" name="gender" value="male">
+            </label>
+        </div>
+        <div class="inline">
+            <label for="female">여
+                <input type="radio" id="female" name="gender" value="female">
+            </label>
+        </div>
+
+        <label for="birthdate">생년월일</label>
+        <input type="text" id="birthdate" name="birthdate" maxlength="8" placeholder="19990101" oninput="validateNumber(this)">
+
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" placeholder="abc@ssg.com" oninput="validateEmail(this)">
+
+        <label for="phone">전화번호</label>
+        <input type="tel" id="phone" name="phone" maxlength="11" placeholder="휴대폰 번호 입력('-'제외 11자리 입력)" oninput="validatePhone(this)">
+        <button class="btn" id="verifyPhone" disabled>인증</button>
+        <span id="timer" style="display: none;">3:00</span>
+
+        <label for="verificationCode">인증번호 입력</label>
+        <input type="text" id="verificationCode" name="verificationCode" maxlength="6" oninput="validateNumber(this)">
+        <button class="btn" id="verifyCode">확인</button>
+    </div>
+    <div class="next-button-container">
+        <button class="btn" id="nextButton" th:onclick="|location.href = '@{/join/member/memberAccountInfo}'|">다음</button>
+    </div>
+</div>
+<script>
+    const nextButton = document.getElementById('nextButton');
+    const nameInput = document.getElementById('name');
+    const genderInputs = document.getElementsByName('gender');
+    const birthdateInput = document.getElementById('birthdate');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const verifyPhoneButton = document.getElementById('verifyPhone');
+    const timerElement = document.getElementById('timer');
+    const verificationCodeInput = document.getElementById('verificationCode');
+
+    function updateButtonState() {
+        const nameValid = nameInput.value.trim() !== '';
+        const genderValid = Array.from(genderInputs).some(input => input.checked);
+        const birthdateValid = birthdateInput.value.trim() !== '';
+        const emailValid = emailInput.value.trim() !== '';
+        const phoneValid = phoneInput.value.trim() !== '';
+        const verificationCodeValid = verificationCodeInput.value.trim() !== '';
+
+        nextButton.disabled = !(nameValid && genderValid && birthdateValid && emailValid && phoneValid && verificationCodeValid);
+        if (nextButton.disabled) {
+            nextButton.classList.remove('active');
+        } else {
+            nextButton.classList.add('active');
+        }
+    }
+
+    function validateKorean(input) {
+        input.value = input.value.replace(/[^가-힣]/g, '');
+        updateButtonState();
+    }
+
+    function validateNumber(input) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+        updateButtonState();
+    }
+
+    function validateEmail(input) {
+        input.value = input.value.replace(/[^\x00-\x7F]/g, '');
+        updateButtonState();
+    }
+
+    function validatePhone(input) {
+        const phoneValid = input.value.trim().length === 11;
+        verifyPhoneButton.disabled = !phoneValid;
+        if (phoneValid) {
+            verifyPhoneButton.classList.add('active');
+        } else {
+            verifyPhoneButton.classList.remove('active');
+        }
+        updateButtonState();
+    }
+
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        const interval = setInterval(() => {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+            }
+        }, 1000);
+        sessionStorage.setItem('timer', Date.now() + duration * 1000);
+    }
+
+    verifyPhoneButton.addEventListener('click', () => {
+        verifyPhoneButton.textContent = '재인증';
+        timerElement.style.display = 'inline';
+        startTimer(180, timerElement);
+    });
+
+    nameInput.addEventListener('input', updateButtonState);
+    genderInputs.forEach(input => input.addEventListener('change', updateButtonState));
+    birthdateInput.addEventListener('input', updateButtonState);
+    emailInput.addEventListener('input', updateButtonState);
+    phoneInput.addEventListener('input', validatePhone);
+    verificationCodeInput.addEventListener('input', updateButtonState);
+</script>
 </body>
 </html>
