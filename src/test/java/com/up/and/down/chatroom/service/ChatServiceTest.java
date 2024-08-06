@@ -33,6 +33,12 @@ class ChatServiceTest {
         assertThat(savedChat.getId()).isNotNull();
         assertThat(savedChat.getChatRoomId()).isEqualTo(1L);
         assertThat(savedChat.getNickname()).isEqualTo("야호");
-        assertThat(savedChat.getMessage()).isEqualTo("안녕하세요. 야호입니다.");
+        assertThat(savedChat.getMessage()).isEqualTo("안녕하세여. 야호입니다");
+        // 실제로 db에 저장되었는 지 확인해보기
+        Chat foundChat = chatRepository.findById(savedChat.getId()).orElse(null);
+        assertThat(foundChat).isNotNull();
+        assertThat(foundChat.getChatRoomId()).isEqualTo(1L);
+        assertThat(foundChat.getNickname()).isEqualTo("야호");
+        assertThat(foundChat.getMessage()).isEqualTo("안녕하세여. 야호입니다");
     }
 }
