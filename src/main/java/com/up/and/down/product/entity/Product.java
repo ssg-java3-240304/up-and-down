@@ -15,6 +15,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "source_site", length = 500)
     private String sourceSite; // 출처 페이지
     @Embedded
     private ProductInformation productInformation;
