@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class ChatStompController {
     private final ChatService chatService;
 
-    @MessageMapping("/chat/chatroom/{roomId}")
-    @SendTo("/sub/chat/chatroom/{roomId}")
+    @MessageMapping("{chatRoomId}")
+    @SendTo("/sub/{chatRoomId}")
     public ChatDto chat(@DestinationVariable(value = "chatroomId") Long chatroomId, ChatDto chatDto){
         log.debug("chatroomId = {}", chatroomId);
         log.debug("chatDto = {}", chatDto);
