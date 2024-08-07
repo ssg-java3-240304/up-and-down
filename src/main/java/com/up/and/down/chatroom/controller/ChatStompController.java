@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
@@ -16,12 +17,19 @@ import org.springframework.stereotype.Controller;
 public class ChatStompController {
     private final ChatService chatService;
 
-    @MessageMapping("/chat/chatroom/{roomId}")
-    @SendTo("/sub/chat/chatroom/{roomId}")
-    public ChatDto chat(@DestinationVariable(value = "roomId") Long chatroomId, ChatDto chatDto){
-        log.debug("chatroomId = {}", chatroomId);
+    @MessageMapping("{chatRoomId}")
+    @SendTo("/sub/{chatRoomId}")
+    public ChatDto chat(@DestinationVariable(value = "chatRoomId") Long chatRoomId, ChatDto chatDto){
+        log.debug("chatroomId = {}", chatRoomId);
         log.debug("chatDto = {}", chatDto);
         chatService.saveMessage(chatDto); // 메시지 db에 저장
         return chatDto;
+    }
+
+    // 채팅방 틀을 띄우기
+    @GetMapping("/chatroom/chat")
+    public String chat(){
+        log.info("GET /chatroom/chat");
+        return "/chatroom/chat";
     }
 }

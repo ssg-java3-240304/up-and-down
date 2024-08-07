@@ -18,12 +18,22 @@ public class ChatDto {
     private String message; // 메시지 내용
     private LocalDateTime now; // 시간
 
-    public Chat toChat(){
+    public Chat toChatEntity(){
         return Chat.builder()
                 .chatRoomId(this.getChatRoomId())
                 .nickname(this.getNickname())
                 .message(this.getMessage())
                 .createdAt(LocalDateTime.now())
                 .build();
+    }
+
+    public static ChatDto toChatDto(Chat chat){
+        return new ChatDto(
+                chat.getId(),
+                chat.getChatRoomId(),
+                chat.getNickname(),
+                chat.getMessage(),
+                null
+        );
     }
 }

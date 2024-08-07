@@ -10,5 +10,5 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     // 메시지 내역 불러오기
-    List<Chat> findByChatRoomId(Long chatRoomId);
+    List<Chat> findChatMessageByChatRoomId(Long chatRoomId);
 }
