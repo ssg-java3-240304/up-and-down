@@ -8,135 +8,121 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>채팅방</title>
-
     <link rel="stylesheet" th:href="@{/css/chat.css}">
-    <script src="https://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 <body>
     <main layout:fragment="main" class="mt-20">
-        <header>
-            <h1 class="chat-room-name" th:text="${chatRoomName}">채팅방 이름</h1>
-            <p>(<span class="members-num" th:text="${memberCount}">인원수</span>)</p>
-        </header>
-        <div class="chat-box">
-<!--            <div class="sent-message">-->
-<!--                <p class="member-name">작성자</p>-->
-<!--                <div class="content">여기에 그래도 내용이</div>-->
-<!--                <p class="sent-time">12:00</p>-->
-<!--            </div>-->
-<!--            <div class="other-message">-->
-<!--                <p class="member-name">작성자</p>-->
-<!--                <div class="content">여기에 그래도 내용이</div>-->
-<!--                <p class="sent-time">12:00</p>-->
-<!--            </div>-->
-            <div th:each="message : ${messages}" class="message" th:classappend="${message.senderId == #authentication.principal.userId} ? 'sent-message' : 'other-message'">
-                <p class="member-name" th:text="${message.senderNickname}">닉네임</p>
-                <div class="content" th:text="${message.content}">메시지 내용</div>
-                <p class="sent-time" th:text="${#dates.format(message.sentTime, 'HH:mm:ss')}">시간</p>
+        <div id="chat-container">
+            <div id="chat-header">
+                <span id="currentRoomNumber" class="chat-title" th:text="${chatRoomName}">채팅방 이름</span>
+                <span class="members-num" th:text="'(' + ${memberCount} + ')'">(25)</span>
             </div>
-        </div>
-        <div class="chat-input">
-            <form action="#" onsubmit="sendMessage(); return false;">
-                <input id="message-input" type="text" placeholder="보낼 내용을 입력해주세요.">
-                <button type="submit">보내기</button>
-            </form>
+            <div id="messages" class="chat-box">
+                <div th:each="message : ${messages}" class="message" th:classappend="${message.nickname == #authentication.principal.username} ? 'sent-message' : 'other-message'">
+                    <p class="member-name" th:text="${message.nickname}">닉네임</p>
+                    <div class="content" th:text="${message.message}">메시지 내용</div>
+                    <p class="sent-time" th:text="${#dates.format(message.now, 'HH:mm:ss')}">시간</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <div id="message-input" contenteditable="true" placeholder="메시지를 입력해주세요."></div>
+                <button id="send-button" class="arrow-button" type="button"></button>            </div>
         </div>
     </main>
+    <script layout:fragment="js">
+        const chatRoomId = /*[[${chatRoomId}]]*/ '1'; // 서버에서 전달된 채팅방 ID
+        // 채팅방 제목
+        // 채팅방 참여 인원수
+        const memberId = /*[[${memberId}]]*/ '123';
+        const username = /*[[${username}]]*/ 'user1'; // 서버에서 전달된 사용자 이
 
-    <script>
-        let stompClient = null;
-        let subscription = null;
-        let currentRoomId = null;
-        let memberId = '현재 사용자 ID'; // 서버에서 사용자 ID를 가져오는 방법에 따라 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. SockJS 객체 생성 후 STOMP 연결 요청
+            const ws = new SockJS('[[@{/stomp}]]');
+            const stompClient = Stomp.over(ws);
 
-        window.onload = () => {
-            connect();
-        };
+            // 2. 서버와 연결되면 호출되는 connect 핸들러
+            stompClient.connect({}, (frame) => {
+                console.log("Connected: ", frame);
 
-        function connect() {
-            const socket = new SockJS('/chat');
-            stompClient = Stomp.over(socket);
-            stompClient.connect({}, function (frame) {
-                console.log('Connected: ' + frame);
+                // 3. 구독 신청
+                stompClient.subscribe(`/sub/${chatRoomId}`, (message) => {
+                    const data = JSON.parse(message.body);
+                    console.log('Received message: ', data);
+
+                    // 메시지를 채팅 창에 추가
+                    const messagesElement = document.getElementById('messages');
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'message';
+
+                    const nicknameElement = document.createElement('p');
+                    nicknameElement.className = 'member-name';
+                    nicknameElement.textContent = data.nickname;
+
+                    const contentElement = document.createElement('div');
+                    contentElement.className = 'content';
+                    contentElement.textContent = data.message;
+
+                    const timeElement = document.createElement('p');
+                    timeElement.className = 'sent-time';
+
+                    const utcDate = new Date(data.now);
+                    const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+                    timeElement.textContent = localDate.toLocaleTimeString();
+
+                    if (data.memberId === memberId) {
+                        messageElement.style.textAlign = 'right';
+                        contentElement.classList.add('chat-right');
+                    } else {
+                        contentElement.classList.add('chat-left');
+                    }
+
+                    messageElement.appendChild(nicknameElement);
+                    messageElement.appendChild(contentElement);
+                    messageElement.appendChild(timeElement);
+                    messagesElement.appendChild(messageElement);
+
+                    // 스크롤을 맨 아래로 이동
+                    messagesElement.scrollTop = messagesElement.scrollHeight;
+                });
             });
-        }
 
-        function enterRoom(roomId) {
-            if (subscription) {
-                subscription.unsubscribe();
-            }
-            currentRoomId = roomId;
-            document.getElementById("currentRoomNumber").innerText = currentRoomId;
-            subscription = stompClient.subscribe(`/sub/chats/rooms/${roomId}`, function (message) {
-                showMessage(JSON.parse(message.body));
-            });
-        }
 
-        function sendMessageWithEnter(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                if (e.isComposing) {
-                    return;
+            // 메시지전송
+            const sendMessage = () => {
+                console.log('Send button clicked');  // 버튼 클릭 로그
+                const messageInput = document.getElementById('message-input');
+                const messageContent = messageInput.innerText.trim();
+                if (messageContent && stompClient) {
+                    const chatMessage = {
+                        chatRoomId: chatRoomId,
+                        nickname: username,
+                        memberId: memberId,
+                        message: messageContent,
+                        now: new Date().toISOString()
+                    };
+                    console.log('Sending message:', chatMessage);  // 메시지 전송 로그
+                    stompClient.send(`/pub/${chatRoomId}`, {}, JSON.stringify(chatMessage));
+                    messageInput.innerText = '';  // 전송 후 내용 초기화
+
+                    // 스크롤을 맨 아래로 이동
+                    const messagesElement = document.getElementById('messages');
+                    messagesElement.scrollTop = messagesElement.scrollHeight;
                 }
-                sendMessage();
-            }
-        }
+            };
 
-        function sendMessage() {
-            const messageInput = document.getElementById("message-input");
-            const message = messageInput.value.trim();
+            // 버튼 클릭 이벤트 리스너 설정
+            document.getElementById('send-button').addEventListener('click', sendMessage);
 
-            if (message === '') return;
+            // Enter 키 이벤트 리스너 설정
+            document.getElementById('message-input').addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                    event.preventDefault();  // 폼 제출 방지
+                }
+            });
 
-            const name = document.getElementById("name").value;
-            const sender = document.getElementById("memberId").value || memberId;
-
-            stompClient.send(`/pub/chats/rooms/${currentRoomId}`, {}, JSON.stringify({
-                memberId: sender,
-                name: name,
-                roomId: currentRoomId,
-                message: message
-            }));
-
-            messageInput.value = "";
-        }
-
-        function showMessage(message) {
-            const response = document.getElementById('messages');
-            const textBox = document.createElement('div');
-            const messageSpan = document.createElement("span");
-            const nameSpan = document.createElement("span");
-
-            textBox.appendChild(nameSpan);
-            textBox.appendChild(messageSpan);
-
-            textBox.classList.add("chat-box");
-
-            if (message.memberId === memberId) {
-                textBox.style.textAlign = "right";
-                messageSpan.classList.add("chat-right");
-            } else {
-                messageSpan.classList.add("chat-left");
-            }
-
-            messageSpan.classList.add("chat-message");
-
-            messageSpan.innerText = `${message.message}`;
-            nameSpan.innerText = message.name;
-            response.appendChild(textBox);
-
-            setTimeout(() => {
-                response.scrollTop = response.scrollHeight;
-            }, 50);
-        }
-
-        function unsubscribe() {
-            if (subscription) {
-                subscription.unsubscribe();
-                subscription = null;
-            }
-        }
+        });
     </script>
 </body>
 </html>
