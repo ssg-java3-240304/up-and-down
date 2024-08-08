@@ -12,7 +12,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat").withSockJS(); // 서버에 접속할 url
+        registry.addEndpoint("/stomp").withSockJS(); // 서버에 접속할 url
     }
 
     @Override
