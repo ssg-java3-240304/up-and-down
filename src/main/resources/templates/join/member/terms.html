@@ -84,48 +84,48 @@
 </head>
 <body>
     <main layout:fragment="main">
-        <div class="container">
-            <div class="step-indicators">
-                <div class="active">1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-            </div>
-            <div class="form-section">
-                <h2>서비스 약관</h2>
-                <div class="terms">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService1.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService2.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService3.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService4.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService5.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService6.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService7.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService8.png">
+            <div class="container">
+                <div class="step-indicators">
+                    <div class="active">1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
                 </div>
-                <label>
-                    <input type="checkbox" id="termsCheckbox"> 본인은 위의 안내사항에 대해 충분히 이해하고 동의합니다.
-                </label>
-            </div>
-            <div class="form-section">
-                <h2>개인정보처리방침</h2>
-                <div class="terms">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy1.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy2.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy3.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy4.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy5.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy6.png">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy7.png">
+                <div class="form-section">
+                    <h2>서비스 약관</h2>
+                    <div class="terms">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService1.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService2.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService3.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService4.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService5.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService6.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService7.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/TermsofService8.png">
+                    </div>
+                    <label>
+                        <input type="checkbox" id="termsCheckbox"> 본인은 위의 안내사항에 대해 충분히 이해하고 동의합니다.
+                    </label>
                 </div>
-                <label>
-                    <input type="checkbox" id="privacyCheckbox"> 본인은 위의 안내사항에 대해 충분히 이해하고 동의합니다.
-                </label>
+                <div class="form-section">
+                    <h2>개인정보처리방침</h2>
+                    <div class="terms">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy1.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy2.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy3.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy4.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy5.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy6.png">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/Terms/privacyPolicy7.png">
+                    </div>
+                    <label>
+                        <input type="checkbox" id="privacyCheckbox"> 본인은 위의 안내사항에 대해 충분히 이해하고 동의합니다.
+                    </label>
+                </div>
+                <div class="next-button-container">
+                    <button class="next-button" id="nextButton" th:onclick="|location.href = '@{/join/member/privacyInfo}'|" disabled>다음</button>
+                </div>
             </div>
-            <div class="next-button-container">
-                <button class="next-button" id="nextButton" th:onclick="|location.href = '@{/join/member/privacyInfo}'|" disabled>다음</button>
-            </div>
-        </div>
         <script>
             const termsCheckbox = document.getElementById('termsCheckbox');
             const privacyCheckbox = document.getElementById('privacyCheckbox');
