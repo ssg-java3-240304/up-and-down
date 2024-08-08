@@ -31,7 +31,6 @@ public class Member extends User {
     }
 
     public void setMemberAuthority() {
-        User member = new Member();
-        member.setAuthorities(Set.of(Authority.MEMBER));
+        super.setAuthorities(Set.of(Authority.MEMBER));
     }
 }

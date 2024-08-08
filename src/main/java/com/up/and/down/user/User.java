@@ -26,7 +26,7 @@ public abstract class User {
     private String phone; // 전화번호
     private String email; // 이메일
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "tbl_authority",
             joinColumns = @JoinColumn(name = "id")
