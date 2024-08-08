@@ -8,7 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>채팅방</title>
+
     <link rel="stylesheet" th:href="@{/css/chat.css}">
+
+    <!-- stomp -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <main layout:fragment="main" class="mt-20">
@@ -26,9 +31,11 @@
             </div>
             <div class="chat-input">
                 <div id="message-input" contenteditable="true" placeholder="메시지를 입력해주세요."></div>
-                <button id="send-button" class="arrow-button" type="button"></button>            </div>
+                <button id="send-button" class="arrow-button" type="button"></button>
+            </div>
         </div>
     </main>
+
     <script layout:fragment="js">
         const chatRoomId = /*[[${chatRoomId}]]*/ '1'; // 서버에서 전달된 채팅방 ID
         // 채팅방 제목
