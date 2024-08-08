@@ -1,355 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/header-n-side}">
 <head>
     <meta charset="UTF-8">
-    <title>Chat</title>
-</head>
-<style type="text/css">
-  body{margin-top:20px;}
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>채팅방</title>
 
-  /* WRAPPERS */
-  #wrapper {
-    width: 100%;
-    overflow-x: hidden;
-  }
-  .wrapper {
-    padding: 0 20px;
-  }
-  .wrapper-content {
-    padding: 20px 10px 40px;
-  }
-  #page-wrapper {
-    padding: 0 15px;
-    min-height: 568px;
-    position: relative !important;
-  }
-  @media (min-width: 768px) {
-    #page-wrapper {
-      position: inherit;
-      margin: 0 0 0 240px;
-      min-height: 2002px;
-    }
-  }
+    <link rel="stylesheet" th:href="@{/css/chat.css}">
 
-
-  .message-input {
-    height: 90px !important;
-  }
-  .chat-avatar {
-    white: 36px;
-    height: 36px;
-    float: left;
-    margin-right: 10px;
-  }
-  .chat-user-name {
-    padding: 10px;
-  }
-  .chat-user {
-    padding: 8px 10px;
-    border-bottom: 1px solid #e7eaec;
-  }
-  .chat-user a {
-    color: inherit;
-  }
-  .chat-view {
-    z-index: 20012;
-  }
-  .chat-users,
-  .chat-statistic {
-    margin-left: -30px;
-  }
-  @media (max-width: 992px) {
-    .chat-users,
-    .chat-statistic {
-      margin-left: 0;
-    }
-  }
-  .chat-view .ibox-content {
-    padding: 0;
-  }
-  .chat-message {
-    padding: 10px 20px;
-  }
-  .message-avatar {
-    height: 48px;
-    width: 48px;
-    border: 1px solid #e7eaec;
-    border-radius: 4px;
-    margin-top: 1px;
-  }
-  .chat-discussion .chat-message.left .message-avatar {
-    float: left;
-    margin-right: 10px;
-  }
-  .chat-discussion .chat-message.right .message-avatar {
-    float: right;
-    margin-left: 10px;
-  }
-  .message {
-    background-color: #fff;
-    border: 1px solid #e7eaec;
-    text-align: left;
-    display: block;
-    padding: 10px 20px;
-    position: relative;
-    border-radius: 4px;
-  }
-  .chat-discussion .chat-message.left .message-date {
-    float: right;
-  }
-  .chat-discussion .chat-message.right .message-date {
-    float: left;
-  }
-  .chat-discussion .chat-message.left .message {
-    text-align: left;
-    margin-left: 55px;
-  }
-  .chat-discussion .chat-message.right .message {
-    text-align: right;
-    margin-right: 55px;
-  }
-  .message-date {
-    font-size: 10px;
-    color: #888888;
-  }
-  .message-content {
-    display: block;
-  }
-  .chat-discussion {
-    background: #eee;
-    padding: 15px;
-    height: 400px;
-    overflow-y: auto;
-  }
-  .chat-users {
-    overflow-y: auto;
-    height: 400px;
-  }
-  .chat-message-form .form-group {
-    margin-bottom: 0;
-  }
-  .ibox {
-    clear: both;
-    margin-bottom: 25px;
-    margin-top: 0;
-    padding: 0;
-  }
-  .ibox.collapsed .ibox-content {
-    display: none;
-  }
-  .ibox.collapsed .fa.fa-chevron-up:before {
-    content: "\f078";
-  }
-  .ibox.collapsed .fa.fa-chevron-down:before {
-    content: "\f077";
-  }
-  .ibox:after,
-  .ibox:before {
-    display: table;
-  }
-  .ibox-title {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #ffffff;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 3px 0 0;
-    color: inherit;
-    margin-bottom: 0;
-    padding: 14px 15px 7px;
-    min-height: 48px;
-  }
-  .ibox-content {
-    background-color: #ffffff;
-    color: inherit;
-    padding: 15px 20px 20px 20px;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px 0;
-  }
-  .ibox-footer {
-    color: inherit;
-    border-top: 1px solid #e7eaec;
-    font-size: 90%;
-    background: #ffffff;
-    padding: 10px 15px;
-  }
-
-  .message-input {
-    height: 90px !important;
-  }
-  .form-control, .single-line {
-    background-color: #FFFFFF;
-    background-image: none;
-    border: 1px solid #e5e6e7;
-    border-radius: 1px;
-    color: inherit;
-    display: block;
-    padding: 6px 12px;
-    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 100%;
-    font-size: 14px;
-  }
-</style>
+    <!-- stomp -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
-  <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-          <div class="ibox-content">
-            <strong>채팅방 이름</strong>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="ibox chat-view">
-          <div class="ibox-title">
-            <small class="pull-right text-muted">Last message: Mon Jan 26 2015 - 18:39:23</small> Chat room panel
-          </div>
-          <div class="ibox-content">
-            <div class="row">
-              <div class="col-md-9 ">
-                <div class="chat-discussion">
-                  <div class="chat-message left">
-                    <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>
-                    <div class="message">
-                      <a class="message-author" href="#"> Michael Smith </a>
-                      <span class="message-date"> Mon Jan 26 2015 - 18:39:23 </span>
-                      <span class="message-content">
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message right">
-                    <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                    <div class="message">
-                      <a class="message-author" href="#"> Karl Jordan </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message right">
-                    <!--                                        <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>-->
-                    <div class="message">
-                      <a class="message-author" href="#"> Michael Smith </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message left">
-                    <!--                                        <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>-->
-                    <div class="message">
-                      <a class="message-author" href="#"> Alice Jordan </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
-It uses a dictionary of over 200 Latin words.
-</span>
-                    </div>
-                  </div>
-                  <div class="chat-message right">
-                    <!--                                        <img class="message-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>-->
-                    <div class="message">
-                      <a class="message-author" href="#"> Mark Smith </a>
-                      <span class="message-date"> Fri Jan 25 2015 - 11:12:36 </span>
-                      <span class="message-content">
-All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
-It uses a dictionary of over 200 Latin words.
-</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="chat-users">
-                  <div class="users-list">
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Karl Jordan</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Monica Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <span class="pull-right label label-primary">Online</span>
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Michael Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <span class="pull-right label label-primary">Online</span>
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar4.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Janet Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Alice Smith</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Monica Cale</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Mark Jordan</a>
-                      </div>
-                    </div>
-                    <div class="chat-user">
-                      <span class="pull-right label label-primary">Online</span>
-                      <img class="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar8.png" alt>
-                      <div class="chat-user-name">
-                        <a href="#">Janet Smith</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <main layout:fragment="main" class="mt-20">
+        <div id="chat-container">
+            <div id="chat-header">
+                <span id="currentRoomNumber" class="chat-title" th:text="${chatRoomName}">채팅방 이름</span>
+                <span class="members-num" th:text="'(' + ${memberCount} + ')'">(25)</span>
             </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="chat-message-form">
-                  <div class="form-group">
-                    <textarea class="form-control message-input" name="message" placeholder="Enter message text and press enter"></textarea>
-                  </div>
+            <div id="messages" class="chat-box">
+                <div th:each="message : ${messages}" class="message" th:classappend="${message.nickname == #authentication.principal.username} ? 'sent-message' : 'other-message'">
+                    <p class="member-name" th:text="${message.nickname}">닉네임</p>
+                    <div class="content" th:text="${message.message}">메시지 내용</div>
+                    <p class="sent-time" th:text="${#dates.format(message.now, 'HH:mm:ss')}">시간</p>
                 </div>
-              </div>
             </div>
-          </div>
+            <div class="chat-input">
+                <div id="message-input" contenteditable="true" placeholder="메시지를 입력해주세요."></div>
+                <button id="send-button" class="arrow-button" type="button"></button>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+    </main>
 
-</script>
+    <script layout:fragment="js">
+        const chatRoomId = /*[[${chatRoomId}]]*/ '1'; // 서버에서 전달된 채팅방 ID
+        // 채팅방 제목
+        // 채팅방 참여 인원수
+        const memberId = /*[[${memberId}]]*/ '123';
+        const username = /*[[${username}]]*/ 'user1'; // 서버에서 전달된 사용자 이
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. SockJS 객체 생성 후 STOMP 연결 요청
+            const ws = new SockJS('[[@{/stomp}]]');
+            const stompClient = Stomp.over(ws);
+
+            // 2. 서버와 연결되면 호출되는 connect 핸들러
+            stompClient.connect({}, (frame) => {
+                console.log("Connected: ", frame);
+
+                // 3. 구독 신청
+                stompClient.subscribe(`/sub/${chatRoomId}`, (message) => {
+                    const data = JSON.parse(message.body);
+                    console.log('Received message: ', data);
+
+                    // 메시지를 채팅 창에 추가
+                    const messagesElement = document.getElementById('messages');
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'message';
+
+                    const nicknameElement = document.createElement('p');
+                    nicknameElement.className = 'member-name';
+                    nicknameElement.textContent = data.nickname;
+
+                    const contentElement = document.createElement('div');
+                    contentElement.className = 'content';
+                    contentElement.textContent = data.message;
+
+                    const timeElement = document.createElement('p');
+                    timeElement.className = 'sent-time';
+
+                    const utcDate = new Date(data.now);
+                    const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+                    timeElement.textContent = localDate.toLocaleTimeString();
+
+                    if (data.memberId === memberId) {
+                        messageElement.style.textAlign = 'right';
+                        contentElement.classList.add('chat-right');
+                    } else {
+                        contentElement.classList.add('chat-left');
+                    }
+
+                    messageElement.appendChild(nicknameElement);
+                    messageElement.appendChild(contentElement);
+                    messageElement.appendChild(timeElement);
+                    messagesElement.appendChild(messageElement);
+
+                    // 스크롤을 맨 아래로 이동
+                    messagesElement.scrollTop = messagesElement.scrollHeight;
+                });
+            });
+
+
+            // 메시지전송
+            const sendMessage = () => {
+                console.log('Send button clicked');  // 버튼 클릭 로그
+                const messageInput = document.getElementById('message-input');
+                const messageContent = messageInput.innerText.trim();
+                if (messageContent && stompClient) {
+                    const chatMessage = {
+                        chatRoomId: chatRoomId,
+                        nickname: username,
+                        memberId: memberId,
+                        message: messageContent,
+                        now: new Date().toISOString()
+                    };
+                    console.log('Sending message:', chatMessage);  // 메시지 전송 로그
+                    stompClient.send(`/pub/${chatRoomId}`, {}, JSON.stringify(chatMessage));
+                    messageInput.innerText = '';  // 전송 후 내용 초기화
+
+                    // 스크롤을 맨 아래로 이동
+                    const messagesElement = document.getElementById('messages');
+                    messagesElement.scrollTop = messagesElement.scrollHeight;
+                }
+            };
+
+            // 버튼 클릭 이벤트 리스너 설정
+            document.getElementById('send-button').addEventListener('click', sendMessage);
+
+            // Enter 키 이벤트 리스너 설정
+            document.getElementById('message-input').addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                    event.preventDefault();  // 폼 제출 방지
+                }
+            });
+
+        });
+    </script>
 </body>
 </html>
