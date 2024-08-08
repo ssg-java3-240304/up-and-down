@@ -94,52 +94,63 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        #nextButton.active {
+            background-color: #007bff;
+        }
+        #verifyCode.active {
+            background-color: #007bff;
+        }
     </style>
+    <!-- jQuery 라이브러리 로드 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <main layout:fragment="main">
-        <div class="container">
-            <div class="step-indicators">
-                <div>1</div>
-                <div class="active">2</div>
-                <div>3</div>
-                <div>4</div>
-            </div>
-            <div class="form-section">
-                <label for="name">이름</label>
-                <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" oninput="validateKorean(this)">
-
-                <label>성별</label>
-                <div class="inline">
-                    <label for="male">남
-                        <input type="radio" id="male" name="gender" value="male">
-                    </label>
+        <form th:action="@{/join/member/privacyInfo}" method="post" name="privacyInfoFrm">
+            <div class="container">
+                <div class="step-indicators">
+                    <div>1</div>
+                    <div class="active">2</div>
+                    <div>3</div>
+                    <div>4</div>
                 </div>
-                <div class="inline">
-                    <label for="female">여
-                        <input type="radio" id="female" name="gender" value="female">
-                    </label>
+                <div class="form-section">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" oninput="validateKorean(this)" required>
+
+                    <label>성별</label>
+                    <div class="inline">
+                        <label for="male">남
+                            <input type="radio" id="male" name="gender" value="male">
+                        </label>
+                    </div>
+                    <div class="inline">
+                        <label for="female">여
+                            <input type="radio" id="female" name="gender" value="female">
+                        </label>
+                    </div>
+
+                    <label for="birthdate">생년월일</label>
+                    <input type="text" id="birthdate" name="birthdate" maxlength="8" placeholder="ex 19990101" oninput="validateNumber(this)" required>
+
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" placeholder="abc@ssg.com" oninput="validateEmail(this)" required>
+
+                    <label for="phone">전화번호</label>
+                    <input type="tel" id="phone" name="phone" maxlength="11" placeholder="휴대폰 번호 입력('-'제외 11자리 입력)" oninput="validatePhone(this)" required>
+                    <button class="btn" id="verifyPhone" disabled>인증</button>
+                    <span id="timer" style="display: none;"></span>
+
+                    <label for="verificationCode">인증번호 입력</label>
+                    <input type="text" id="verificationCode" name="verificationCode" maxlength="6" placeholder="인증번호를 입력하세요" oninput="validateVerificationCode(this)" required>
+                    <button type="button" class="btn" id="verifyCode">확인</button>
                 </div>
-
-                <label for="birthdate">생년월일</label>
-                <input type="text" id="birthdate" name="birthdate" maxlength="8" placeholder="19990101" oninput="validateNumber(this)">
-
-                <label for="email">이메일</label>
-                <input type="email" id="email" name="email" placeholder="abc@ssg.com" oninput="validateEmail(this)">
-
-                <label for="phone">전화번호</label>
-                <input type="tel" id="phone" name="phone" maxlength="11" placeholder="휴대폰 번호 입력('-'제외 11자리 입력)" oninput="validatePhone(this)">
-                <button class="btn" id="verifyPhone" disabled>인증</button>
-                <span id="timer" style="display: none;">3:00</span>
-
-                <label for="verificationCode">인증번호 입력</label>
-                <input type="text" id="verificationCode" name="verificationCode" maxlength="6" oninput="validateNumber(this)">
-                <button class="btn" id="verifyCode">확인</button>
+                <div class="next-button-container">
+<!--                    <button type="submit" class="btn" id="nextButton" th:onclick="|location.href = '@{/join/member/memberAccountInfo}'|">다음</button>-->
+                    <button type="submit" class="btn" id="nextButton">다음</button>
+                </div>
             </div>
-            <div class="next-button-container">
-                <button class="btn" id="nextButton" th:onclick="|location.href = '@{/join/member/memberAccountInfo}'|">다음</button>
-            </div>
-        </div>
+        </form>
         <script>
             const nextButton = document.getElementById('nextButton');
             const nameInput = document.getElementById('name');
@@ -148,8 +159,12 @@
             const emailInput = document.getElementById('email');
             const phoneInput = document.getElementById('phone');
             const verifyPhoneButton = document.getElementById('verifyPhone');
+            const verifyCodeButton = document.getElementById('verifyCode');
             const timerElement = document.getElementById('timer');
             const verificationCodeInput = document.getElementById('verificationCode');
+            let interval;
+            let certificationNumber;
+            let timerExpired = false;
 
             function updateButtonState() {
                 const nameValid = nameInput.value.trim() !== '';
@@ -157,15 +172,37 @@
                 const birthdateValid = birthdateInput.value.trim() !== '';
                 const emailValid = emailInput.value.trim() !== '';
                 const phoneValid = phoneInput.value.trim() !== '';
-                const verificationCodeValid = verificationCodeInput.value.trim() !== '';
+                const verificationCodeValid = verificationCodeInput.value.length === 6;
+                const verificationCompleted = verifyCodeButton.style.display === 'none';
 
-                nextButton.disabled = !(nameValid && genderValid && birthdateValid && emailValid && phoneValid && verificationCodeValid);
+                nextButton.disabled = !(nameValid && genderValid && birthdateValid && emailValid && phoneValid && verificationCompleted);
                 if (nextButton.disabled) {
                     nextButton.classList.remove('active');
                 } else {
                     nextButton.classList.add('active');
                 }
+
+                if (verificationCodeValid) {
+                    verifyCodeButton.classList.add('active');
+                } else {
+                    verifyCodeButton.classList.remove('active');
+                }
+
+                // if (verificationCompleted) {
+                //     setInputsReadOnly(true);
+                // }
             }
+
+            // function setInputsReadOnly(isReadOnly) {
+            //     const inputs = document.querySelectorAll('input');
+            //     inputs.forEach(input => {
+            //         input.readOnly = isReadOnly;
+            //         input.disabled = isReadOnly;
+            //     });
+            //     genderInputs.forEach(input => {
+            //         input.disabled = isReadOnly;
+            //     });
+            // }
 
             function validateKorean(input) {
                 input.value = input.value.replace(/[^가-힣]/g, '');
@@ -183,7 +220,7 @@
             }
 
             function validatePhone(input) {
-                const phoneValid = input.value.trim().length === 11;
+                const phoneValid = input.value.length === 11;
                 verifyPhoneButton.disabled = !phoneValid;
                 if (phoneValid) {
                     verifyPhoneButton.classList.add('active');
@@ -193,9 +230,15 @@
                 updateButtonState();
             }
 
+            function validateVerificationCode(input) {
+                input.value = input.value.replace(/[^0-9]/g, '');
+                updateButtonState();
+            }
+
             function startTimer(duration, display) {
+                clearInterval(interval); // 기존 타이머를 정리합니다.
                 let timer = duration, minutes, seconds;
-                const interval = setInterval(() => {
+                interval = setInterval(() => {
                     minutes = parseInt(timer / 60, 10);
                     seconds = parseInt(timer % 60, 10);
 
@@ -205,6 +248,7 @@
                     display.textContent = minutes + ":" + seconds;
 
                     if (--timer < 0) {
+                        timerExpired = true;
                         clearInterval(interval);
                     }
                 }, 1000);
@@ -212,9 +256,63 @@
             }
 
             verifyPhoneButton.addEventListener('click', () => {
-                verifyPhoneButton.textContent = '재인증';
-                timerElement.style.display = 'inline';
-                startTimer(180, timerElement);
+                const phoneInputVal = phoneInput.value.trim();
+                if (phoneInputVal.length === 11) {
+                    verifyPhoneButton.textContent = '재인증';
+                    timerElement.style.display = 'inline';
+                    startTimer(180, timerElement);
+                    timerExpired = false;
+
+                    const csrfHeader = `[[${_csrf.headerName}]]`;
+                    const csrfToken = `[[${_csrf.token}]]`;
+                    const headers = {
+                        // 헤더명을 변수처리하려면, []을 통해 선언하면 된다.
+                        [csrfHeader] : csrfToken
+                    }
+
+                    $.ajax({
+                        url: '/app/join/member/sign/send',
+                        type: 'POST',
+                        headers,
+                        data: { to : phoneInputVal },
+                        success: function (response) {
+                            console.log("POST response:", response);
+                            const {result, resultNum} = response;
+                            if(result === 'success')
+                                certificationNumber = resultNum;
+                        },
+                        error: function (error) {
+                            console.error("Error with POST request:", error);
+                        }
+                    });
+                }
+            });
+
+            verifyCodeButton.addEventListener('click', () => {
+                const checkNum = document.getElementById('verificationCode').value.trim();
+                if(!timerExpired) {
+                    if (certificationNumber === checkNum) {
+                        alert("인증이 완료되었습니다.");
+                        clearInterval(interval);
+                        verifyPhoneButton.disabled = true;
+                        verifyCodeButton.style.display = 'none';
+                        verifyPhoneButton.textContent = '인증 완료';
+                        // setInputsReadOnly(true);
+                        // nameInput.style.readonly = true;
+                        // genderInputs.style.readonly = true;
+                        // birthdateInput.style.readonly = true;
+                        // emailInput.style.readonly = true;
+                        // phoneInput.style.readonly = true;
+                        // verificationCodeInput.style.readonly = true;
+                        updateButtonState();
+                    } else if(certificationNumber !== checkNum){
+                        alert("인증번호가 일치하지 않습니다. 다시 인증해주세요.");
+                    } else {
+                        alert("오류가 발생했습니다. 다시 인증해주세요.");
+                    }
+                } else {
+                    alert("인증 시간이 만료되었습니다. 다시 인증해주세요.");
+                }
             });
 
             nameInput.addEventListener('input', updateButtonState);
@@ -222,8 +320,8 @@
             birthdateInput.addEventListener('input', updateButtonState);
             emailInput.addEventListener('input', updateButtonState);
             phoneInput.addEventListener('input', validatePhone);
-            verificationCodeInput.addEventListener('input', updateButtonState);
-        </script>
+            verificationCodeInput.addEventListener('input', validateVerificationCode);
+    </script>
     </main>
 </body>
 </html>
