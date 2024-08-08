@@ -18,7 +18,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
         return new AuthPrincipal(user); // @Data가 @AllArgsConstructor를 같이 선언해주기 때문에 생성자 사용이 가능
