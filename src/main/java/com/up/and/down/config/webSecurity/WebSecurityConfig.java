@@ -31,11 +31,11 @@ public class WebSecurityConfig {
          */
         http.authorizeHttpRequests((registry) -> {
             registry
-                    .requestMatchers("/**").permitAll() // 누구나 허용
-//                    .requestMatchers("/", "/main", "/product", "/chatroom/chat", "/stomp/**", "/api/public").permitAll() // 누구나 허용
-//                    .requestMatchers("/login/**", "/join/**").anonymous()
-//                    .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
-//                    .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
+//                    .requestMatchers("/**").permitAll() // 누구나 허용
+                    .requestMatchers("/", "/main", "/product", "/chatroom/chat", "/stomp/**", "/api/public").permitAll() // 누구나 허용
+                    .requestMatchers("/login/**", "/join/**").anonymous()
+                    .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
+                    .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
         });
 
