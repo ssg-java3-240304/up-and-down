@@ -30,7 +30,7 @@ public class WebSecurityConfig {
          * - hasRole(), hasAnyRole() : 특정 권한이 있는 사용자만 허용
          */
         http.authorizeHttpRequests((registry) -> {
-            registry.requestMatchers("/", "index", "/product", "/chatroom/chat", "/stomp/**").permitAll() // 누구나 허용
+            registry.requestMatchers("/", "/main", "/product", "/chatroom/chat", "/stomp/**").permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**").anonymous()
                     .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
