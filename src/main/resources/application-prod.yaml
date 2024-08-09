@@ -13,3 +13,7 @@ coolsms:
   api:
     key: ${SMS_KEY}
     secret: ${SMS_SECRET}
+
+server:
+  servlet:
+    context-path: /app
