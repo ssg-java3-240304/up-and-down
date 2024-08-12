@@ -6,8 +6,6 @@ import com.up.and.down.user.member.service.NaverSNSService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +30,6 @@ public class NaverSNSController {
     @GetMapping("/member/naver_login")
     public String loginToken(@RequestParam("code") String code,
                              @RequestParam("state") String state,
-                             @CurrentSecurityContext SecurityContext securityContext,
                              HttpServletRequest request) {
 //        log.info("POST loginToken");
         // naver 접근 토큰 발급 요청
@@ -47,7 +44,6 @@ public class NaverSNSController {
 
         // 로그인
         authService.snsLogin(userInfo.getId(), request);
-        log.info("test = {}", securityContext);
         return "redirect:/";
     }
 }
