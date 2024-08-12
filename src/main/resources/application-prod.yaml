@@ -21,7 +21,3 @@ sns:
   kakao:
     key: ${KAKAO_KEY}
     secret: ${KAKAO_SECRET}
-
-server:
-  servlet:
-    context-path: /app
