@@ -3,6 +3,7 @@ package com.up.and.down.user.member.dto;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.up.and.down.user.member.entity.Gender;
+import com.up.and.down.user.member.entity.SNS;
 import com.up.and.down.user.member.entity.SNSMember;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,6 +58,7 @@ public class NaverProfileDto {
                 this.nickname,
                 this.gender,
                 this.birth,
-                null);
+                null,
+                SNS.NAVER);
     }
 }

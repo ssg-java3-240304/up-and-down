@@ -22,19 +22,23 @@ public class SNSMember extends User {
     private Gender gender; // 성별
     private LocalDate birth; // 생년월일
     private Marketing marketing; // 마케팅 정보 수신 동의 여부
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sns_type")
+    private SNS snsType; // 로그인한 sns
 
     @Override
     public String getUserId() {
         return snsId;
     }
 
-    public SNSMember(Long id, String name, String userId, String password, String phone, String email, Set<Authority> authorities, String snsId, String nickname, Gender gender, LocalDate birth, Marketing marketing) {
+    public SNSMember(Long id, String name, String userId, String password, String phone, String email, Set<Authority> authorities, String snsId, String nickname, Gender gender, LocalDate birth, Marketing marketing, SNS snsType) {
         super(id, name, userId, password, phone, email, authorities);
         this.snsId = snsId;
         this.nickname = nickname;
         this.gender = gender;
         this.birth = birth;
         this.marketing = marketing;
+        this.snsType = snsType;
     }
 
     public void setSNSMemberAuthority() {
