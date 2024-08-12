@@ -21,27 +21,12 @@
                 <button type="button" class="join-button" th:onclick="|location.href = '@{/join/member/terms}'|">회원가입</button>
             </div>
             <div class="social-login">
-                <img src="https://kr.object.ncloudstorage.com/up-bucket/socialImage/naver.png" alt="Naver login" id="naverLoginImage">
+                <img src="https://kr.object.ncloudstorage.com/up-bucket/socialImage/naver.png" alt="Naver login" id="naverLogin" th:onclick="|location.href='@{/sns_api}'|">
                 <img src="https://kr.object.ncloudstorage.com/up-bucket/socialImage/kakao.png" alt="Kakao login">
                 <img class="google-login" src="https://kr.object.ncloudstorage.com/up-bucket/socialImage/google.png" alt="Google login">
             </div>
         </div>
     </form>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // JavaScript 함수 정의
-            function naverLogin() {
-                // 네이버 로그인 요청 URL 삽입
-                const csrfToken = "[[${_csrf.token}]]";
-                const encodedToken = encodeURIComponent(csrfToken);
-                const url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=_gTTj5HevAEyXNeUhRjE&state=${encodedToken}&redirect_uri=http://localhost:8080/app/`;
-                window.location.href = url; // 네이버 로그인 페이지로 이동
-            }
-
-            // 이벤트 리스너를 통해 이미지 클릭 시 함수 호출
-            document.getElementById("naverLoginImage").addEventListener("click", naverLogin);
-        });
-    </script>
 </main>
 </body>
 </html>

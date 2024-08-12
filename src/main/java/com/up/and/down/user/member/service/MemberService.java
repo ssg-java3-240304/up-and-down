@@ -1,6 +1,5 @@
 package com.up.and.down.user.member.service;
 
-import com.up.and.down.user.Authority;
 import com.up.and.down.user.member.dto.MemberAccountInfoDto;
 import com.up.and.down.user.member.dto.MemberDto;
 import com.up.and.down.user.member.dto.PrivacyInfoDto;

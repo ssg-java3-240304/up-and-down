@@ -1,6 +1,5 @@
 package com.up.and.down.user.member.dto;
 
-import com.up.and.down.user.Authority;
 import com.up.and.down.user.member.entity.Gender;
 import com.up.and.down.user.member.entity.Marketing;
 import com.up.and.down.user.member.entity.Member;
@@ -8,7 +7,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 
 @Data
 @Setter(AccessLevel.PRIVATE)
@@ -34,6 +32,7 @@ public class MemberDto {
                 this.phone,
                 this.email,
                 null,
+                this.userId,
                 this.nickname,
                 this.gender,
                 this.birth,
