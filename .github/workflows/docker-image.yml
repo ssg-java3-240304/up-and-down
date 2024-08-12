@@ -63,6 +63,10 @@ jobs:
             -e "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" \
             -e "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" \
             -e "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" \
+            -e "SMS_KEY=${{ secrets.SMS_KEY }}" \
+            -e "SMS_SECRET=${{ secrets.SMS_SECRET }}" \
+            -e "NAVER_KEY=${{ secrets.NAVER_KEY }}" \
+            -e "NAVER_SECRET=${{ secrets.NAVER_SECRET }}" \
             --name ${{ vars.APP_NAME }} \
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
             sudo docker image prune -f

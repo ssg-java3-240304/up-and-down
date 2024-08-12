@@ -31,14 +31,14 @@
 </head>
 <body>
     <div id="wrapper">
-        <aside th:replace="~{/fragments/admin/aside::asideFragment}"></aside>
+        <aside th:replace="~{fragments/admin/aside::asideFragment}"></aside>
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <header th:replace="~{/fragments/admin/header::headerFragment}"></header>
+                <header th:replace="~{fragments/admin/header::headerFragment}"></header>
                 <main layout:fragment="main"></main>
             </div>
-            <footer th:replace="~{/fragments/admin/footer::footerFragment}"></footer>
+            <footer th:replace="~{fragments/admin/footer::footerFragment}"></footer>
         </div>
     </div>
     <script layout:fragment="js"></script>

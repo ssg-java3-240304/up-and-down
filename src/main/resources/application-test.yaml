@@ -13,3 +13,8 @@ coolsms:
   api:
     key: ${SMS_KEY}
     secret: ${SMS_SECRET}
+
+sns:
+  naver:
+    key: ${NAVER_KEY}
+    secret: ${NAVER_SECRET}

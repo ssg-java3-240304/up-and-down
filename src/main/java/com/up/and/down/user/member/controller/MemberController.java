@@ -1,16 +1,28 @@
 package com.up.and.down.user.member.controller;
 
+import com.up.and.down.auth.principal.AuthPrincipal;
+import com.up.and.down.auth.service.AuthService;
+import com.up.and.down.user.User;
 import com.up.and.down.user.member.dto.MemberAccountInfoDto;
+import com.up.and.down.user.member.dto.NaverProfileDto;
 import com.up.and.down.user.member.dto.PrivacyInfoDto;
 import com.up.and.down.user.member.service.MemberService;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 @Controller
@@ -20,6 +32,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
 
     // 회원가입 step1. 약관동의
     @GetMapping("/join/member/terms")

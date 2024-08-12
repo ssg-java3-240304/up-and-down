@@ -1,5 +1,6 @@
 package com.up.and.down.config.webSecurity;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -28,8 +30,11 @@ public class WebSecurityConfig {
          * - hasRole(), hasAnyRole() : 특정 권한이 있는 사용자만 허용
          */
         http.authorizeHttpRequests((registry) -> {
-            registry.requestMatchers("/", "index", "/product", "/chatroom/chat", "/stomp/**").permitAll() // 누구나 허용
+            registry
+//                    .requestMatchers("/**").permitAll() // 누구나 허용
+                    .requestMatchers("/", "/main", "/product", "/chatroom/chat", "/stomp/**", "/api/public", "member/naver_login", "/sns_api").permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**").anonymous()
+//                    .requestMatchers("/admin/**", "/stomp/**").authenticated() // 인증된 사용자만 허용 - 실제 적용
                     .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
