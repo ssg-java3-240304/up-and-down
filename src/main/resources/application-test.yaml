@@ -18,8 +18,3 @@ sns:
   naver:
     key: ${NAVER_KEY}
     secret: ${NAVER_SECRET}
-
-server:
-  servlet:
-    context-path: /app
-
