@@ -21,3 +21,6 @@ sns:
   kakao:
     key: ${KAKAO_KEY}
     secret: ${KAKAO_SECRET}
+  google:
+    key: ${GOOGLE_KEY}
+    secret: ${GOOGLE_SECRET}
