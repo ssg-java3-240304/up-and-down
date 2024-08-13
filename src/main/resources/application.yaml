@@ -18,9 +18,10 @@ spring:
         show_sql: true
         hbm2ddl:
           auto: update
-
-app:
-  version: 0.5.1
+  elasticsearch:
+    uris: 101.79.11.20:9200
+    username: ${ELASTIC_USERNAME}
+    password: ${ELASTIC_PASSWORD}
 
 logging:
   level:
