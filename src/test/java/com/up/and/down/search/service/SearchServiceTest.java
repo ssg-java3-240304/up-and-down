@@ -33,6 +33,23 @@ class SearchServiceTest {
         assertThat(productGroupDocList).isNotEmpty();
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"제주도", "거제"})
+    @DisplayName("여행지 조회")
+    void testFindByDestination(String destinationStr) {
+        // given
+        Destination destination = Destination.fromKrName(destinationStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByDestination(destination);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+    }
+
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");

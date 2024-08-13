@@ -11,4 +11,6 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     @Override
     @NonNull
     List<ProductGroupDoc> findAll();
+
+    List<ProductGroupDoc> findByDestination(Destination destination);
 }
