@@ -5,9 +5,10 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Embeddable
 @Data
@@ -20,6 +21,7 @@ public class ProductInformation {
     private int nights; // 여행일
 
     private String title; // 제목
+    @Field(type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd")
     private LocalDate start_date; // 여행 시작일
     private int price; // 가격
 

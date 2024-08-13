@@ -18,3 +18,6 @@ sns:
   naver:
     key: ${NAVER_KEY}
     secret: ${NAVER_SECRET}
+  kakao:
+    key: ${KAKAO_KEY}
+    secret: ${KAKAO_SECRET}

@@ -32,7 +32,17 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((registry) -> {
             registry
 //                    .requestMatchers("/**").permitAll() // 누구나 허용
-                    .requestMatchers("/", "/main", "/product", "/chatroom/chat", "/stomp/**", "/api/public", "member/naver_login", "/sns_api").permitAll() // 누구나 허용
+                    .requestMatchers(
+                            "/",
+                            "/main",
+                            "/search",
+                            "/product",
+                            "/chatroom/chat",
+                            "/stomp/**",
+                            "/api/public",
+                            "/member/**",
+                            "/sns_api"
+                    ).permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**").anonymous()
 //                    .requestMatchers("/admin/**", "/stomp/**").authenticated() // 인증된 사용자만 허용 - 실제 적용
                     .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
