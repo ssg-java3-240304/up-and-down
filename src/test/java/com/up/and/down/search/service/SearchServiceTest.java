@@ -50,6 +50,20 @@ class SearchServiceTest {
         assertThat(productGroupDocList).isNotEmpty();
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {2, 3})
+    @DisplayName("숙박일 조회")
+    void testFindByNights(int nights) {
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByNights(nights);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+    }
+
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");
