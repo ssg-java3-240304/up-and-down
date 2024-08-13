@@ -34,4 +34,8 @@ public class ProductGroup {
     @Column(name = "product_information")
     private Map<Long, ProductInformation> productList; // 상품 목록
     private int viewCount; // 조회수
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 }

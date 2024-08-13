@@ -99,7 +99,7 @@ class ElasticsearchTest {
             );
             int curViewCount = productGroupDoc.getViewCount();
 
-            productGroupDoc.setViewCount(curViewCount + i + 1);
+            productGroupDoc.setViewCount(curViewCount + 1);
 
             this.repo.save(productGroupDoc);
             
@@ -108,7 +108,7 @@ class ElasticsearchTest {
             ProductGroupDoc updateProductGroupDoc = this.repo.findById(idList.get(i)).orElseThrow(
                     () -> new RuntimeException("ProductGroupDoc not found with id: " + idList.get(curId))
             );
-            assertThat(updateProductGroupDoc.getViewCount()).isEqualTo(curViewCount + i + 1);
+            assertThat(updateProductGroupDoc.getViewCount()).isEqualTo(curViewCount + 1);
             System.out.println("check success!!!");
         }
     }
