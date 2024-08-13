@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +62,28 @@ class SearchServiceTest {
         assertThat(productGroupDocList).isNotNull();
         assertThat(productGroupDocList).isNotEmpty();
     }
+
+    @Test
+    @DisplayName("아이디 조회")
+    void testFindById() {
+        // given
+        List<Long> idList = this.repo.findAll().stream()
+                .map(ProductGroupDoc::getId)
+                .toList();
+
+        // when
+        for (Long id : idList) {
+            ProductGroupDoc productGroupDoc = this.repo.findById(id).orElse(null);
+
+            // then
+            assertThat(productGroupDoc).isNotNull();
+            assertThat(productGroupDoc.getId()).isEqualTo(id);
+        }
+
+        System.out.println("check success!!!");
+    }
+
+
 
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
