@@ -63,6 +63,6 @@ body {
     border-radius: 5px;
 }
 .social-login img.google-login {
-    border: 2px solid #1e3a8a; /* Blue border color for Google login */
+    border: 2px solid #E0E0E0; /* Blue border color for Google login */
     border-radius: 5px; /* Optional: add some border radius */
 }

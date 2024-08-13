@@ -28,7 +28,7 @@ public class KakaoSNSService {
     private String kakaoKey;
     @Value("${sns.kakao.secret}")
     private String kakaoSecret;
-    private final RestTemplate restTemplate = new RestTemplate();
+
     public String reqSnsApi() {
         String clientId = kakaoKey;//애플리케이션 클라이언트 아이디값";
         String redirectURI = "http://localhost:8080/app/member/kakao_login";
