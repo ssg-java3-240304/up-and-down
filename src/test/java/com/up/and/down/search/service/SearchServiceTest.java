@@ -127,7 +127,8 @@ class SearchServiceTest {
         for (int i = 0; i < top4ProductGroupList.size() - 1; i++) {
             assertThat(top4ProductGroupList.get(i).getViewCount())
                     .isGreaterThanOrEqualTo(top4ProductGroupList.get(i + 1).getViewCount());
-        }    }
+        }
+    }
 
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
