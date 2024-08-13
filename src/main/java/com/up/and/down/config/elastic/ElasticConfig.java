@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
+import org.springframework.lang.NonNull;
 
 @Configuration
 public class ElasticConfig extends ElasticsearchConfiguration {
@@ -17,6 +18,7 @@ public class ElasticConfig extends ElasticsearchConfiguration {
     private String password;
 
     @Override
+    @NonNull
     public ClientConfiguration clientConfiguration() {
         try {
             return ClientConfiguration.builder()

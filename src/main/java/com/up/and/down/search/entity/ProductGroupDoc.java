@@ -20,10 +20,11 @@ import java.util.Map;
 @Builder
 public class ProductGroupDoc {
     @Id
+    @Field(type = FieldType.Long)
     private Long id;
 
     @Field(type = FieldType.Object)
-    private Destination description;
+    private Destination destination;
     @Field(type = FieldType.Integer)
     private int nights;
 

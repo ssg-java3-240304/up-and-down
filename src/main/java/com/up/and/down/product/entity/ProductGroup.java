@@ -17,7 +17,7 @@ public class ProductGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private Destination description; // 여행지
+    private Destination destination; // 여행지
     private int nights; // 숙박일
 
     // 관리 정보
