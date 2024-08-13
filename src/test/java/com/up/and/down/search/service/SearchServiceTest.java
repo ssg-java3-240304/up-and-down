@@ -73,6 +73,7 @@ class SearchServiceTest {
 
         // when
         for (Long id : idList) {
+            System.out.println(id);
             ProductGroupDoc productGroupDoc = this.repo.findById(id).orElse(null);
 
             // then
@@ -83,7 +84,34 @@ class SearchServiceTest {
         System.out.println("check success!!!");
     }
 
+    @Test
+    @DisplayName("상품 그룹 조회수 증가")
+    void testIncreaseViewCount() {
+        // given
+        List<Long> idList = List.of(1L, 3L, 5L, 7L, 9L);
 
+        // when
+        for (int i = 0; i < idList.size(); i++) {
+            int curId = i;
+            // id에 해당하는 ProductGroupDoc 의 조회수를 가져옴
+            ProductGroupDoc productGroupDoc = this.repo.findById(idList.get(i)).orElseThrow(
+                    () -> new RuntimeException("ProductGroupDoc not found with id: " + idList.get(curId))
+            );
+            int curViewCount = productGroupDoc.getViewCount();
+
+            productGroupDoc.setViewCount(curViewCount + i + 1);
+
+            this.repo.save(productGroupDoc);
+            
+            // then
+            // 조회수가 증가했는지 확인
+            ProductGroupDoc updateProductGroupDoc = this.repo.findById(idList.get(i)).orElseThrow(
+                    () -> new RuntimeException("ProductGroupDoc not found with id: " + idList.get(curId))
+            );
+            assertThat(updateProductGroupDoc.getViewCount()).isEqualTo(curViewCount + i + 1);
+            System.out.println("check success!!!");
+        }
+    }
 
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
