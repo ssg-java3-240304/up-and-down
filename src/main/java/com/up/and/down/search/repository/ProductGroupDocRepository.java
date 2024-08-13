@@ -12,7 +12,9 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     @NonNull
     List<ProductGroupDoc> findAll();
 
-    List<ProductGroupDoc> findByDestination(Destination destination);
+    List<ProductGroupDoc> findByDestination(Destination destination); // 여행지로 조회
 
-    List<ProductGroupDoc> findByNights(int nights);
+    List<ProductGroupDoc> findByNights(int nights); // 숙박일로 조회
+
+    List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
 }

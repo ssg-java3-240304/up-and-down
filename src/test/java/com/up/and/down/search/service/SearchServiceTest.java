@@ -113,6 +113,22 @@ class SearchServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("조회수로 조회 상위 4개만")
+    void testFindByViewCountTop4() {
+        // when
+        List<ProductGroupDoc> top4ProductGroupList = this.repo.findTop4ByOrderByViewCountDesc();
+
+        // then
+        assertThat(top4ProductGroupList).isNotNull();
+        assertThat(top4ProductGroupList).isNotEmpty();
+        assertThat(top4ProductGroupList).hasSize(4);
+        // 각 항목이 이전 항목보다 조회수가 크거나 같음을 확인
+        for (int i = 0; i < top4ProductGroupList.size() - 1; i++) {
+            assertThat(top4ProductGroupList.get(i).getViewCount())
+                    .isGreaterThanOrEqualTo(top4ProductGroupList.get(i + 1).getViewCount());
+        }    }
+
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");
