@@ -17,9 +17,6 @@ public class MainController {
     @GetMapping
     public String index(){
         log.info("GET index");
-
-        // 검색창
-
         // 실시간 최다 검색 상품
 
         // 테마별 상품

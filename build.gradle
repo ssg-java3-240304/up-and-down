@@ -24,30 +24,42 @@ repositories {
 }
 
 dependencies {
-	// 관리자 레이아웃 템플릿 사용을 위한 의존성 추가
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
-	// sms api 의존성 추가
-	implementation 'net.nurigo:javaSDK:2.2'
-	// 서버측 유효성검사 관련 의존 @NotNull, @NotEmpty, @NotBlank등
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	// json 파싱을 위한 의존성 추가
-	implementation 'com.google.code.gson:gson:2.8.9'
-
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// Spring Boot 관련 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
+
+	// Thymeleaf 및 Spring Security 관련 추가 의존성
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+	// AWS SDK 및 JSON 파싱 관련 의존성
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.761'
+	implementation 'com.google.code.gson:gson:2.8.9'
+
+	// Lombok 관련 의존성
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// SMS API 의존성
+	implementation 'net.nurigo:javaSDK:2.2'
+
+	// Elasticsearch 의존성
+	implementation 'org.springframework.data:spring-data-elasticsearch:5.3.2'
+
+	// MySQL 연결 의존성
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// 테스트 관련 의존성
+	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.761'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
