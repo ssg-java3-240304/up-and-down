@@ -69,6 +69,8 @@ jobs:
             -e "NAVER_SECRET=${{ secrets.NAVER_SECRET }}" \
             -e "KAKAO_KEY=${{ secrets.KAKAO_KEY }}" \
             -e "KAKAO_SECRET=${{ secrets.KAKAO_SECRET }}" \
+            -e "GOOGLE_KEY=${{ secrets.GOOGLE_KEY }}" \
+            -e "GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}" \
             --name ${{ vars.APP_NAME }} \
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
             sudo docker image prune -f
