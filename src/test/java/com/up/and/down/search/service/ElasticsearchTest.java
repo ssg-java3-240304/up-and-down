@@ -6,6 +6,7 @@ import com.up.and.down.search.repository.ProductGroupDocRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,6 +56,26 @@ class ElasticsearchTest {
     void testFindByNights(int nights) {
         // when
         List<ProductGroupDoc> productGroupDocList = this.repo.findByNights(nights);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2",
+            "거제, 3"
+    })
+    @DisplayName("여행지, 숙박일로 조회")
+    void testFindByDestinationAndNights(String destinationStr, int nights) {
+        // given
+        Destination destination = Destination.fromKrName(destinationStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByDestinationAndNights(destination, nights);
 
         // then
         docToString(productGroupDocList);
