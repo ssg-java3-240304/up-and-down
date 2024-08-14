@@ -1,6 +1,7 @@
 package com.up.and.down.search.entity;
 
 import com.up.and.down.product.entity.Destination;
+import com.up.and.down.product.entity.ProductGroup;
 import com.up.and.down.product.entity.ProductInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,14 @@ public class ProductGroupDoc {
     private Map<Long, ProductInformation> productList;
     @Field(type = FieldType.Integer)
     private int viewCount;
+
+    public ProductGroup toEntity() {
+        return ProductGroup.builder()
+                .id(id)
+                .destination(destination)
+                .nights(nights)
+                .productList(productList)
+                .viewCount(viewCount)
+                .build();
+    }
 }
