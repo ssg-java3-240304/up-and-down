@@ -4,6 +4,7 @@ import com.up.and.down.user.User;
 import com.up.and.down.user.admin.entity.Admin;
 import com.up.and.down.user.member.entity.Member;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Data
+@Slf4j
 public class AuthPrincipal implements UserDetails, Serializable {
     private final User user;
 

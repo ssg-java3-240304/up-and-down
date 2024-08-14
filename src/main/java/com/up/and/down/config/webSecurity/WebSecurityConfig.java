@@ -43,7 +43,7 @@ public class WebSecurityConfig {
                             "/member/**",
                             "/sns_api"
                     ).permitAll() // 누구나 허용
-                    .requestMatchers("/login/**", "/join/**").anonymous()
+                    .requestMatchers("/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
 //                    .requestMatchers("/admin/**", "/stomp/**").authenticated() // 인증된 사용자만 허용 - 실제 적용
                     .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
@@ -58,6 +58,7 @@ public class WebSecurityConfig {
                     .loginProcessingUrl("/auth/login") // POST 로그인처리 url
                     .usernameParameter("username") // name="username"이 아닌 경우 작성 필요
                     .passwordParameter("password") // name="password"가 아닌 경우 작성 필요
+                    .successHandler(customAuthenticationSuccessHandler())
                     .permitAll();
         });
 
@@ -72,8 +73,15 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    // 비밀번호 암호화
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    // 로그인 후 리다이렉트 경로 설정
+    @Bean
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 }

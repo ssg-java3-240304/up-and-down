@@ -1,10 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>adminAccountInfo</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo-up {
+            font-size: 36px;
+            color: #0056b3; /* 파란색 */
+            font-weight: bold;
+        }
+
+        .logo-down {
+            font-size: 36px;
+            color: #39b778; /* 연두색 */
+            font-weight: bold;
+        }
+
+        .login-box {
+            background-color: #ffffff;
+            width: 400px;
+            padding: 30px 40px;
+            border: 2px solid #0056b3;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .login-title {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center; /* 추가: 수직 정렬 */
+        }
+
+        .form-group input {
+            width: 100%; /* 비밀번호 입력창의 너비와 일치 */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-buttons {
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100px; /* 버튼 크기를 비밀번호 입력창의 너비에 맞춤 */
+            padding: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #0056b3;
+            color: white;
+            font-size: 16px;
+            cursor: not-allowed;
+            text-transform: uppercase;
+        }
+
+        .btn.active {
+            background-color: #0056b3; /* 활성화 상태 색상 */
+            cursor: pointer;
+        }
+
+        .btn:hover.active {
+            background-color: #003f8a;
+        }
+
+        .verify-btn {
+            width: 100px; /* 인증 버튼 크기를 조정 */
+            padding: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #cccccc; /* 비활성화 상태 색상 */
+            color: white;
+            font-size: 16px;
+            cursor: not-allowed;
+            text-transform: uppercase;
+        }
+
+        .verify-btn.active {
+            background-color: #0056b3; /* 활성화 상태 색상 */
+            cursor: pointer;
+        }
+
+        .verify-btn:hover.active {
+            background-color: #003f8a;
+        }
+
+        #confirmButton:not(.active):hover {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .btn-timer-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap; /* 타이머로 인해 버튼이 밀리지 않도록 조정 */
+        }
+
+        #phone {
+            width: calc(100% - 110px);
+        }
+
+        #verificationCode {
+            width: calc(100% - 110px);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .timer {
+            font-size: 14px;
+            color: red;
+        }
+
+        .logo-link {
+            text-decoration: none; /* 밑줄 제거 */
+        }
+
+        .logo-link:hover {
+            cursor: pointer; /* 마우스를 올리면 포인터로 변경 */
+        }
+
+        #empNumButton {
+            width: 100px;
+            padding: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #0056b3;
+            color: white;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="logo">
+            <a th:href="@{/admin/login}" class="logo-link">
+                <span class="logo-up">Up</span><span class="logo-down">Down</span>
+            </a>
+        </div>
+        <div class="login-box">
+            <h2 class="login-title">등록</h2>
+            <form th:action="@{/admin/register}" method="post">
+                <div class="form-group">
+                    <input type="text" id="empNum" name="empNum" placeholder="사번" required>
+                    <button type="button" id="empNumButton">등록 확인</button>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="비밀번호" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" placeholder="전화번호" required>
+                    <div class="btn-timer-wrapper">
+                        <button type="button" class="btn verify-btn" id="verifyButton" disabled>인증</button>
+                        <span id="timer" class="timer"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="verificationGroup" style="display:none;">
+                    <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호" required>
+                    <button type="button" class="btn verify-btn" id="confirmButton" disabled>확인</button>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn" id="registerButton" disabled>등록하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let timerInterval; // 타이머를 제어하기 위한 변수
+        let timerExpired = false;
+        const phoneNumber = document.getElementById("phone").value.trim();
+        let certificationNumber; // 인증 번호
+        let completeYn = false;
+        const registerButton = document.getElementById("registerButton");
 
+        // 전화번호 입력 시 인증 버튼 활성화
+        document.getElementById("phone").addEventListener("input", function() {
+            const verifyButton = document.getElementById("verifyButton");
+            if (this.value.length === 11) {
+                verifyButton.disabled = false;
+                verifyButton.classList.add("active");
+                verifyButton.removeAttribute("disabled");
+            } else {
+                verifyButton.disabled = true;
+                verifyButton.classList.remove("active");
+            }
+        });
+
+        // 인증번호 입력 시 확인 버튼 활성화
+        document.getElementById("verificationCode").addEventListener("input", function() {
+            const confirmButton = document.getElementById("confirmButton");
+            if (this.value.length === 6) {
+                confirmButton.disabled = false;
+                confirmButton.classList.add("active");
+                confirmButton.removeAttribute("disabled");
+            } else {
+                confirmButton.disabled = true;
+                confirmButton.classList.remove("active");
+            }
+        });
+
+        document.getElementById("verifyButton").addEventListener("click", function() {
+            if(!timerExpired) {
+                timerExpired = false;
+                completeYn = false;
+                registerButton.disabled = true;
+                registerButton.classList.remove("active");
+                this.textContent = "재인증";
+                document.getElementById("confirmButton").disabled = false;
+                if(document.getElementById("verificationCode").value.length === 6) {
+                    document.getElementById("confirmButton").classList.add("active");
+                }
+                document.getElementById("verificationGroup").style.display = "flex";
+
+                // 기존 타이머를 초기화
+                clearInterval(timerInterval);
+                startTimer(3 * 60, document.getElementById("timer")); // 3분 타이머 시작
+
+                const csrfHeader = "[[${_csrf.headerName}]]";
+                const csrfToken = "[[${_csrf.token}]]";
+                const headers = {
+                    [csrfHeader] : csrfToken
+                }
+
+                $.ajax({
+                    url: '/app/admin/sign/send',
+                    type: 'POST',
+                    headers,
+                    data: { phoneNum : phoneNumber },
+                    success: function (response) {
+                        console.log("POST response:", response);
+                        const {result, resultNum} = response;
+                        if(result === 'success')
+                            certificationNumber = resultNum;
+                    },
+                    error: function (error) {
+                        console.error("Error with POST request:", error);
+                    }
+                });
+            }
+        });
+
+        document.getElementById("confirmButton").addEventListener("click", function() {
+            const checkNum = document.getElementById('verificationCode').value.trim();
+
+            if (!timerExpired) {
+                if (certificationNumber === checkNum) {
+                    alert("인증이 완료되었습니다.");
+                    completeYn = true;
+                    clearInterval(timerInterval);
+                    document.getElementById("confirmButton").disabled = true;
+                    document.getElementById("confirmButton").classList.remove("active");
+
+                    // 등록하기 버튼 활성화
+                    registerButton.disabled = false;
+                    registerButton.classList.add("active");
+                } else if(certificationNumber !== checkNum){
+                    alert("인증번호가 일치하지 않습니다. 다시 인증해주세요.");
+                } else {
+                    alert("오류가 발생했습니다. 다시 인증해주세요.");
+                }
+            } else {
+                alert("인증 시간이 만료되었습니다. 다시 인증해주세요.");
+            }
+        });
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            timerInterval = setInterval(() => {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timerExpired = true;
+                    clearInterval(timerInterval);
+                }
+            }, 1000);
+        }
+
+        document.getElementById("empNumButton").addEventListener("click", function() {
+            const empNumber = document.getElementById("empNum").value.trim();
+            const csrfHeader = "[[${_csrf.headerName}]]";
+            const csrfToken = "[[${_csrf.token}]]";
+            const headers = {
+                [csrfHeader] : csrfToken
+            }
+
+            $.ajax({
+                url: '/app/admin/check',
+                type: 'POST',
+                headers,
+                data: { empNum : empNumber },
+                success: function (response) {
+                    // console.log("POST response:", response);
+                    if(response.result === "empty") {
+                        alert("등록 가능합니다🎈");
+                    } else if(response.result === "registered") {
+                        alert("이미 등록되어 있습니다🏡 로그인 화면으로 이동합니다🎈");
+                        location.href="/app/admin/login";
+                    } else {
+                        alert("등록된 사번이 없습니다. 사번의 정보가 일치한지 다시 확인해주세요.");
+                    }
+                },
+                error: function (error) {
+                    console.error("Error with POST request:", error);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
