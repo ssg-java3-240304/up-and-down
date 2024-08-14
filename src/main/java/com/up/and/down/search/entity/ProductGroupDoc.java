@@ -21,8 +21,11 @@ import java.util.Map;
 @Builder
 public class ProductGroupDoc {
     @Id
-    @Field(type = FieldType.Long)
+    @Field(type = FieldType.Keyword)
     private Long id;
+
+    @Field(type = FieldType.Text, analyzer = "nori", searchAnalyzer = "nori")
+    private String searchKeywords;
 
     @Field(type = FieldType.Object)
     private Destination destination;

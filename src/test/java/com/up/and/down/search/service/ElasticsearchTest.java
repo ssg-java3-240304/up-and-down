@@ -151,10 +151,23 @@ class ElasticsearchTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"제주도", "제주", "바다", "휴양"})
+    @DisplayName("searchKeywords 로 조회")
+    void testFindBySearchKeywords(String keyword) {
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(keyword);
+
+        // then
+        docToString(productGroupDocList);
+        assertThat(productGroupDocList).isNotNull();
+    }
+
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");
             System.out.println("\tid=" + doc.getId() + ",");
+            System.out.println("\tsearchKeywords=" + doc.getSearchKeywords() + ",");
             System.out.println("\tdestination='" + doc.getDestination() + "',");
             System.out.println("\tnights=" + doc.getNights() + ",");
             System.out.println("\tproductList={");
