@@ -134,27 +134,46 @@ main {
 
 .list-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 10px;
     margin-bottom: 10px;
     transition: background-color 0.3s ease;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    gap: 15px;
 }
 
-.list-item:hover {
-    background-color: #f1f1f1;
+.list-item-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .list-title {
-    font-weight: bold;
-    font-size: 18px;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.list-nickname {
+    font-size: 0.9rem;
+    color: #888;
+    margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .list-categories {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    flex-grow: 1;
+    margin-left: 10px;
+    white-space: nowrap;
 }
 
 .category-badge {
@@ -163,12 +182,16 @@ main {
     border-radius: 20px;
     font-size: 14px;
     color: #495057;
+    margin: 0 5px;
 }
 
 .list-participants {
     font-size: 14px;
     color: #495057;
     white-space: nowrap;
+    font-weight: bold;
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .pagination .page-link {
