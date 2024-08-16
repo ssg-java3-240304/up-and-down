@@ -15,49 +15,85 @@ import java.util.Set;
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-    // [우리모임] memberId가 속한 채팅방 목록 조회
-    @Query("""
-        select
-            c
-        from
-            ChatRoom c join c.chatRoomMembers m
-        where
-            m.chatRoomMemberId = :memberId
-    """)
-    Page<ChatRoom> findChatRoomByMemberId(@Param("memberId") User user, Pageable pageable);
-
     // 채팅방 참여인원수
-    int countMembersByChatRoomId(Long chatRoomId);
+    @Query("""
+    select count(m)
+    from ChatRoom c join c.memberIdList m\s
+    where c.chatRoomId = :chatRoomId
+    """)
+    int countMembersByChatRoomId(@Param("chatRoomId") Long chatRoomId);
 
-    // [내모임] memberId가 만든 채팅방 목록 조회
+    // member가 속한 채팅방 제목으로 검색
     @Query("""
     select c
     from ChatRoom c
-    where c.creatorId = :memberId
+    where :memberId member of c.memberIdList and c.name like %:name%
     """)
-    Page<ChatRoom> findChatRoomCreatedByMemberId(@Param("memberId")User user, Pageable pageable);
+    Page<ChatRoom> findByNameContainingAndMember(@Param("name") String name, @Param("memberId") Long memberId, Pageable pageable);
 
-    // 제목+내용+카테고리
-    @Query("""
-    select c
-    from ChatRoom c join c.category cca
-    where (c.name like %:keyword% or c.content like %:keyword%)
-    and cca in :categories
-    """)
-    Page<ChatRoom> searchByNameAndContentAndCategory(@Param("keyword") String keyword, @Param("categories") Set<Category> category, Pageable pageable);
-    // 제목과 내용으로 검색
+    // member가 만든 채팅방 제목으로 검색
     @Query("""
     select c
     from ChatRoom c
-    where c.name like %:keyword% or c.content like %:keyword%
+    where c.name like %:name% and c.creatorId = :creatorId
     """)
-    Page<ChatRoom> searchByNameAndContent(@Param("keyword") String keyword, Pageable pageable);
-    // 카테고리 검색
+    Page<ChatRoom> findByNameContainingAndCreator(@Param("name") String name, @Param("creatorId") Long creatorId, Pageable pageable);
+
+    // 전체 탭에서 제목으로 검색
     @Query("""
     select c
     from ChatRoom c
-    join c.category cca
-    where cca in :categories
+    where c.name like %:name%
     """)
-    Page<ChatRoom> searchCategory(@Param("categories") Set<Category> category, Pageable pageable);
+    Page<ChatRoom> findByNameContaining(@Param("name") String name, Pageable pageable);
+
+    // member가 속한 채팅방 제목+내용으로 검색
+    @Query("""
+    select c
+    from ChatRoom c
+    where :memberId member of c.memberIdList and (c.name like %:name% or c.description like %:description%)
+    """)
+    Page<ChatRoom> findByNameContainingOrDescriptionContainingAndMemberId(@Param("name") String name, @Param("description") String description, @Param("memberId") Long memberId, Pageable pageable);
+
+    // member가 만든 채팅방 제목+내용으로 검색
+    @Query("""
+    select c
+    from ChatRoom c
+    where (c.name like %:name% or c.description like %:description%) and c.creatorId = :creatorId
+    """)
+    Page<ChatRoom> findByNameContainingOrDescriptionContainingAndCreatorId(@Param("name") String name, @Param("description") String description, @Param("creatorId") Long creatorId, Pageable pageable);
+
+    // 전체 탭에서 제목+내용으로 검색
+    @Query("""
+    select c
+    from ChatRoom c
+    where c.name like %:name% or c.description like %:description%
+    """)
+    Page<ChatRoom> findByNameContainingOrDescriptionContaining(@Param("name") String name, @Param("description") String description, Pageable pageable);
+
+    // 전체 탭에서 카테고리 검색
+    @Query("""
+    select c
+    from ChatRoom c join c.category cg
+    where cg in :categories
+    """)
+    Page<ChatRoom> findByCategory(@Param("categories") Set<Category> categories, Pageable pageable);
+
+    // member가 속한 채팅방 카테고리 검색
+    @Query("""
+    select c
+    from ChatRoom c join c.category cg
+    join c.memberIdList m
+    where cg in :categories and m = :memberId
+    """)
+    Page<ChatRoom> findByCategoryAndMember(@Param("categories") Set<Category> categories, @Param("memberId") Long memberId, Pageable pageable);
+
+    // member가 만든 채팅방 카테고리 검색
+    @Query("""
+    select c
+    from ChatRoom c join c.category cg
+    where cg in :categories and c.creatorId = :creatorId
+    """)
+    Page<ChatRoom> findByCategoryCreator(@Param("categories") Set<Category> categories, @Param("creatorId") Long creatorId, Pageable pageable);
+
 }
