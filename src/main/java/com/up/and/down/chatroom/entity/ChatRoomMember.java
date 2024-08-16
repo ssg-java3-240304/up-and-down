@@ -10,5 +10,4 @@ import lombok.*;
 @AllArgsConstructor
 public class ChatRoomMember {
     private Long chatRoomMemberId; // 채팅방에 속한 사람
-    private String nickname; // 채팅방 닉네임
 }

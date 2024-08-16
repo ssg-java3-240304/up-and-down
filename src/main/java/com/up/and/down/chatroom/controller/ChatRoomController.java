@@ -6,6 +6,7 @@ import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.common.paging.PageCriteria;
 import com.up.and.down.user.User;
+import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
@@ -28,87 +30,88 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
-@RequestMapping("/chatroom")
+@RequestMapping("/chat-rooms")
 @RequiredArgsConstructor
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
-    // 메인페이지 전체 목록
+    // [커뮤니티] 메인페이지 보여주기
     @GetMapping("/list")
-    public Map<String, Object> list(@AuthenticationPrincipal AuthPrincipal principal,
-                                    @PageableDefault(page = 1, size = 10) Pageable pageable,
-                                    @RequestParam(required = false) String filter,
-                                    Model model) throws AccessDeniedException {
-        log.info("GET /chatroom/list");
-        log.info("GET /chatroom/list?page={}", pageable.getPageNumber());
-        log.debug("principal = {}", principal);
+    public String list(@PageableDefault(page = 0, size = 10) Pageable pageable,
+                       @AuthenticationPrincipal AuthPrincipal principal,
+                       Model model){
 
-        User user = principal.getUser();
+        // 사용자 닉네임 가져오기
+        String nickname = (principal != null && principal.getUser() instanceof Member) ?
+                ((Member) principal.getUser()).getNickname() : "Guest";
 
-        pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+        // 전체 채팅방 목록 가져오기
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findAll(pageable, nickname);
 
-        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.getChatRoom(filter, user, pageable);
-        log.debug("chatRoomPate = {}", chatRoomPage);
         model.addAttribute("chatRooms", chatRoomPage.getContent());
+        model.addAttribute("currentPage", chatRoomPage.getNumber());
+        model.addAttribute("totalPages", chatRoomPage.getTotalPages());
+        model.addAttribute("totalCount", chatRoomPage.getTotalElements());
 
-        int page = chatRoomPage.getNumber();
-        int limit = chatRoomPage.getSize();
-        int totalCount = (int) chatRoomPage.getTotalElements();
-        String basedUrl = "/app/chatroom/list";
-        String url = "";
-        if (filter != null) {
-            url += "filter+" + filter;
-        }
-        if (!url.isEmpty()) {
-            basedUrl += "?" + url;
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("chatRoomPage", chatRoomPage.getContent());
-        response.put("pageCriteria", new PageCriteria(page, limit, totalCount, basedUrl));
-
-        model.addAttribute("pageCriteria", new PageCriteria(page, limit, totalCount, url));
-        model.addAttribute("currentFilter", filter); // 현재 필터값
-        return response;
+        return "chatroom/list";
     }
-    // 메인페이지 검색
-    @GetMapping("/search")
-    public Map<String, Object> search(@RequestParam(required = false) String keyword,
-                                      @RequestParam(required = false) Set<Category> category,
-                                      @PageableDefault(page = 1, size = 10) Pageable pageable,
-                                      Model model){
-        log.info("GET /chatroom/search");
-        log.debug("keyword = {}, category = {}, page = {}, size = {}", keyword, category, pageable.getPageNumber(), pageable.getPageSize());
-        pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        Page<ChatRoomListResponseDto> searchChatRoom = chatRoomService.searchChatRoom(keyword, category, pageable);
-        log.debug("searchResult = {}", searchChatRoom);
 
-        int page = searchChatRoom.getNumber(); // 0-based 페이지번호
-        int limit = searchChatRoom.getSize();
-        int totalCount = (int) searchChatRoom.getTotalElements(); // 전체 페이지 수
-        String baseUrl = "/app/chatroom/search";
-        String url = "";
-        if (keyword != null) {
-            url += "keyword=" + keyword;
-        }
-        if (category != null && !category.isEmpty()) {
-            String categories = category.stream()
-                    .map(Category::getDisplayName)
-                    .collect(Collectors.joining());
-            url += "category=" + categories;
-        }
-        if (url.length() > 0) {
-            baseUrl += "?" + url.substring(0, url.length() - 1);
-        }
+    // 전체 채팅방 목록
+    @GetMapping("")
+    @ResponseBody
+    public Page<ChatRoomListResponseDto> getAllChatRooms(@PageableDefault(page = 0, size = 10) Pageable pageable,
+                                                         @RequestParam(required = false) String searchType, // 제목, 제목+내용
+                                                         @RequestParam(required = false) String q, // 검색키워드
+                                                         @RequestParam(required = false) Set<Category> categories,
+                                                         @AuthenticationPrincipal AuthPrincipal principal){ // 로그인된 사용자 정보
+        log.debug("GET /chat-rooms/all?page={}", pageable.getPageNumber());
+        log.debug("GET /chat-rooms/all?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("searchResult", searchChatRoom.getContent());
-        response.put("pageCriteria", new PageCriteria(page, limit, totalCount, baseUrl));
+        // 로그인된 사용자 닉네임 가져오기
+        String nickname = (principal != null && principal.getUser() instanceof Member) ?
+                ((Member) principal.getUser()).getNickname() : "Guest";
+        log.debug("nickname = {}", nickname);
 
-        model.addAttribute("pageCriteria", new PageCriteria(page, limit, totalCount, baseUrl));
-        model.addAttribute("searchKeyword", keyword); // 현재 검색 키워드
-        model.addAttribute("selectedCategories", category); // 선택된 카테고리
-        return response;
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findAllChatRooms(pageable, searchType, q, categories, nickname);
+        log.debug("chatRoomPage = {}", chatRoomPage);
+
+        return chatRoomPage;
+    }
+    // 우리모임 채팅방 목록
+    @GetMapping("/our")
+    @ResponseBody
+    public Page<ChatRoomListResponseDto> getOurChatRooms(@AuthenticationPrincipal AuthPrincipal principal,
+                                                         @PageableDefault(page = 0, size = 10) Pageable pageable,
+                                                         @RequestParam(required = false) String searchType, // 제목, 제목+내용
+                                                         @RequestParam(required = false) String q, // 검색키워드
+                                                         @RequestParam(required = false) Set<Category> categories){
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        log.debug("GET /chat-rooms/our?page={}", pageable.getPageNumber());
+        log.debug("GET /chat-rooms/our?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
+
+        Long memberId = principal.getUser().getId();
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findOurChatRooms(memberId, pageable, searchType, q, categories);
+        log.debug("chatRoomPage = {}", chatRoomPage);
+
+        return chatRoomPage;
+    }
+    // 내모임 채팅방 목록
+    @GetMapping("/my")
+    @ResponseBody
+    public Page<ChatRoomListResponseDto> getMyChatRooms(@AuthenticationPrincipal AuthPrincipal principal,
+                                                        @PageableDefault(page = 0, size = 10) Pageable pageable,
+                                                        @RequestParam(required = false) String searchType, // 제목, 제목+내용
+                                                        @RequestParam(required = false) String q, // 검색키워드
+                                                        @RequestParam(required = false) Set<Category> categories){
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        log.debug("GET /chat-rooms/my?page={}", pageable.getPageNumber());
+        log.debug("GET /chat-rooms/my?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
+
+        Long memberId = principal.getUser().getId();
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findMyChatRooms(memberId, pageable, searchType, q, categories);
+        log.debug("chatRoomPage = {}", chatRoomPage);
+
+        return chatRoomPage;
     }
 
     // 상세페이지

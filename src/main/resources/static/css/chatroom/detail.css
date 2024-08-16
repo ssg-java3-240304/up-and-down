@@ -1,0 +1,106 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* 버튼 스타일 */
+.button-container {
+    text-align: right; /* 오른쪽 정렬 */
+}
+
+.button-container .list-button,
+.join-button-container .join-button {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #66CDAA;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid #66CDAA;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-container .list-button:hover,
+.join-button-container .join-button:hover {
+    background-color: #66CDAA;
+    color: white;
+    border: 2px solid #46896e;
+}
+
+/* header 스타일 */
+.header h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header .categories {
+    margin-top: 10px;
+}
+
+/* 카테고리 배지 스타일 */
+.category-badge {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* info-bar 스타일 */
+.info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.info-bar .create-date {
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+}
+
+.info-bar .user-info {
+    text-align: right;
+}
+
+.info-bar .user-info .nickname {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.info-bar .user-info .total-participants {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 본문 내용 스타일 */
+.details {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+/* 참여하기 버튼 컨테이너 스타일 */
+.join-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.join-button-container .join-button {
+    padding: 5px 10px;
+}
