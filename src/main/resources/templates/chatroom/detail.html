@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/header-n-side}">
+      layout:decorate="~{layout/header-n-side}" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -73,24 +73,39 @@
         <!-- 참여하기 버튼 -->
         <div class="button-container bottom-center">
             <!-- 채팅방장인 경우 -->
-            <th:block th:if="${chatRoom.isCreator}">
-                <a th:href="@{/chat-rooms/update/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-update">수정하기</a>
-            </th:block>
+            <div sec:authorize="isAuthenticated()">
+                <th:block th:if="${chatRoom.isCreator}">
+                    <a th:href="@{/chat-rooms/update/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-update">수정하기</a>
+                </th:block>
+            </div>
+
             <!-- 채팅방 멤버인 경우 -->
-            <th:block th:if="${chatRoom.isMember}">
-                <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-chat">채팅방</a>
-            </th:block>
+            <div sec:authorize="isAuthenticated()">
+                <th:block th:if="${chatRoom.isMember}">
+                    <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-chat">채팅방</a>
+                </th:block>
+            </div>
+
             <!-- 로그인된 경우, 채팅방에 참여하지 않은 경우 -->
-            <th:block th:if="${!chatRoom.isMember && !chatRoom.isCreator}">
-                <th:block th:if="${principal != null}">
+            <div sec:authorize="isAuthenticated()">
+                <th:block th:if="${!chatRoom.isMember && !chatRoom.isCreator}">
                     <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-join">참여하기</a>
                 </th:block>
-                <!-- 비회원일 경우 -->
-                <th:block th:if="${principal == null}">
-                    <a th:href="@{/auth/login}" class="btn btn-join">참여하기</a>
-                </th:block>
-            </th:block>
+            </div>
+
+            <!-- 비회원일 경우 -->
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/auth/login}" class="btn btn-join">참여하기</a>
+            </div>
         </div>
+
+        <script>
+            document.querySelector('h1').style.fontSize = '2rem';
+            document.querySelector('h1').style.fontWeight = '700';
+            document.querySelector('body').style.fontFamily = 'Noto Sans KR, sans-serif';
+            document.querySelector('body').style.color = '#252525';
+            document.querySelector('body').style.lineHeight = '1';
+        </script>
     </main>
 </body>
 </html>
