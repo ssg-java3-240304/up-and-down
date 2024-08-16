@@ -2,6 +2,7 @@ package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
+import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.common.paging.PageCriteria;
@@ -16,10 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
@@ -115,9 +113,16 @@ public class ChatRoomController {
     }
 
     // 상세페이지
-    @GetMapping("/detail")
-    public String detail(){
+    @GetMapping("/{chatRoomId}")
+    public String detail(@PathVariable("chatRoomId") Long chatRoomId,
+                         @AuthenticationPrincipal AuthPrincipal principal,
+                         Model model){
+
+        Long memberId = principal != null ? principal.getUser().getId() : null;
+        ChatRoomResponseDto chatRoom = chatRoomService.findByChatRoom(chatRoomId, memberId);
         log.info("GET /chatroom/detail");
+        log.debug("chatRoom = {}", chatRoom);
+        model.addAttribute("chatRoom", chatRoom);
         return "chatroom/detail";
     }
 
