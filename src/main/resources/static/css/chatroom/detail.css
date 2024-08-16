@@ -1,74 +1,78 @@
-/* 기본 스타일 */
+/* Container and layout styles */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
+    font-family: Arial, sans-serif;
 }
 
-/* 버튼 스타일 */
+.main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.nav-tabs .nav-item .nav-link {
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: #000;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+    background-color: #f8f9fa;
+    border-color: #ddd #ddd #fff;
+}
+
 .button-container {
-    text-align: right; /* 오른쪽 정렬 */
+    margin-top: 20px;
 }
 
-.button-container .list-button,
-.join-button-container .join-button {
-    display: inline-block;
-    padding: 5px 10px;
+.button-container .list-button {
+    color: #fff;
     background-color: #66CDAA;
-    color: white;
-    text-align: center;
-    text-decoration: none;
+    padding: 8px 16px;
     border-radius: 5px;
-    border: 2px solid #66CDAA;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
-.button-container .list-button:hover,
-.join-button-container .join-button:hover {
-    background-color: #66CDAA;
-    color: white;
-    border: 2px solid #46896e;
-}
-
-/* header 스타일 */
-.header h2 {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.header .categories {
-    margin-top: 10px;
-}
-
-/* 카테고리 배지 스타일 */
+/* Category Badge Styles */
 .category-badge {
     display: inline-block;
-    background-color: #e0e0e0;
-    color: #333;
     padding: 5px 10px;
-    border-radius: 5px;
     margin-right: 5px;
-    border: 1px solid #ccc; /* 테두리 추가 */
-    font-size: 14px;
-    font-weight: bold;
+    background-color: #e0e0e0; /* 배경색을 회색으로 */
+    color: #000; /* 텍스트 색상을 검정으로 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 14px; /* 폰트 크기 */
+    font-weight: bold; /* 폰트 굵기 */
 }
 
-/* info-bar 스타일 */
+.category-badge:last-child {
+    margin-right: 0; /* 마지막 배지는 오른쪽 마진 제거 */
+}
+
+.header {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.header h2 {
+    font-size: 24px;
+}
+
 .info-bar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-top: 20px;
 }
 
 .info-bar .create-date {
     font-size: 14px;
-    font-weight: bold;
-    color: #666;
+    color: #555;
 }
 
 .info-bar .user-info {
@@ -78,29 +82,63 @@ body {
 .info-bar .user-info .nickname {
     font-size: 14px;
     font-weight: bold;
-    color: #333;
 }
 
 .info-bar .user-info .total-participants {
     font-size: 14px;
-    color: #666;
+    color: #555;
 }
 
-/* 본문 내용 스타일 */
 .details {
-    border: 1px solid #ddd;
-    padding: 10px;
     margin-top: 20px;
-    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 10px;
 }
 
-/* 참여하기 버튼 컨테이너 스타일 */
-.join-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+.button-container .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #66CDAA;
+    color: white;
+    border: 2px solid transparent; /* 초기에는 투명한 테두리 */
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-.join-button-container .join-button {
-    padding: 5px 10px;
+.btn-update,
+.btn-chat,
+.btn-join {
+    background-color: #66CDAA;
+    color: white;
+    border-radius: 5px;
+    border: 2px solid transparent;
+}
+
+/* 버튼 호버 스타일 */
+.button-container .btn:hover {
+    background-color: #66CDAA; /* 배경색을 흰색으로 변경 */
+    color: white; /* 글씨는 배경색과 동일하게 */
+}
+
+/* 상단 오른쪽에 위치한 목록 버튼 */
+.button-container.top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* 하단 중앙에 위치한 참여하기/채팅방/수정하기 버튼 */
+.button-container.bottom-center {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
 }
