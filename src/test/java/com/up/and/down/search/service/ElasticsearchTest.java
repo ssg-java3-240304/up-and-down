@@ -163,6 +163,23 @@ class ElasticsearchTest {
         assertThat(productGroupDocList).isNotNull();
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2",
+            "거제, 3"
+    })
+    @DisplayName("키워드, 숙박일로 조회")
+    void testFindBySearchKeywordsAndNights(String searchKeywords, int nights) {
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNights(searchKeywords, nights);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+    }
+
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");

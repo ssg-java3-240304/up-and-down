@@ -21,4 +21,6 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     List<ProductGroupDoc> findByDestinationAndNights(Destination destination, int nights);
 
     List<ProductGroupDoc> findBySearchKeywords(String keyword);
+
+    List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
 }
