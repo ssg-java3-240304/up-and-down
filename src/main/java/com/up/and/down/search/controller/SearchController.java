@@ -21,13 +21,13 @@ public class SearchController {
 
     @GetMapping
     public void searchProduct(
-            @RequestParam(name = "destination", required = false) String destination,
-            @RequestParam(name = "nights", required = false) String nights,
+            @RequestParam(name = "searchKeywords") String searchKeywords,
+            @RequestParam(name = "nights") String nights,
             Model model) {
-        log.info("GET search - Destination: {}, Nights: {}", destination, nights);
+        log.info("GET search - Destination: {}, Nights: {}", searchKeywords, nights);
 
         // 여행지, 숙박일로 elasticsearch 에 조회
-        List<ProductGroup> searchResult = this.searchService.findByDestinationAndNights(destination, nights);
+        List<ProductGroup> searchResult = this.searchService.findBySearchKeywordsAndNights(searchKeywords, nights);
         log.debug("search result: {}", searchResult);
     }
 }
