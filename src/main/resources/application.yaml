@@ -15,7 +15,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+        show_sql: false
         hbm2ddl:
           auto: update
   elasticsearch:
@@ -26,7 +26,7 @@ spring:
 logging:
   level:
     root: info
-    com.sh.app: debug
+    com.up.and.down: debug
 
 server:
   servlet:

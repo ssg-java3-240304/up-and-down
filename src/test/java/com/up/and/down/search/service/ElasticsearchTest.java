@@ -6,6 +6,7 @@ import com.up.and.down.search.repository.ProductGroupDocRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,6 +56,26 @@ class ElasticsearchTest {
     void testFindByNights(int nights) {
         // when
         List<ProductGroupDoc> productGroupDocList = this.repo.findByNights(nights);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2",
+            "거제, 3"
+    })
+    @DisplayName("여행지, 숙박일로 조회")
+    void testFindByDestinationAndNights(String destinationStr, int nights) {
+        // given
+        Destination destination = Destination.fromKrName(destinationStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByDestinationAndNights(destination, nights);
 
         // then
         docToString(productGroupDocList);
@@ -130,10 +151,40 @@ class ElasticsearchTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"제주도", "제주", "바다", "휴양"})
+    @DisplayName("searchKeywords 로 조회")
+    void testFindBySearchKeywords(String keyword) {
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(keyword);
+
+        // then
+        docToString(productGroupDocList);
+        assertThat(productGroupDocList).isNotNull();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2",
+            "거제, 3"
+    })
+    @DisplayName("키워드, 숙박일로 조회")
+    void testFindBySearchKeywordsAndNights(String searchKeywords, int nights) {
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNights(searchKeywords, nights);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+    }
+
     private void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");
             System.out.println("\tid=" + doc.getId() + ",");
+            System.out.println("\tsearchKeywords=" + doc.getSearchKeywords() + ",");
             System.out.println("\tdestination='" + doc.getDestination() + "',");
             System.out.println("\tnights=" + doc.getNights() + ",");
             System.out.println("\tproductList={");

@@ -13,26 +13,31 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
-    <main layout:fragment="main" class="mt-50">
+    <main layout:fragment="main" class="mt-50 mb-50">
         <!--베너-->
         <div class="banner-box">
             <!--베너 이미지-->
-            <div class="banner-image"></div>
+            <img th:src="@{/images/banner-image.png}" alt="배너 이미지" class="banner-img">
+            <!--검색창-->
             <div class="layout">
-                <!--검색창-->
                 <div class="search-box">
-                    <h2>어디로 떠나고 싶으세요?</h2>
-                    <div class="button-group">
-                        <button type="button">제주</button>
-                        <button type="button">부산</button>
-                    </div>
-                    <form th:action="@{/search}" method="get">
-                        <input type="text" placeholder="여행지 입력">
-                        <input type="date" placeholder="출발예정일 입력">
+                    <h2 class="mb-30">어디로 떠나고 싶으세요?</h2>
+                    <form th:action="@{/search}" method="get" class="search-frm">
+                        <label for="searchKeywords">떠나고 싶은 곳</label>
+                        <input type="text" name="searchKeywords" id="searchKeywords" class="destination" placeholder="어디든지">
+                        <label for="nights">숙박일</label>
+                        <select name="nights" id="nights" class="nights">
+                            <option value="all" selected>전체</option>
+                            <option value="1">1박2일</option>
+                            <option value="2">2박3일</option>
+                            <option value="3">3박4일</option>
+                            <option value="4">4박5일</option>
+                            <option value="5">5박6일</option>
+                            <option value="6">6박7일</option>
+                        </select>
                         <button type="submit">검색하기</button>
                     </form>
                 </div>
-                <div></div>
             </div>
         </div>
 

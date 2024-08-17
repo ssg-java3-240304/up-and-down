@@ -19,6 +19,14 @@ input {
 input:focus {
     outline: 1px solid #265AB4;
 }
+select {
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #808080; border-radius: 10px;
+}
+select:focus {
+    outline: 1px solid #265AB4;
+}
 
 /* button style */
 button {

@@ -12,6 +12,7 @@ import java.util.Map;
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

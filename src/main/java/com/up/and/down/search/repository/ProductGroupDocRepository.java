@@ -17,4 +17,10 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     List<ProductGroupDoc> findByNights(int nights); // 숙박일로 조회
 
     List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
+
+    List<ProductGroupDoc> findByDestinationAndNights(Destination destination, int nights);
+
+    List<ProductGroupDoc> findBySearchKeywords(String keyword);
+
+    List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
 }

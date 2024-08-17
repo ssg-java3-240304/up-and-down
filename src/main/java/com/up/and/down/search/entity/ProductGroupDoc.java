@@ -1,6 +1,7 @@
 package com.up.and.down.search.entity;
 
 import com.up.and.down.product.entity.Destination;
+import com.up.and.down.product.entity.ProductGroup;
 import com.up.and.down.product.entity.ProductInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,11 @@ import java.util.Map;
 @Builder
 public class ProductGroupDoc {
     @Id
-    @Field(type = FieldType.Long)
+    @Field(type = FieldType.Keyword)
     private Long id;
+
+    @Field(type = FieldType.Text, analyzer = "nori", searchAnalyzer = "nori")
+    private String searchKeywords;
 
     @Field(type = FieldType.Object)
     private Destination destination;
@@ -32,4 +36,14 @@ public class ProductGroupDoc {
     private Map<Long, ProductInformation> productList;
     @Field(type = FieldType.Integer)
     private int viewCount;
+
+    public ProductGroup toEntity() {
+        return ProductGroup.builder()
+                .id(id)
+                .destination(destination)
+                .nights(nights)
+                .productList(productList)
+                .viewCount(viewCount)
+                .build();
+    }
 }
