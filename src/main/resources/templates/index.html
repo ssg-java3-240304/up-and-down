@@ -46,40 +46,21 @@
             <header>
                 <h1>실시간 최다 검색</h1>
             </header>
-            <div class="product-group">
-                <div class="product">
-                    <div class="product-image"></div>
-                    <p class="title">패키지 여행 제목</p>
-                    <p class="content">상세 내용</p>
+            <ul class="product-group">
+                <!-- Thymeleaf 를 사용하여 전달된 상품 목록을 반복하여 표시 -->
+                <li class="product" th:each="product : ${mostSearchedTop4}">
+                    <div class="product-image">
+                        <!-- 이미지 URL 을 동적으로 설정 -->
+                        <img th:attr="src=${product.representativeImage}" alt="상품 이미지"/>
+                    </div>
+                    <p class="title" th:text="${product.representativeTitle}">패키지 여행 제목</p>
+                    <p class="content" th:text="${product.representativeContent}">상세 내용</p>
                     <p class="price-text">
-                        <span class="price">4,0000,000</span>원
+                        <!-- 가격을 동적으로 설정 -->
+                        <span class="price" th:text="${product.representativePrice}">0</span>원
                     </p>
-                </div>
-                <div class="product">
-                    <div class="product-image"></div>
-                    <p class="title">패키지 여행 제목</p>
-                    <p class="content">상세 내용</p>
-                    <p class="price-text">
-                        <span class="price">4,0000,000</span>원
-                    </p>
-                </div>
-                <div class="product">
-                    <div class="product-image"></div>
-                    <p class="title">패키지 여행 제목</p>
-                    <p class="content">상세 내용</p>
-                    <p class="price-text">
-                        <span class="price">4,0000,000</span>원
-                    </p>
-                </div>
-                <div class="product">
-                    <div class="product-image"></div>
-                    <p class="title">패키지 여행 제목</p>
-                    <p class="content">상세 내용</p>
-                    <p class="price-text">
-                        <span class="price">4,0000,000</span>원
-                    </p>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
 
         <!--테마별 상품-->

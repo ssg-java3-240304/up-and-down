@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("search")
 @RequiredArgsConstructor
 public class SearchController {
-    private final SearchService searchService;
+    private final SearchService service;
 
     @GetMapping
     public void searchProduct(
@@ -27,7 +27,7 @@ public class SearchController {
         log.info("GET search - Destination: {}, Nights: {}", searchKeywords, nights);
 
         // 여행지, 숙박일로 elasticsearch 에 조회
-        List<ProductGroup> searchResult = this.searchService.findBySearchKeywordsAndNights(searchKeywords, nights);
+        List<ProductGroup> searchResult = this.service.findBySearchKeywordsAndNights(searchKeywords, nights);
         log.debug("search result: {}", searchResult);
     }
 }

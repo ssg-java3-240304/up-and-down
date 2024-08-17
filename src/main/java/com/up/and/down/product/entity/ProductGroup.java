@@ -3,8 +3,11 @@ package com.up.and.down.product.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Entity
 @Table(name = "tbl_product_group")
@@ -38,5 +41,33 @@ public class ProductGroup {
 
     public void increaseViewCount() {
         this.viewCount++;
+    }
+
+    // 가장 저렴한 객체 반환
+    private ProductInformation getCheapestProduct() {
+        return productList.values().stream()
+                .min(Comparator.comparing(ProductInformation::getPrice))
+                .orElseThrow(() -> new NoSuchElementException("No products found in the product list"));
+    }
+
+    // 대표 이미지 반환
+    public String getRepresentativeImage() {
+        return getCheapestProduct().getThumbnailUrl();
+    }
+
+    // 대표 제목 반환
+    public String getRepresentativeTitle() {
+        return String.format("%s %d박%d일", this.destination.getKrName(), this.nights, this.nights + 1);
+    }
+
+    // 대표 내용 반환
+    public String getRepresentativeContent() {
+        ProductInformation cheapestProduct = getCheapestProduct();
+        return String.format("%s [%s]", "여행사", cheapestProduct.getStart_date());
+    }
+
+    // 대표 가격 반환
+    public String getRepresentativePrice() {
+        return NumberFormat.getInstance().format(getCheapestProduct().getPrice());
     }
 }
