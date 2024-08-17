@@ -1,5 +1,6 @@
 package com.up.and.down.chatroom.service;
 
+import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
@@ -153,5 +154,19 @@ public class ChatRoomService {
         int memberCount = chatRoom.getMemberIdList().size();
 
         return ChatRoomResponseDto.fromChatRoom(chatRoom, nickname, memberId);
+    }
+
+    // 채팅방에서 보여줘야 하는 데이터(채팅방 이름, 카테고리, 참여인원수)
+    public ChatRoomInfoDto getChatRoomInfo(Long chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
+
+        // 카테고리
+        Set<Category> categories = chatRoom.getCategory();
+
+        // 채팅방에 속한 멤버 수 계산
+        int memberCount = chatRoom.getMemberIdList().size();
+
+        return new ChatRoomInfoDto(chatRoom.getName(), categories, memberCount);
     }
 }
