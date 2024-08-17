@@ -34,7 +34,6 @@ public class WebSecurityConfig {
 //                    .requestMatchers("/**").permitAll() // 누구나 허용
                     .requestMatchers(
                             "/",
-                            "/main",
                             "/search/**",
                             "/product",
                             "/chatroom/chat",
