@@ -194,18 +194,30 @@ main {
     flex-shrink: 0;
 }
 
+/* 참여중인 모임이 없을 경우 */
+.no-results {
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    font-size: 18px; /* 텍스트 크기 조절 */
+    color: #555; /* 텍스트 색상 */
+    margin-top: 20px; /* 상단 여백 */
+    padding: 20px; /* 안쪽 여백 */
+    background-color: #f9f9f9; /* 배경 색상 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    border-radius: 5px; /* 테두리 둥글게 */
+}
+
 .pagination .page-link {
-    color: #007bff;
+    color: #66CDAA;
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #66CDAA;
+    border-color: #66CDAA;
     color: #fff;
 }
 
 .pagination .page-link:hover {
-    background-color: #0056b3;
+    background-color: #4ea889;
     color: #fff;
 }
 

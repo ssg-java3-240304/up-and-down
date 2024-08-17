@@ -4,10 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/header-n-side}">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-
     <title>ChatRoom List</title>
 
     <link rel="stylesheet" th:href="@{/css/chatroom/list.css}">
@@ -74,6 +70,9 @@
 
         <!-- 목록 -->
         <div id="list-container" class="list-container">
+            <!-- 결과 없음 메시지 컨테이너 추가 -->
+            <div class="no-results d-none" id="no-results"></div>
+
             <div th:each="chatRoom : ${chatRooms}" class="list-item"
                  th:attr="onclick='window.location.href=\'/app/chat-rooms/' + ${chatRoom.chatRoomId} + '\''">
                 <div class="list-item-content d-flex align-items-center justify-content-end">
@@ -96,7 +95,7 @@
         </div>
 
         <!-- 페이지 -->
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation example" id="pagination">
             <ul class="pagination justify-content-center">
                 <!-- Previous 버튼 -->
                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
@@ -118,6 +117,14 @@
                 </li>
             </ul>
         </nav>
+
+        <script>
+            document.querySelector('h1').style.fontSize = '2rem';
+            document.querySelector('h1').style.fontWeight = '700';
+            document.querySelector('body').style.fontFamily = 'Noto Sans KR, sans-serif';
+            document.querySelector('body').style.color = '#252525';
+            document.querySelector('body').style.lineHeight = '1';
+        </script>
     </main>
 </body>
 </html>
