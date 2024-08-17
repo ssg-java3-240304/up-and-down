@@ -29,16 +29,4 @@ public class ChatService {
         List<Chat> chatList = chatRepository.findChatMessageByChatRoomId(chatRoomId);
         return chatList.stream().map(ChatDto::toChatDto).toList();// List<ChatDto>로 수집
     }
-
-    // 채팅방에 있는 인원수
-    public int countMembersInChatRoom(Long chatRoomId){
-        return chatRoomRepository.countMembersByChatRoomId(chatRoomId);
-    }
-
-    // 채팅방 이름 가져오기
-    public String getChatRoomName(Long chatRoomId){
-        return chatRoomRepository.findById(chatRoomId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 채팅방입니다"))
-                .getName();
-    }
 }

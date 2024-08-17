@@ -1,5 +1,6 @@
 package com.up.and.down.chatroom.service;
 
+import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
+    private final MemberRepository memberRepository; // 닉네임 조회를 위해서 작성
 
     // 전체 목록 조회
     public Page<ChatRoomListResponseDto> findAll(Pageable pageable, String nickname) {
@@ -32,8 +34,12 @@ public class ChatRoomService {
         log.debug("chatRooms = {}", chatRooms.getContent());
 
         return chatRooms.map(chatRoom -> {
+            String creatorNickname = memberRepository.findById(chatRoom.getCreatorId())
+                    .map(Member::getNickname)
+                    .orElse("Unknown");
+
             int participantCount = chatRoomRepository.countMembersByChatRoomId(chatRoom.getChatRoomId());
-            return ChatRoomListResponseDto.fromChatRoom(chatRoom, nickname, participantCount);
+            return ChatRoomListResponseDto.fromChatRoom(chatRoom, creatorNickname, participantCount);
         });
     }
 
@@ -133,5 +139,34 @@ public class ChatRoomService {
                         .collect(Collectors.toSet()))
                 .createdAt(chatRoom.getCreatedAt())
                 .build();
+    }
+
+    // 상세페이지
+    public ChatRoomResponseDto findByChatRoom(Long chatRoomId, Long memberId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
+
+        String nickname = memberRepository.findById(chatRoom.getCreatorId())
+                .map(Member::getNickname)
+                .orElse("Unknown");
+
+        // 채팅방 멤버 수 계산
+        int memberCount = chatRoom.getMemberIdList().size();
+
+        return ChatRoomResponseDto.fromChatRoom(chatRoom, nickname, memberId);
+    }
+
+    // 채팅방에서 보여줘야 하는 데이터(채팅방 이름, 카테고리, 참여인원수)
+    public ChatRoomInfoDto getChatRoomInfo(Long chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
+
+        // 카테고리
+        Set<Category> categories = chatRoom.getCategory();
+
+        // 채팅방에 속한 멤버 수 계산
+        int memberCount = chatRoom.getMemberIdList().size();
+
+        return new ChatRoomInfoDto(chatRoom.getName(), categories, memberCount);
     }
 }
