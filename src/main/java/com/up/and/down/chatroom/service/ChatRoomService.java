@@ -33,8 +33,12 @@ public class ChatRoomService {
         log.debug("chatRooms = {}", chatRooms.getContent());
 
         return chatRooms.map(chatRoom -> {
+            String creatorNickname = memberRepository.findById(chatRoom.getCreatorId())
+                    .map(Member::getNickname)
+                    .orElse("Unknown");
+
             int participantCount = chatRoomRepository.countMembersByChatRoomId(chatRoom.getChatRoomId());
-            return ChatRoomListResponseDto.fromChatRoom(chatRoom, nickname, participantCount);
+            return ChatRoomListResponseDto.fromChatRoom(chatRoom, creatorNickname, participantCount);
         });
     }
 

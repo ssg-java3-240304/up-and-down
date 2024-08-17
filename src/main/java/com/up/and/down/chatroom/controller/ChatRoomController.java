@@ -5,8 +5,6 @@ import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.service.ChatRoomService;
-import com.up.and.down.common.paging.PageCriteria;
-import com.up.and.down.user.User;
 import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -36,12 +31,16 @@ public class ChatRoomController {
     // [커뮤니티] 메인페이지 보여주기
     @GetMapping("/list")
     public String list(@PageableDefault(page = 0, size = 10) Pageable pageable,
-                       @AuthenticationPrincipal AuthPrincipal principal,
+                       Authentication authentication,
                        Model model){
 
         // 사용자 닉네임 가져오기
-        String nickname = (principal != null && principal.getUser() instanceof Member) ?
-                ((Member) principal.getUser()).getNickname() : "Guest";
+        String nickname = "Guest";
+        if (authentication != null && authentication.getPrincipal() instanceof AuthPrincipal principal) {
+            if (principal.getUser() instanceof Member) {
+                nickname = ((Member) principal.getUser()).getNickname();
+            }
+        }
 
         // 전체 채팅방 목록 가져오기
         Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findAll(pageable, nickname);
@@ -61,14 +60,18 @@ public class ChatRoomController {
                                                          @RequestParam(required = false) String searchType, // 제목, 제목+내용
                                                          @RequestParam(required = false) String q, // 검색키워드
                                                          @RequestParam(required = false) Set<Category> categories,
-                                                         @AuthenticationPrincipal AuthPrincipal principal){ // 로그인된 사용자 정보
+                                                         Authentication authentication){ // 로그인된 사용자 정보
         log.debug("GET /chat-rooms/all?page={}", pageable.getPageNumber());
         log.debug("GET /chat-rooms/all?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
 
         // 로그인된 사용자 닉네임 가져오기
-        String nickname = (principal != null && principal.getUser() instanceof Member) ?
-                ((Member) principal.getUser()).getNickname() : "Guest";
-        log.debug("nickname = {}", nickname);
+        String nickname = "Guest";
+        if (authentication != null && authentication.getPrincipal() instanceof AuthPrincipal principal) {
+            if (principal.getUser() instanceof Member) {
+                nickname = ((Member) principal.getUser()).getNickname();
+            }
+        }
+        log.debug("nickname = {}", authentication);
 
         Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findAllChatRooms(pageable, searchType, q, categories, nickname);
         log.debug("chatRoomPage = {}", chatRoomPage);
@@ -78,7 +81,7 @@ public class ChatRoomController {
     // 우리모임 채팅방 목록
     @GetMapping("/our")
     @ResponseBody
-    public Page<ChatRoomListResponseDto> getOurChatRooms(@AuthenticationPrincipal AuthPrincipal principal,
+    public Page<ChatRoomListResponseDto> getOurChatRooms(Authentication authentication,
                                                          @PageableDefault(page = 0, size = 10) Pageable pageable,
                                                          @RequestParam(required = false) String searchType, // 제목, 제목+내용
                                                          @RequestParam(required = false) String q, // 검색키워드
@@ -87,7 +90,13 @@ public class ChatRoomController {
         log.debug("GET /chat-rooms/our?page={}", pageable.getPageNumber());
         log.debug("GET /chat-rooms/our?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
 
-        Long memberId = principal.getUser().getId();
+        Long memberId = null;
+        if (authentication != null && authentication.getPrincipal() instanceof AuthPrincipal principal) {
+            if (principal.getUser() instanceof Member) {
+                memberId = principal.getUser().getId();
+                log.debug("Authenticated Member ID: {}", memberId);
+            }
+        }
         Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findOurChatRooms(memberId, pageable, searchType, q, categories);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
@@ -96,7 +105,7 @@ public class ChatRoomController {
     // 내모임 채팅방 목록
     @GetMapping("/my")
     @ResponseBody
-    public Page<ChatRoomListResponseDto> getMyChatRooms(@AuthenticationPrincipal AuthPrincipal principal,
+    public Page<ChatRoomListResponseDto> getMyChatRooms(Authentication authentication,
                                                         @PageableDefault(page = 0, size = 10) Pageable pageable,
                                                         @RequestParam(required = false) String searchType, // 제목, 제목+내용
                                                         @RequestParam(required = false) String q, // 검색키워드
@@ -105,7 +114,12 @@ public class ChatRoomController {
         log.debug("GET /chat-rooms/my?page={}", pageable.getPageNumber());
         log.debug("GET /chat-rooms/my?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
 
-        Long memberId = principal.getUser().getId();
+        Long memberId = null;
+        if (authentication != null && authentication.getPrincipal() instanceof AuthPrincipal principal) {
+            if (principal.getUser() instanceof Member) {
+                memberId = principal.getUser().getId();
+            }
+        }
         Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findMyChatRooms(memberId, pageable, searchType, q, categories);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
