@@ -17,15 +17,19 @@ body {
 }
 
 #chat-header {
-    display: flex;
-    height: 100px;
-    justify-content: center;
-    align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ddd;
-    text-align: center;
     background-color: #ffffff;
     box-sizing: border-box;
+    text-align: center;
+}
+
+/* 채팅방 이름과 참여 인원수를 한 줄로 배치 */
+#chat-header .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* 채팅방 이름과 카테고리 사이의 간격 */
 }
 
 #chat-header .chat-title {
@@ -40,12 +44,42 @@ body {
     margin-left: 10px;
 }
 
+/* 카테고리를 채팅방 이름 아래에 배치 */
+#categories {
+    display: flex;
+    justify-content: center; /* 카테고리를 중앙에 배치 */
+    margin-top: 10px;
+}
+
+#categories ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.category-label {
+    padding: 5px 10px;
+    background-color: #E0E0E0;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.category-label:hover {
+    background-color: #C0C0C0;
+}
+
 .chat-box {
     width: 100%;
     background-color: #fff;
     padding: 10px;
     border-radius: 5px;
-    height: 970px;
+    height: 730px;
     overflow-y: auto;
     box-sizing: border-box;
 }
@@ -149,20 +183,3 @@ body {
     color: #777;
 }
 
-.ad-section {
-    width: 100%;
-    max-width: 800px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 20px auto;
-    box-sizing: border-box;
-}
-
-.ad-section img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin-bottom: 10px;
-}
