@@ -1,11 +1,14 @@
 package com.up.and.down.chatroom.controller;
 
+import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.chatroom.service.ChatService;
+import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +33,18 @@ public class ChatController {
 
     // 채팅창 페이지 보여주기
     @GetMapping("/chat/{chatRoomId}")
-    public String chat(@PathVariable Long chatRoomId, Model model){
+    public String chat(@PathVariable Long chatRoomId,
+                       @AuthenticationPrincipal AuthPrincipal principal,
+                       Model model){
         ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatRoomId);
 
+        // 사용자 닉네임 가져오기
+        Long memberId = principal.getUser().getId();
+        String username = ((Member) principal.getUser()).getNickname();
+
         model.addAttribute("chatRoomId", chatRoomId); // 채팅방 id
+        model.addAttribute("memberId", memberId); // memberId
+        model.addAttribute("username", username); // 닉네임
         model.addAttribute("chatRoomName", chatRoomInfo.getName()); // 실제 채팅방 이름
         model.addAttribute("chatRoomCategories", chatRoomInfo.getCategories()); // 카테고리
         model.addAttribute("memberCount", chatRoomInfo.getMemberCount()); // 실제 멤버 수

@@ -32,7 +32,7 @@ public class ChatStompController {
     public void chat(@DestinationVariable(value = "chatRoomId") Long chatRoomId, ChatDto chatDto){
         log.debug("chatroomId = {}", chatRoomId);
         log.debug("chatDto = {}", chatDto);
-        chatDto.setNow(LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));  // 현재 시간을 메시지에 설정
+        chatDto.setNow(LocalDateTime.now());  // 현재 시간을 메시지에 설정
         chatService.saveMessage(chatDto); // 메시지 db에 저장
         messagingTemplate.convertAndSend("/sub/chat-rooms/" + chatRoomId, chatDto);
     }

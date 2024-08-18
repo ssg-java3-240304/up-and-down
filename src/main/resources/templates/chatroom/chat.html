@@ -38,13 +38,13 @@
             <div id="messages" class="chat-box">
                 <!-- 날짜 표시 -->
                 <div th:each="message, iterStat : ${messages}" class="message">
-                    <div th:if="${iterStat.index == 0 || !#dates.format(messages[iterStat.index - 1].now, 'yyyyMMdd').equals(#dates.format(message.now, 'yyyyMMdd'))}" class="date-separator">
-                        <p th:text="${#dates.format(message.now, 'yyyy년 M월 d일 E요일')}">2024년 7월 30일 화요일</p>
+                    <div th:if="${iterStat.index == 0 || !#temporals.format(messages[iterStat.index - 1].now, 'yyyyMMdd').equals(#temporals.format(message.now, 'yyyyMMdd'))}" class="date-separator">
+                        <p th:text="${#temporals.format(message.now, 'yyyy년 M월 d일 E요일')}">2024년 7월 30일 화요일</p>
                     </div>
                     <div th:classappend="${message.nickname == #authentication.principal.username} ? 'sent-message' : 'other-message'">
                         <p class="member-name" th:text="${message.nickname}">닉네임</p>
                         <div class="content" th:text="${message.message}">메시지 내용</div>
-                        <p class="sent-time" th:text="${#dates.format(message.now, 'HH:mm:ss')}">시간</p>
+                        <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
                     </div>
                 </div>
 
