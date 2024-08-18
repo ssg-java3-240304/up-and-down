@@ -143,6 +143,7 @@ public class ChatRoomController {
     }
 
     // 등록페이지
+    @GetMapping("/regist")
     public String regist(){
         log.info("GET /chatroom/regist");
         return "chatroom/regist";
