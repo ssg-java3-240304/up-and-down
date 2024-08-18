@@ -60,11 +60,11 @@ public class ChatRoomController {
     @ResponseBody
     public Page<ChatRoomListResponseDto> getAllChatRooms(@PageableDefault(page = 0, size = 10) Pageable pageable,
                                                          @RequestParam(required = false) String searchType, // 제목, 제목+내용
-                                                         @RequestParam(required = false) String q, // 검색키워드
+                                                         @RequestParam(required = false) String keywords, // 검색키워드
                                                          @RequestParam(required = false) Set<Category> categories,
                                                          Authentication authentication){ // 로그인된 사용자 정보
         log.debug("GET /chat-rooms/all?page={}", pageable.getPageNumber());
-        log.debug("GET /chat-rooms/all?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
+        log.debug("GET /chat-rooms/all?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, keywords, categories);
 
         // 로그인된 사용자 닉네임 가져오기
         String nickname = "Guest";
@@ -75,7 +75,7 @@ public class ChatRoomController {
         }
         log.debug("nickname = {}", authentication);
 
-        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findAllChatRooms(pageable, searchType, q, categories, nickname);
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findAllChatRooms(pageable, searchType, keywords, categories, nickname);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
         return chatRoomPage;
@@ -86,11 +86,11 @@ public class ChatRoomController {
     public Page<ChatRoomListResponseDto> getOurChatRooms(Authentication authentication,
                                                          @PageableDefault(page = 0, size = 10) Pageable pageable,
                                                          @RequestParam(required = false) String searchType, // 제목, 제목+내용
-                                                         @RequestParam(required = false) String q, // 검색키워드
+                                                         @RequestParam(required = false) String keywords, // 검색키워드
                                                          @RequestParam(required = false) Set<Category> categories){
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         log.debug("GET /chat-rooms/our?page={}", pageable.getPageNumber());
-        log.debug("GET /chat-rooms/our?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
+        log.debug("GET /chat-rooms/our?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, keywords, categories);
 
         Long memberId = null;
         if (authentication != null && authentication.getPrincipal() instanceof AuthPrincipal principal) {
@@ -99,7 +99,7 @@ public class ChatRoomController {
                 log.debug("Authenticated Member ID: {}", memberId);
             }
         }
-        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findOurChatRooms(memberId, pageable, searchType, q, categories);
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findOurChatRooms(memberId, pageable, searchType, keywords, categories);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
         return chatRoomPage;
@@ -110,11 +110,11 @@ public class ChatRoomController {
     public Page<ChatRoomListResponseDto> getMyChatRooms(Authentication authentication,
                                                         @PageableDefault(page = 0, size = 10) Pageable pageable,
                                                         @RequestParam(required = false) String searchType, // 제목, 제목+내용
-                                                        @RequestParam(required = false) String q, // 검색키워드
+                                                        @RequestParam(required = false) String keywords, // 검색키워드
                                                         @RequestParam(required = false) Set<Category> categories){
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         log.debug("GET /chat-rooms/my?page={}", pageable.getPageNumber());
-        log.debug("GET /chat-rooms/my?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, q, categories);
+        log.debug("GET /chat-rooms/my?page={}&searchType={}&q={}&categories={}", pageable.getPageNumber(), searchType, keywords, categories);
 
         Long memberId = null;
         if (authentication != null && authentication.getPrincipal() instanceof AuthPrincipal principal) {
@@ -122,7 +122,7 @@ public class ChatRoomController {
                 memberId = principal.getUser().getId();
             }
         }
-        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findMyChatRooms(memberId, pageable, searchType, q, categories);
+        Page<ChatRoomListResponseDto> chatRoomPage = chatRoomService.findMyChatRooms(memberId, pageable, searchType, keywords, categories);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
         return chatRoomPage;
