@@ -2,6 +2,7 @@ package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
+import com.up.and.down.chatroom.dto.ChatRoomRegistRequestDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.service.ChatRoomService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
@@ -141,10 +143,23 @@ public class ChatRoomController {
     }
 
     // 등록페이지
-    @GetMapping("/regist")
-    public void regist(){
+    public String regist(){
         log.info("GET /chatroom/regist");
+        return "chatroom/regist";
     }
+    @PostMapping("/regist")
+    public String regist(@ModelAttribute ChatRoomRegistRequestDto dto,
+                         @AuthenticationPrincipal AuthPrincipal principal,
+                         RedirectAttributes redirectAttributes){
+        log.debug("dto = {}", dto);
+        // 현재 로그인한 사용자 id
+        Long creatorId = principal.getUser().getId();
+        // 채팅방 등록
+        chatRoomService.registChatRoom(dto, creatorId);
+        redirectAttributes.addFlashAttribute("message", "채팅방이 등록되었습니다");
+        return "redirect:/chat-rooms/list"; // 등록후에 메인페이지로 리다이렉트
+    }
+
 
     // 수정페이지
     @GetMapping("/update")

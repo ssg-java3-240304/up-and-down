@@ -2,6 +2,7 @@ package com.up.and.down.chatroom.service;
 
 import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
+import com.up.and.down.chatroom.dto.ChatRoomRegistRequestDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.entity.ChatRoom;
@@ -168,5 +169,12 @@ public class ChatRoomService {
         int memberCount = chatRoom.getMemberIdList().size();
 
         return new ChatRoomInfoDto(chatRoom.getName(), categories, memberCount);
+    }
+
+    // 채팅방 등록 페이지
+    public void registChatRoom(ChatRoomRegistRequestDto dto, Long creatorId) {
+        ChatRoom chatRoom = dto.toChatRoom(creatorId);
+        log.debug("saved chatRoom = {}", chatRoom);
+        chatRoomRepository.save(chatRoom);
     }
 }
