@@ -19,7 +19,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         if (roles.contains("ADMIN")) {
             response.sendRedirect("/app/admin/dashboard");
         } else if (roles.contains("MEMBER")) {
-            response.sendRedirect("/app/main");
+            response.sendRedirect("/app/");
         } else {
             response.sendRedirect("/app"); // 기본 경로 설정
         }

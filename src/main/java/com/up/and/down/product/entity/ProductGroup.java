@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_product_group")
@@ -26,10 +27,14 @@ public class ProductGroup {
 
     // 관리 정보
     private LocalDate createDate; // 생성일
-    @ElementCollection(
-            fetch = FetchType.EAGER,
-            targetClass = ProductInformation.class
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "tbl_search_keyword",
+            joinColumns = @JoinColumn(name = "product_group_id")
     )
+    @Column(name = "search_keyword")
+    private Set<SearchKeyword> searchKeywords; // 검색 키워드 set
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "tbl_product_group_products",
             joinColumns = @JoinColumn(name = "product_group_id")
