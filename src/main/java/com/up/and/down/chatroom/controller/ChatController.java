@@ -42,6 +42,10 @@ public class ChatController {
         Long memberId = principal.getUser().getId();
         String username = ((Member) principal.getUser()).getNickname();
 
+        // 최신 메시지 50개 가져오기
+        List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatRoomId, 0, 50);
+        model.addAttribute("messages", lastMessages);
+
         model.addAttribute("chatRoomId", chatRoomId); // 채팅방 id
         model.addAttribute("memberId", memberId); // memberId
         model.addAttribute("username", username); // 닉네임
@@ -52,12 +56,18 @@ public class ChatController {
         return "chatroom/chat";
     }
 
-    // 메시지 가져오기
+    // 마지막 채팅 메시지 가져오기
     @GetMapping("/{chatRoomId}/messages")
     @ResponseBody
-    public List<ChatDto> chatList(@PathVariable("chatRoomId") Long chatRoomId) {
-        log.debug("{chatRoomId} = {}", chatRoomId);
-        List<ChatDto> chatMessages = chatService.findChatMessageByChatRoomId(chatRoomId);
+    public List<ChatDto> chatList(@PathVariable("chatRoomId") Long chatRoomId,
+                                  @RequestParam(value = "page", defaultValue = "0") int page,
+                                  @RequestParam(value = "size", defaultValue = "50") int size) {
+        log.debug("chatRoomId = {}", chatRoomId);
+        List<ChatDto> chatMessages = chatService.findChatMessageByChatRoomId(chatRoomId, page, size);
+
+        // ID가 null로 나오는지 로그 확인
+        chatMessages.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
+
         return chatMessages;
     }
 }

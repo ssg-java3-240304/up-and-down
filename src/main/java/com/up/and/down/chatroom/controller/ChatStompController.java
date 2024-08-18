@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 
 @Controller
@@ -35,5 +36,11 @@ public class ChatStompController {
         chatDto.setNow(LocalDateTime.now());  // 현재 시간을 메시지에 설정
         chatService.saveMessage(chatDto); // 메시지 db에 저장
         messagingTemplate.convertAndSend("/sub/chat-rooms/" + chatRoomId, chatDto);
+    }
+
+    @MessageMapping("/chat-rooms/enter/{chatRoomId}")
+    public void enterChatRoom(@DestinationVariable Long chatRoomId, ChatDto chatDto) {
+        List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatRoomId, 0, 20); // 최신 메시지 50개 가져오기
+        messagingTemplate.convertAndSendToUser(chatDto.getNickname(), "/sub/chat-rooms/" + chatRoomId, lastMessages);
     }
 }
