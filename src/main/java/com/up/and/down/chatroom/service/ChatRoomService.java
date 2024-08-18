@@ -2,6 +2,7 @@ package com.up.and.down.chatroom.service;
 
 import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
+import com.up.and.down.chatroom.dto.ChatRoomRegistRequestDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.entity.ChatRoom;
@@ -44,30 +45,30 @@ public class ChatRoomService {
     }
 
     // 검색
-    private Page<ChatRoom> search(Pageable pageable, String searchType, String q, Long memberId, Long creatorId) {
+    private Page<ChatRoom> search(Pageable pageable, String searchType, String keywords, Long memberId, Long creatorId) {
         // 제목으로 검색할 경우
         if ("name".equalsIgnoreCase(searchType)) {
             if (memberId != null) {
                 // member가 속한 채팅방 제목으로 검색
-                return chatRoomRepository.findByNameContainingAndMember(q, memberId, pageable);
+                return chatRoomRepository.findByNameContainingAndMember(keywords, memberId, pageable);
             } else if (creatorId != null) {
                 // member가 만든 채팅방 제목으로 검색
-                return chatRoomRepository.findByNameContainingAndCreator(q, creatorId, pageable);
+                return chatRoomRepository.findByNameContainingAndCreator(keywords, creatorId, pageable);
             } else {
                 // 전체 탭에서 제목 검색
-                return chatRoomRepository.findByNameContaining(q, pageable);
+                return chatRoomRepository.findByNameContaining(keywords, pageable);
             }
             // 제목+내용으로 검색할 경우
         } else if ("nameAndDescription".equalsIgnoreCase(searchType)) {
             if (memberId != null) {
                 // member가 속한 채팅방 제목+내용으로 검색
-                return chatRoomRepository.findByNameContainingOrDescriptionContainingAndMemberId(q, q, memberId, pageable);
+                return chatRoomRepository.findByNameContainingOrDescriptionContainingAndMemberId(keywords, keywords, memberId, pageable);
             } else if (creatorId != null) {
                 // member가 만든 채팅방 제목+내용으로 검색
-                return chatRoomRepository.findByNameContainingOrDescriptionContainingAndCreatorId(q, q, creatorId, pageable);
+                return chatRoomRepository.findByNameContainingOrDescriptionContainingAndCreatorId(keywords, keywords, creatorId, pageable);
             } else {
                 // 전체 탭에서 제목+내용 검색
-                return chatRoomRepository.findByNameContainingOrDescriptionContaining(q, q, pageable);
+                return chatRoomRepository.findByNameContainingOrDescriptionContaining(keywords, keywords, pageable);
             }
         } else {
             return Page.empty(pageable);
@@ -75,13 +76,13 @@ public class ChatRoomService {
     }
 
     // 전체
-    public Page<ChatRoomListResponseDto> findAllChatRooms(Pageable pageable, String searchType, String q, Set<Category> categories, String nickname) {
+    public Page<ChatRoomListResponseDto> findAllChatRooms(Pageable pageable, String searchType, String keywords, Set<Category> categories, String nickname) {
         Page<ChatRoom> chatRooms;
 
         if (categories != null && !categories.isEmpty()) {
             chatRooms = chatRoomRepository.findByCategory(categories, pageable);
         } else {
-            chatRooms = search(pageable, searchType, q, null, null);
+            chatRooms = search(pageable, searchType, keywords, null, null);
         }
         return chatRooms.map(chatRoom -> {
             int participantCount = chatRoomRepository.countMembersByChatRoomId(chatRoom.getChatRoomId());
@@ -99,25 +100,25 @@ public class ChatRoomService {
     }
 
     // 우리모임
-    public Page<ChatRoomListResponseDto> findOurChatRooms(Long memberId, Pageable pageable, String searchType, String q, Set<Category> categories) {
+    public Page<ChatRoomListResponseDto> findOurChatRooms(Long memberId, Pageable pageable, String searchType, String keywords, Set<Category> categories) {
         Page<ChatRoom> chatRooms;
 
         if (categories != null && !categories.isEmpty()) {
             chatRooms = chatRoomRepository.findByCategoryAndMember(categories, memberId, pageable);
         } else {
-            chatRooms = search(pageable, searchType, q, memberId, null);
+            chatRooms = search(pageable, searchType, keywords, memberId, null);
         }
         return chatRooms.map(this::dto);
     }
 
     // 내모임
-    public Page<ChatRoomListResponseDto> findMyChatRooms(Long memberId, Pageable pageable, String searchType, String q, Set<Category> categories) {
+    public Page<ChatRoomListResponseDto> findMyChatRooms(Long memberId, Pageable pageable, String searchType, String keywords, Set<Category> categories) {
         Page<ChatRoom> chatRooms;
 
         if (categories != null && !categories.isEmpty()) {
             chatRooms = chatRoomRepository.findByCategoryCreator(categories, memberId, pageable);
         } else {
-            chatRooms = search(pageable,searchType, q, memberId, null);
+            chatRooms = search(pageable,searchType, keywords, memberId, null);
         }
         return chatRooms.map(this::dto);
     }
@@ -168,5 +169,12 @@ public class ChatRoomService {
         int memberCount = chatRoom.getMemberIdList().size();
 
         return new ChatRoomInfoDto(chatRoom.getName(), categories, memberCount);
+    }
+
+    // 채팅방 등록 페이지
+    public void registChatRoom(ChatRoomRegistRequestDto dto, Long creatorId) {
+        ChatRoom chatRoom = dto.toChatRoom(creatorId);
+        log.debug("saved chatRoom = {}", chatRoom);
+        chatRoomRepository.save(chatRoom);
     }
 }
