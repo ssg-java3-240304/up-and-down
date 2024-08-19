@@ -56,10 +56,10 @@ jobs:
         script: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           
-          if [ "$(sudo docker ps -q --filter "name=${{ vars.APP_NAME }}")" ]; then
-              sudo docker stop ${{ vars.APP_NAME }}
-              sudo docker rm ${{ vars.APP_NAME }}
-            fi
+          if [ "$(sudo docker ps -q --filter "name=up-and-down")" ]; then
+              sudo docker stop up-and-down
+              sudo docker rm up-and-down
+          fi
           
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
           sudo docker run -d -p 8080:8080 \
