@@ -92,13 +92,23 @@ body {
 }
 
 .sent-message {
-    align-items: flex-end;
     text-align: right;
+    background-color: transparent; /* 보낸 메시지 배경색 */
+}
+
+/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
+.sent-message .content {
+    background-color: #66CDAA; /* 메시지의 배경색을 밝게 설정 */
 }
 
 .other-message {
-    align-items: flex-start;
     text-align: left;
+    background-color: transparent; /* 기존의 진한 회색 배경색 */
+}
+
+/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
+.other-message .content {
+    background-color: #AEAEAE; /* 메시지의 배경색을 밝게 설정 */
 }
 
 .message .member-name {

@@ -36,11 +36,12 @@ public class WebSecurityConfig {
                             "/",
                             "/search/**",
                             "/product",
-                            "/chatroom/chat",
+                            "/chat-rooms/chat",
                             "/chat/**",
                             "/api/public",
                             "/member/**",
                             "/sns_api",
+                            "/chat-rooms/list"
                             "/admin/dashboard"
                     ).permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
