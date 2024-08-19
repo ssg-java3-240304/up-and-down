@@ -152,7 +152,7 @@ class ElasticsearchTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"제주도", "제주", "바다", "휴양"})
+    @ValueSource(strings = {"제주도", "휴식", "자연", "로맨틱"})
     @DisplayName("searchKeywords 로 조회")
     void testFindBySearchKeywords(String keyword) {
         // when

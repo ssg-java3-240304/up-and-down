@@ -91,7 +91,7 @@ main .most-searched .product-group .product .price-text {
     float: right;
 }
 /*테마별 노출*/
-main .product-category-box header {
+main .theme-box header {
     height: 200px;
     border: none;
     margin-top: 50px;
@@ -99,30 +99,48 @@ main .product-category-box header {
     display: flex;
     align-items: center;
 }
-main .product-category-box header .header-group {
+main .theme-box header .header-group {
     width: 1400px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-main .product-category-box header h1 {
+main .theme-box header h1 {
     color: #fff;
 }
-main .product-category-box header img {
+main .theme-box header img {
     width: 150px; height: 150px;
 }
-main .product-category-box .product-category-group {
+main .theme-box .theme-group {
     width: 1400px;
     margin: 50px auto 0;
     display: flex;
     justify-content: space-between;
 }
-main .product-category-box .product-category-group .product-category {
+main .theme-box .theme-group .theme {
+    position: relative;
     width: 400px; height: 400px;
-    background-color: #D9D9D9;
+    background-position: center;
     border-radius: 50%;
     text-align: center;
     line-height: 400px;
     font-weight: bold; font-size: 32px;
+
+    overflow: hidden;
+}
+main .theme-box .theme-group .theme.nature {
+    background-image: url(../images/index/Nature.png);    
+}
+main .theme-box .theme-group .theme.relaxation {
+    background-image: url(../images/index/relaxation.png);
+}
+main .theme-box .theme-group .theme.romantic {
+    background-image: url(../images/index/romantic.png);
+}
+main .theme-box .theme-group .theme .theme-text {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.2);
 }

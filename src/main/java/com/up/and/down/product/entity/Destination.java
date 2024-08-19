@@ -15,16 +15,16 @@ public enum Destination {
     YEOSU("여수"),
     ULLEUNGDO("울릉도");
 
-    private final String krName;
+    private final String korName;
 
-    Destination(String krName) {
-        this.krName = krName;
+    Destination(String korName) {
+        this.korName = korName;
     }
 
     // 한글 이름을 통해 열거형 값 찾기
     public static Destination fromKrName(String krName) {
         for (Destination destination : Destination.values()) {
-            if (destination.getKrName().equals(krName)) {
+            if (destination.getKorName().equals(krName)) {
                 return destination;
             }
         }
