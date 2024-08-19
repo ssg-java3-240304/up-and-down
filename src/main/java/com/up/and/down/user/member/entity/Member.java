@@ -25,6 +25,7 @@ public class Member extends User {
 
     public Member(Long id, String name, String userId, String password, String phone, String email, Set<Authority> authorities, String memberId, String nickname, com.up.and.down.user.member.entity.Gender gender, LocalDate birth, Marketing marketing) {
             super(id, name, userId, password, phone, email, authorities);
+            this.memberId = memberId;
             this.nickname = nickname;
             this.gender = gender;
             this.birth = birth;
