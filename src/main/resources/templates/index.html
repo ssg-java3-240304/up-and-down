@@ -17,7 +17,7 @@
         <!--베너-->
         <div class="banner-box">
             <!--베너 이미지-->
-            <img th:src="@{/images/banner-image.png}" alt="배너 이미지" class="banner-img">
+            <img th:src="@{/images/index/banner-image.png}" alt="배너 이미지" class="banner-img">
             <!--검색창-->
             <div class="layout">
                 <div class="search-box">
@@ -64,17 +64,23 @@
         </div>
 
         <!--테마별 상품-->
-        <div class="product-category-box">
+        <div class="theme-box">
             <header>
                 <div class="header-group">
                     <h1>테마 별로 재미나게 즐기자!</h1>
                     <img th:src="@{/images/index/water-slide.png}" alt="워터슬라이드 아이콘">
                 </div>
             </header>
-            <div class="product-category-group">
-                <div class="product-category">산</div>
-                <div class="product-category">바다</div>
-                <div class="product-category">힐링</div>
+            <div class="theme-group">
+                <a class="theme nature" th:href="@{search/nature}">
+                    <div class="theme-text">자연</div>
+                </a>
+                <a class="theme relaxation" th:href="@{search/relaxation}">
+                    <div class="theme-text">휴식</div>
+                </a>
+                <a class="theme romantic" th:href="@{search/romantic}">
+                    <div class="theme-text">로맨틱</div>
+                </a>
             </div>
         </div>
     </main>
