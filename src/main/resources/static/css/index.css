@@ -130,7 +130,7 @@ main .theme-box .theme-group .theme {
     overflow: hidden;
 }
 main .theme-box .theme-group .theme.nature {
-    background-image: url(../images/index/Nature.png);    
+    background-image: url(../images/index/nature.png);
 }
 main .theme-box .theme-group .theme.relaxation {
     background-image: url(../images/index/relaxation.png);
