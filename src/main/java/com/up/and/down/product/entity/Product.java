@@ -26,6 +26,4 @@ public class Product {
     private String sourceSite; // 출처 페이지
     @Column(name = "view_count")
     private int viewCount;  // 조회수
-    @Column(name = "is_visible")
-    private boolean isVisible; // 페이지 노출 가능 여부
 }

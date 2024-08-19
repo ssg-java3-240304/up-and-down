@@ -31,6 +31,9 @@ public class SearchController {
         // 여행지, 숙박일로 elasticsearch 에 조회
         List<ProductGroup> searchResult = this.service.findBySearchKeywordsAndNights(searchKeywords, nights);
         log.debug("search result: {}", searchResult);
+        log.debug("result size: {}", searchResult.size());
+
+        model.addAttribute("searchResult", searchResult);
     }
 
     @GetMapping("/{theme}")
