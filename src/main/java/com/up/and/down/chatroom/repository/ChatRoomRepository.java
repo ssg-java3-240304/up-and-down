@@ -17,8 +17,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     // 채팅방 참여인원수
     @Query("""
-    select count(m)
-    from ChatRoom c join c.memberIdList m\s
+    select size(c.memberIdList)
+    from ChatRoom c
     where c.chatRoomId = :chatRoomId
     """)
     int countMembersByChatRoomId(@Param("chatRoomId") Long chatRoomId);

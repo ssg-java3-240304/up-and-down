@@ -1,6 +1,7 @@
 package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
+import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
 import com.up.and.down.chatroom.dto.ChatRoomRegistRequestDto;
 import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
@@ -135,10 +136,20 @@ public class ChatRoomController {
                          Model model){
 
         Long memberId = principal != null ? principal.getUser().getId() : null;
+
+        // 채팅방 상세 정보와 멤버수 가져오기
+        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatRoomId);
         ChatRoomResponseDto chatRoom = chatRoomService.findByChatRoom(chatRoomId, memberId);
+        int memberCount = chatRoomService.getChatRoomMemberCount(chatRoomId); // 멤버수 조회
+
         log.info("GET /chatroom/detail");
         log.debug("chatRoom = {}", chatRoom);
+        log.debug("chatRoomInfo = {}", chatRoomInfo);
+        log.debug("memberCount = {}", memberCount);
+
         model.addAttribute("chatRoom", chatRoom);
+        model.addAttribute("chatRoomInfo", chatRoomInfo);
+        model.addAttribute("memberCount", memberCount);
         return "chatroom/detail";
     }
 

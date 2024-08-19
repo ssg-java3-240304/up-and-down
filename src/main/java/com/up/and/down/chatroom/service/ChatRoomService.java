@@ -123,9 +123,25 @@ public class ChatRoomService {
         return chatRooms.map(this::dto);
     }
 
-    // 채팅방 인원수
+    // 채팅방 인원수 가져오기
     public int getChatRoomMemberCount(Long chatRoomId) {
-        return chatRoomRepository.countMembersByChatRoomId(chatRoomId);
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
+        return chatRoom.getMemberIdList().size(); // 채팅방에 속한 멤버 수 계산
+    }
+
+    // 채팅방 상세페이지 및 채팅 페이지에 멤버수 보여주기
+    public ChatRoomInfoDto getChatRoomInfo(Long chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
+
+        // 카테고리
+        Set<Category> categories = chatRoom.getCategory();
+
+        // 채팅방에 속한 멤버 수
+        int memberCount = chatRoomRepository.countMembersByChatRoomId(chatRoomId);
+
+        return new ChatRoomInfoDto(chatRoom.getName(), categories, memberCount);
     }
 
     private ChatRoomListResponseDto dto(ChatRoom chatRoom) {
@@ -155,20 +171,6 @@ public class ChatRoomService {
         int memberCount = chatRoom.getMemberIdList().size();
 
         return ChatRoomResponseDto.fromChatRoom(chatRoom, nickname, memberId);
-    }
-
-    // 채팅방에서 보여줘야 하는 데이터(채팅방 이름, 카테고리, 참여인원수)
-    public ChatRoomInfoDto getChatRoomInfo(Long chatRoomId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
-                .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
-
-        // 카테고리
-        Set<Category> categories = chatRoom.getCategory();
-
-        // 채팅방에 속한 멤버 수 계산
-        int memberCount = chatRoom.getMemberIdList().size();
-
-        return new ChatRoomInfoDto(chatRoom.getName(), categories, memberCount);
     }
 
     // 채팅방 등록 페이지
