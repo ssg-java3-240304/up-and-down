@@ -42,12 +42,6 @@ public class ChatStompController {
 
         // 현재 인증된 사용자 정보 가져오기
         AuthPrincipal principal = (AuthPrincipal) authentication.getPrincipal();
-//        Long memberId = principal.getUser().getId();
-//        String nickname = principal.getUser().getName();
-
-        // chatDto에 사용자 정보 설정
-//        chatDto.setMemberId(memberId);
-//        chatDto.setNickname(nickname);
         chatDto.setNow(LocalDateTime.now());  // 현재 시간을 메시지에 설정
 
         chatService.saveMessage(chatDto); // 메시지 db에 저장
