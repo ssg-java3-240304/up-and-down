@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Entity
 @Table(name = "tbl_product_group")
@@ -27,13 +26,9 @@ public class ProductGroup {
 
     // 관리 정보
     private LocalDate createDate; // 생성일
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-            name = "tbl_search_keyword",
-            joinColumns = @JoinColumn(name = "product_group_id")
-    )
+    @Embedded
     @Column(name = "search_keyword")
-    private Set<SearchKeyword> searchKeywords; // 검색 키워드 set
+    private SearchKeyword searchKeywords; // 검색 키워드 set
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "tbl_product_group_products",
@@ -62,7 +57,7 @@ public class ProductGroup {
 
     // 대표 제목 반환
     public String getRepresentativeTitle() {
-        return String.format("%s %d박%d일", this.destination.getKrName(), this.nights, this.nights + 1);
+        return String.format("%s %d박%d일", this.destination.getKorName(), this.nights, this.nights + 1);
     }
 
     // 대표 내용 반환
