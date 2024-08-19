@@ -1,17 +1,19 @@
 package com.up.and.down.chatroom.controller;
 
+import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 
@@ -30,12 +32,26 @@ public class ChatStompController {
      * @return
      */
     @MessageMapping("/chat-rooms/chat/{chatRoomId}") // 메시지가 어디로 가야하는지 정하는 것 ex) chatroomId로 보내며
-    public void chat(@DestinationVariable(value = "chatRoomId") Long chatRoomId, ChatDto chatDto){
+//    @SendTo("/sub/chat-rooms/chat/{chatRoomId}")
+    public ChatDto chat(@DestinationVariable(value = "chatRoomId") Long chatRoomId,
+                        Authentication authentication,
+                        ChatDto chatDto){
         log.debug("chatroomId = {}", chatRoomId);
         log.debug("chatDto = {}", chatDto);
+        log.debug("authentication = {}", authentication);
+
+        // 현재 인증된 사용자 정보 가져오기
+        AuthPrincipal principal = (AuthPrincipal) authentication.getPrincipal();
+//        Long memberId = principal.getUser().getId();
+//        String nickname = principal.getUser().getName();
+
+        // chatDto에 사용자 정보 설정
+//        chatDto.setMemberId(memberId);
+//        chatDto.setNickname(nickname);
         chatDto.setNow(LocalDateTime.now());  // 현재 시간을 메시지에 설정
+
         chatService.saveMessage(chatDto); // 메시지 db에 저장
-        messagingTemplate.convertAndSend("/sub/chat-rooms/" + chatRoomId, chatDto);
+        return chatDto;
     }
 
     @MessageMapping("/chat-rooms/enter/{chatRoomId}")

@@ -31,6 +31,10 @@ public class ChatService {
 
         // 저장된 메시지 정보 사용해서 chatDto 갱신하기
         ChatDto savedChatDto = ChatDto.toChatDto(savedChat);
+
+        // ChatDto의 id를 로그로 출력하여 확인
+        log.debug("ChatDto ID after saving: {}", savedChatDto.getId());
+
         messagingTemplate.convertAndSend("/sub/chat-rooms/" + chatDto.getChatRoomId(), savedChatDto);
     }
 
@@ -38,6 +42,9 @@ public class ChatService {
     public List<ChatDto> findChatMessageByChatRoomId(Long chatRoomId, int page, int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
         List<Chat> chatPage = chatRepository.findChatMessageByChatRoomId(chatRoomId, pageable);
+        // 로그 추가
+        List<ChatDto> chatDtos = chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+        chatDtos.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
         return chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
     }
 
@@ -45,6 +52,9 @@ public class ChatService {
     public List<ChatDto> findLastChatByChatRoomId(Long chatRoomId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         List<Chat> chatList = chatRepository.findLastChatByChatRoomId(chatRoomId, pageable);
+        // 로그 추가
+        List<ChatDto> chatDtos = chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+        chatDtos.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
         return chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
     }
 }

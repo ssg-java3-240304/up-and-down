@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 스크롤을 맨 아래로 이동
             const messagesElement = document.getElementById('messages');
-            messagesElement.scrollTop = messagesElement.scrollHeight;
+            setTimeout(() => {
+                messagesElement.scrollTop = messagesElement.scrollHeight;
+            }, 100); // 잠시 지연 후 스크롤 이동
 
             // 마지막 메시지 내역 저장
             localStorage.setItem(`lastMessage_${chatRoomId}`, JSON.stringify(chatMessage));
@@ -117,10 +119,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function createMessageElement(data) {
         const messageElement = document.createElement('div');
         messageElement.className = 'message';
+        // 메시지의 발신자에 따라 위치 설정
         if (data.memberId === memberId) {
-            messageElement.style.textAlign = 'right';
+            console.log(memberId);
+            console.log(data.memberId);
+            messageElement.classList.add('sent-message'); // 내 메시지
         } else {
-            messageElement.classList.add('other-message');
+            messageElement.classList.add('other-message'); // 다른 사람의 메시지
         }
 
         const nicknameElement = document.createElement('p');
@@ -134,9 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const timeElement = document.createElement('p');
         timeElement.className = 'sent-time';
 
-        // const utcDate = new Date(data.now);
-        // const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
-        // timeElement.textContent = localDate.toLocaleTimeString();
         const utcDate = new Date(data.now);
         timeElement.textContent = utcDate.toLocaleString('ko-KR', {
             hour: '2-digit',
@@ -156,8 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Enter 키 이벤트 리스너 설정
     document.getElementById('message-input').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-            sendMessage();
             event.preventDefault();  // 폼 제출 방지
+            if (event.isComposing) {
+                return;
+            }
+            sendMessage();
         }
     });
 

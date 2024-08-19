@@ -50,20 +50,19 @@
                         <p th:text="${#temporals.format(message.now, 'yyyy년 M월 d일 E요일')}">2024년 7월 30일 화요일</p>
                     </div>
                     <!-- 내가 보냈을 때, 상대방이 보냈을 때 메시지 위치 수정 필요 -->
-                    <div th:if="${message.memberId == #authentication.principal.getUser().getId()}"
+                    <div th:if="${message.memberId == #authentication.principal.user.id}"
                          th:class="'sent-message message'">
                         <p class="member-name" th:text="${message.nickname}">닉네임</p>
                         <div class="content" th:text="${message.message}">메시지 내용</div>
                         <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
                     </div>
-                    <div th:if="${message.memberId != #authentication.principal.getUser().getId()}"
+                    <div th:if="${message.memberId != #authentication.principal.user.id}"
                          th:class="'other-message message'">
                         <p class="member-name" th:text="${message.nickname}">닉네임</p>
                         <div class="content" th:text="${message.message}">메시지 내용</div>
                         <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
                     </div>
                 </div>
-
             </div>
 
             <div class="chat-input">
