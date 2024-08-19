@@ -37,10 +37,11 @@ public class WebSecurityConfig {
                             "/search/**",
                             "/product",
                             "/chatroom/chat",
-                            "/stomp/**",
+                            "/chat/**",
                             "/api/public",
                             "/member/**",
-                            "/sns_api"
+                            "/sns_api",
+                            "/admin/dashboard"
                     ).permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
 //                    .requestMatchers("/admin/**", "/stomp/**").authenticated() // 인증된 사용자만 허용 - 실제 적용
