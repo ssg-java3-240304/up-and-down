@@ -40,7 +40,7 @@ public class ChatController {
 
         // 사용자 닉네임 가져오기
         Long memberId = principal.getUser().getId();
-        String username = ((Member) principal.getUser()).getNickname();
+        String nickname = chatService.getNicknameById(memberId);
 
         // 최신 메시지 50개 가져오기
         List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatRoomId, 0, 50);
@@ -48,7 +48,7 @@ public class ChatController {
 
         model.addAttribute("chatRoomId", chatRoomId); // 채팅방 id
         model.addAttribute("memberId", memberId); // memberId
-        model.addAttribute("username", username); // 닉네임
+        model.addAttribute("nickname", nickname); // 닉네임
         model.addAttribute("chatRoomName", chatRoomInfo.getName()); // 실제 채팅방 이름
         model.addAttribute("chatRoomCategories", chatRoomInfo.getCategories()); // 카테고리
         model.addAttribute("memberCount", chatRoomInfo.getMemberCount()); // 실제 멤버 수

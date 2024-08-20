@@ -4,6 +4,9 @@ import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.entity.Chat;
 import com.up.and.down.chatroom.repository.ChatRepository;
 import com.up.and.down.chatroom.repository.ChatRoomRepository;
+import com.up.and.down.user.member.entity.Member;
+import com.up.and.down.user.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +25,14 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatRepository chatRepository;
+    private final MemberRepository memberRepository;
+
+    // 사용자 id로 닉네임 조회하기
+    public String getNicknameById(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
+        return member.getNickname();
+    }
 
     // 메시지 db에 저장
     public void saveMessage(ChatDto chatDto) {

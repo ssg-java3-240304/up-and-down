@@ -3,6 +3,9 @@ package com.up.and.down.chatroom.controller;
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.service.ChatService;
+import com.up.and.down.user.member.entity.Member;
+import com.up.and.down.user.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -23,6 +26,7 @@ import java.util.List;
 public class ChatStompController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatService chatService;
+    private final MemberRepository memberRepository;
 
     /**
      * 실제로 메시지가 처리하는 곳(새로운 메시지를 실시간으로 주고받는 컨트롤러)
@@ -40,7 +44,13 @@ public class ChatStompController {
         log.debug("authentication = {}", authentication);
 
         // 현재 인증된 사용자 정보 가져오기
-        AuthPrincipal principal = (AuthPrincipal) authentication.getPrincipal();
+        Long memberId = ((AuthPrincipal) authentication.getPrincipal()).getUser().getId();
+
+        // db에서 member조회하기
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
+
+        chatDto.setNickname(member.getNickname()); // 닉네임 설정
         chatDto.setNow(LocalDateTime.now());  // 현재 시간을 메시지에 설정
 
         chatService.saveMessage(chatDto); // 메시지 db에 저장
