@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (messageContent && stompClient) {
             const chatMessage = {
                 chatRoomId: chatRoomId,
-                nickname: username,
+                nickname: nickname,
                 memberId: memberId,
                 message: messageContent,
                 now: new Date().toISOString()
@@ -120,12 +120,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const messageElement = document.createElement('div');
         messageElement.className = 'message';
         // 메시지의 발신자에 따라 위치 설정
-        if (data.memberId === memberId) {
-            console.log(memberId);
-            console.log(data.memberId);
-            messageElement.classList.add('sent-message'); // 내 메시지
+        if (data.nickname === nickname) {
+            messageElement.classList.add('sent-message'); // 로그인한 사용자의 메시지
         } else {
-            messageElement.classList.add('other-message'); // 다른 사람의 메시지
+            messageElement.classList.add('received-message'); // 다른 사용자의 메시지
         }
 
         const nicknameElement = document.createElement('p');

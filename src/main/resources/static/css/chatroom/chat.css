@@ -84,40 +84,23 @@ body {
     box-sizing: border-box;
 }
 
+.parent-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.date-separator {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
 .message {
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-
-.sent-message {
-    text-align: right;
-    background-color: transparent; /* 보낸 메시지 배경색 */
-}
-
-/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
-.sent-message .content {
-    background-color: #66CDAA; /* 메시지의 배경색을 밝게 설정 */
-}
-
-.other-message {
-    text-align: left;
-    background-color: transparent; /* 기존의 진한 회색 배경색 */
-}
-
-/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
-.other-message .content {
-    background-color: #AEAEAE; /* 메시지의 배경색을 밝게 설정 */
-}
-
-.message .member-name {
-    font-weight: bold;
-}
-
-.message .sent-time {
-    font-size: 12px;
-    color: #888;
 }
 
 .message .content {
@@ -131,12 +114,32 @@ body {
     display: inline-block;
 }
 
-.chat-right {
-    background-color: #66CDAA;
+/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
+.sent-message .content {
+    background-color: #66CDAA; !important; /* 메시지의 배경색을 밝게 설정 */
+    color: white;
 }
 
-.chat-left {
-    background-color: #AEAEAE;
+/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
+.message.received-message .content {
+    background-color: #f1f1f1; !important; /* 메시지의 배경색을 밝게 설정 */
+}
+
+/* 입장 메시지 스타일 추가 */
+.member-join-message {
+    font-style: italic;
+    color: #888;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.message .member-name {
+    font-weight: bold;
+}
+
+.message .sent-time {
+    font-size: 12px;
+    color: #888;
 }
 
 .chat-input {
