@@ -32,7 +32,6 @@ public class ChatStompController {
      * @return
      */
     @MessageMapping("/chat-rooms/chat/{chatRoomId}") // 메시지가 어디로 가야하는지 정하는 것 ex) chatroomId로 보내며
-//    @SendTo("/sub/chat-rooms/chat/{chatRoomId}")
     public ChatDto chat(@DestinationVariable(value = "chatRoomId") Long chatRoomId,
                         Authentication authentication,
                         ChatDto chatDto){
