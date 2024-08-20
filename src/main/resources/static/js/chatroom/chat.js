@@ -80,6 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 스크롤 이벤트 리스너 설정
     const messagesElement = document.getElementById('messages');
+    // 새로 고침 시 최신 메시지로 자동 스크롤
+    function scrollToBottom() {
+        messagesElement.scrollTop = messagesElement.scrollHeight;
+    }
+    // 페이지가 로드되면 최신 메시지로 스크롤
+    scrollToBottom();
     messagesElement.addEventListener('scroll', () => {
         if (messagesElement.scrollTop === 0 && !loadingMessages) {
             loadingMessages = true;
