@@ -48,4 +48,30 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     Page<ProductGroupDoc> findByNightsAndStartDateAfter(int nights, LocalDate startDate, Pageable pageable);
 
     Page<ProductGroupDoc> findBySearchKeywordsAndStartDateAfter(String searchKeyword, LocalDate startDate, Pageable pageable);
+
+    // 조회수순으로 조회
+    Page<ProductGroupDoc> findByStartDateAfterOrderByViewCountDesc(LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findByNightsOrderByViewCountDesc(int nights, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsOrderByViewCountDesc(String searchKeyword, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndNightsOrderByViewCountDesc(String searchKeyword, int nights, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndStartDateAfterOrderByViewCountDesc(String searchKeyword, LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndNightsAndStartDateAfterOrderByViewCountDesc(String searchKeyword, int nights, LocalDate startDate, Pageable pageable);
+
+    // 좋아요순으로 조회
+    Page<ProductGroupDoc> findByStartDateAfterOrderByLikeCountDesc(LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findByNightsOrderByLikeCountDesc(int nights, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsOrderByLikeCountDesc(String searchKeyword, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndNightsOrderByLikeCountDesc(String searchKeyword, int nights, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndStartDateAfterOrderByLikeCountDesc(String searchKeyword, LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndNightsAndStartDateAfterOrderByLikeCountDesc(String searchKeyword, int nights, LocalDate startDate, Pageable pageable);
 }

@@ -20,6 +20,7 @@ public class ProductGroupToEntityService {
                     .startDate(productGroupDoc.getStartDate())
                     .productList(jsonConvertService.convertJsonToProductList(productGroupDoc.getProductListJson()))
                     .viewCount(productGroupDoc.getViewCount())
+                    .likeCount(productGroupDoc.getLikeCount())
                     .build();
         } catch (JsonProcessingException e) {
             e.printStackTrace();

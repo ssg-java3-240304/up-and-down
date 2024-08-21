@@ -26,13 +26,17 @@ public class SearchController {
             @RequestParam(required = false) String searchKeyword,
             @RequestParam(required = false) String nights,
             @RequestParam(required = false) String startDate,
+            @RequestParam(defaultValue = "viewCount") String searchSort,
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             Model model
     ) {
         log.info("GET search - Destination: {}, Nights: {}, StartDate: {}", searchKeyword, nights, startDate);
 
         // 여행지, 숙박일로 elasticsearch 에 조회
-        Page<ProductGroup> searchResult = this.service.search(searchKeyword, nights, startDate, pageable);
+        Page<ProductGroup> searchResult = switch (SearchSort.fromString(searchSort)) {
+            case VIEW_COUNT -> this.service.searchOrderByViewCount(searchKeyword, nights, startDate, pageable);
+            case LIKE_COUNT -> this.service.searchOrderByLikeCount(searchKeyword, nights, startDate, pageable);
+        };
 
         // 검색어 타이틀
         model.addAttribute("searchKeywordTitle", (searchKeyword == null || searchKeyword.isBlank()) ? "어디든지" : searchKeyword);
@@ -49,6 +53,8 @@ public class SearchController {
         model.addAttribute("nights", nights);
         // 출발 예정일
         model.addAttribute("startDate", startDate);
+        // 정렬 기준
+        model.addAttribute("searchSort", searchSort);
         // 총 페이지 수
         model.addAttribute("totalPages", searchResult.getTotalPages());
 

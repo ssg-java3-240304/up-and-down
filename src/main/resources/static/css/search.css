@@ -38,10 +38,14 @@
     display: flex;
     gap: 20px;
 }
-.list-header .sort button {
-    font-size: 16px;
+.sort a {
     color: #808080;
 }
+.sort a.active {
+    font-weight: 700;
+    color: #265AB4;
+}
+
 
 /* 상품 목록 */
 .search-result-list a {

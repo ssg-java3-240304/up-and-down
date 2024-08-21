@@ -302,7 +302,7 @@ class ElasticsearchTest {
                     System.out.println("\t\t\tdestination='" + value.getDestination() + "',");
                     System.out.println("\t\t\tnights=" + value.getNights() + ",");
                     System.out.println("\t\t\ttitle='" + value.getTitle() + "',");
-                    System.out.println("\t\t\tstart_date='" + value.getStart_date() + "',");
+                    System.out.println("\t\t\tstart_date='" + value.getStartDate() + "',");
                     System.out.println("\t\t\tprice=" + value.getPrice() + ",");
                     System.out.println("\t\t\tthumbnailUrl='" + value.getThumbnailUrl() + "',");
                     System.out.println("\t\t\ttravelAgency='" + value.getTravelAgency() + "',");
