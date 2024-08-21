@@ -15,6 +15,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -45,4 +46,7 @@ public class ProductGroupDoc {
 
     @Field(type = FieldType.Integer)
     private int viewCount; // 조회수
+
+    @Field(type = FieldType.Integer)
+    private int likeCount; // 좋아요
 }

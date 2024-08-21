@@ -38,10 +38,14 @@
     display: flex;
     gap: 20px;
 }
-.list-header .sort button {
-    font-size: 16px;
+.sort a {
     color: #808080;
 }
+.sort a.active {
+    font-weight: 700;
+    color: #265AB4;
+}
+
 
 /* 상품 목록 */
 .search-result-list a {
@@ -106,4 +110,48 @@ img.travel-agency-name {
 }
 .notice-box p {
     color: #808080;
+}
+/* 푸터 영역 */
+footer {
+    position: relative;
+    margin: 50px 0;
+    padding: 20px;
+}
+/* 페이지네이션 */
+.pagination ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+}
+.pagination ul li {
+    display: inline-block;
+}
+.pagination ul li a, .pagination ul li span {
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination ul li a:hover {
+    background-color: #f0f0f0;
+}
+.pagination ul li.active a {
+    background-color: #265AB4;
+    color: #fff;
+    border-color: #265AB4;
+}
+.pagination ul li.disabled span {
+    color: #aaa;
+    border-color: #ddd;
+    background-color: #f9f9f9;
+}
+.pagination ul li.disabled span {
+    cursor: not-allowed;
+}
+.pagination ul li.disabled span:hover {
+    background-color: #f9f9f9;
 }

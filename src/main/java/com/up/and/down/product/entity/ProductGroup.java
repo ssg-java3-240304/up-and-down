@@ -48,6 +48,8 @@ public class ProductGroup {
 
     private int viewCount; // 조회수
 
+    private int likeCount; // 좋아요
+
 
     public void increaseViewCount() {
         this.viewCount++;
