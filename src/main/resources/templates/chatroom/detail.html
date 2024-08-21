@@ -72,7 +72,7 @@
 
         <!-- 본문내용 -->
         <div class="details mt-4 p-3 border">
-            <p th:text="${chatRoom.description}">Description</p>
+            <p th:utext="${#strings.replace(chatRoom.description, '\n', '<br />')}">Description</p>
         </div>
 
         <!-- 참여하기 버튼 -->
