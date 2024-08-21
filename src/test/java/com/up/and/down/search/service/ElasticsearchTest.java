@@ -1,6 +1,9 @@
 package com.up.and.down.search.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.up.and.down.product.entity.Destination;
+import com.up.and.down.product.entity.ProductInformation;
 import com.up.and.down.search.entity.ProductGroupDoc;
 import com.up.and.down.search.repository.ProductGroupDocRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +14,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ElasticsearchTest {
     @Autowired
     private ProductGroupDocRepository repo;
+    @Autowired
+    private ProductListJsonConvertService jsonConvertService;
 
     @Test
     @DisplayName("전체 조회")
@@ -34,20 +42,15 @@ class ElasticsearchTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"제주도", "거제"})
-    @DisplayName("여행지 조회")
-    void testFindByDestination(String destinationStr) {
-        // given
-        Destination destination = Destination.fromKrName(destinationStr);
-
+    @ValueSource(strings = {"제주도", "휴식", "자연", "로맨틱"})
+    @DisplayName("searchKeywords 로 조회")
+    void testFindBySearchKeywords(String keyword) {
         // when
-        List<ProductGroupDoc> productGroupDocList = this.repo.findByDestination(destination);
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(keyword);
 
         // then
         docToString(productGroupDocList);
-
         assertThat(productGroupDocList).isNotNull();
-        assertThat(productGroupDocList).isNotEmpty();
     }
 
     @ParameterizedTest
@@ -69,13 +72,10 @@ class ElasticsearchTest {
             "제주도, 2",
             "거제, 3"
     })
-    @DisplayName("여행지, 숙박일로 조회")
-    void testFindByDestinationAndNights(String destinationStr, int nights) {
-        // given
-        Destination destination = Destination.fromKrName(destinationStr);
-
+    @DisplayName("키워드, 숙박일로 조회")
+    void testFindBySearchKeywordsAndNights(String searchKeywords, int nights) {
         // when
-        List<ProductGroupDoc> productGroupDocList = this.repo.findByDestinationAndNights(destination, nights);
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNights(searchKeywords, nights);
 
         // then
         docToString(productGroupDocList);
@@ -135,6 +135,22 @@ class ElasticsearchTest {
     }
 
     @Test
+    @DisplayName("조회수순으로 조회")
+    void testFindByViewCount() {
+        // when
+        List<ProductGroupDoc> productGroupList = this.repo.findAllByOrderByViewCountDesc();
+
+        // then
+        assertThat(productGroupList).isNotNull();
+        assertThat(productGroupList).isNotEmpty();
+        // 각 항목이 이전 항목보다 조회수가 크거나 같음을 확인
+        for (int i = 0; i < productGroupList.size() - 1; i++) {
+            assertThat(productGroupList.get(i).getViewCount())
+                    .isGreaterThanOrEqualTo(productGroupList.get(i + 1).getViewCount());
+        }
+    }
+
+    @Test
     @DisplayName("조회수로 조회 상위 4개만")
     void testFindByViewCountTop4() {
         // when
@@ -151,36 +167,7 @@ class ElasticsearchTest {
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"제주도", "휴식", "자연", "로맨틱"})
-    @DisplayName("searchKeywords 로 조회")
-    void testFindBySearchKeywords(String keyword) {
-        // when
-        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(keyword);
-
-        // then
-        docToString(productGroupDocList);
-        assertThat(productGroupDocList).isNotNull();
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "제주도, 2",
-            "거제, 3"
-    })
-    @DisplayName("키워드, 숙박일로 조회")
-    void testFindBySearchKeywordsAndNights(String searchKeywords, int nights) {
-        // when
-        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNights(searchKeywords, nights);
-
-        // then
-        docToString(productGroupDocList);
-
-        assertThat(productGroupDocList).isNotNull();
-        assertThat(productGroupDocList).isNotEmpty();
-    }
-
-    private void docToString(List<ProductGroupDoc> docList) {
+    public void docToString(List<ProductGroupDoc> docList) {
         docList.forEach(doc -> {
             System.out.println("ProductGroupDoc {");
             System.out.println("\tid=" + doc.getId() + ",");
@@ -188,20 +175,31 @@ class ElasticsearchTest {
             System.out.println("\tdestination='" + doc.getDestination() + "',");
             System.out.println("\tnights=" + doc.getNights() + ",");
             System.out.println("\tproductList={");
+            Map<Long, ProductInformation> productList;
+            try {
+                productList = jsonConvertService.convertJsonToProductList(doc.getProductListJson());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                productList = null;
+            }
+            if (productList != null) {
+                productList.forEach((key, value) -> {
+                    System.out.println("\t\t" + key + " = ProductInformation {");
+                    System.out.println("\t\t\tdestination='" + value.getDestination() + "',");
+                    System.out.println("\t\t\tnights=" + value.getNights() + ",");
+                    System.out.println("\t\t\ttitle='" + value.getTitle() + "',");
+                    System.out.println("\t\t\tstart_date='" + value.getStart_date() + "',");
+                    System.out.println("\t\t\tprice=" + value.getPrice() + ",");
+                    System.out.println("\t\t\tthumbnailUrl='" + value.getThumbnailUrl() + "',");
+                    System.out.println("\t\t\ttravelAgency='" + value.getTravelAgency() + "',");
+                    System.out.println("\t\t\tdetailUrl='" + value.getDetailUrl() + "'");
+                    System.out.println("\t\t},");
+                });
+            } else {
+                System.out.println("\t\t<empty product list>");
+            }
+            System.out.println("\t},");
 
-            doc.getProductList().forEach((key, value) -> {
-                System.out.println("\t\t" + key + " = ProductInformation {");
-                System.out.println("\t\t\tdestination='" + value.getDestination() + "',");
-                System.out.println("\t\t\tnights=" + value.getNights() + ",");
-                System.out.println("\t\t\ttitle='" + value.getTitle() + "',");
-                System.out.println("\t\t\tstart_date='" + value.getStart_date() + "',");
-                System.out.println("\t\t\tprice=" + value.getPrice() + ",");
-                System.out.println("\t\t\tthumbnailUrl='" + value.getThumbnailUrl() + "',");
-                System.out.println("\t\t\ttravelAgency='" + value.getTravelAgency() + "',");
-                System.out.println("\t\t\tdetailUrl='" + value.getDetailUrl() + "'");
-                System.out.println("\t\t},");
-            });
-            System.out.println("\t}" + ",");
             System.out.println("\tviewCount=" + doc.getViewCount());
             System.out.println("}");
         });

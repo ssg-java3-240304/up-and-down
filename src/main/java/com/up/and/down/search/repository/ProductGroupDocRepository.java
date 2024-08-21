@@ -1,6 +1,5 @@
 package com.up.and.down.search.repository;
 
-import com.up.and.down.product.entity.Destination;
 import com.up.and.down.search.entity.ProductGroupDoc;
 import lombok.NonNull;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
@@ -12,15 +11,13 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     @NonNull
     List<ProductGroupDoc> findAll();
 
-    List<ProductGroupDoc> findByDestination(Destination destination); // 여행지로 조회
+    List<ProductGroupDoc> findBySearchKeywords(String keyword);
 
     List<ProductGroupDoc> findByNights(int nights); // 숙박일로 조회
 
-    List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
-
-    List<ProductGroupDoc> findByDestinationAndNights(Destination destination, int nights);
-
-    List<ProductGroupDoc> findBySearchKeywords(String keyword);
-
     List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
+
+    List<ProductGroupDoc> findAllByOrderByViewCountDesc();
+
+    List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
 }
