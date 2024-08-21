@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchService {
     private final ProductGroupDocRepository repo;
+    private final ProductGroupToEntityService productGroupToEntityService;
 
     public List<ProductGroup> findBySearchKeywordsAndNights(String searchKeywords, String nights) {
         List<ProductGroupDoc> productGroupDocList;
@@ -34,7 +35,7 @@ public class SearchService {
         // Doc 객체 -> entity 객체로 변환
         List<ProductGroup> productGroupList = new ArrayList<>();
         for (ProductGroupDoc productGroupDoc : productGroupDocList) {
-            productGroupList.add(productGroupDoc.toEntity());
+                productGroupList.add(productGroupToEntityService.toEntity(productGroupDoc));
         }
 
         return productGroupList;
