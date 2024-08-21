@@ -6,8 +6,10 @@ import lombok.*;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tbl_product_group")
@@ -74,11 +76,19 @@ public class ProductGroup {
 
     // 대표 내용 반환
     public String getRepresentativeContent() {
-        return String.format("[%s]", this.startDate);
+        return String.format("출발 예정일 [%s]", this.startDate);
     }
 
     // 대표 가격 반환
     public String getRepresentativePrice() {
         return NumberFormat.getInstance().format(getCheapestProduct().getPrice());
+    }
+
+    // 저렴한 순으로 4개의 ProductInformation 반환
+    public List<ProductInformation> getTop4CheapestProducts() {
+        return productList.values().stream()
+                .sorted(Comparator.comparing(ProductInformation::getPrice))
+                .limit(4)
+                .collect(Collectors.toList());
     }
 }

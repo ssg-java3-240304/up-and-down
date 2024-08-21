@@ -21,20 +21,25 @@ public class SearchController {
     private final SearchService service;
 
     @GetMapping
-    public void searchProduct(
-            @RequestParam() String searchKeyword,
-            @RequestParam() String nights,
-            @RequestParam() String startDate,
+    public String searchProductByParam(
+            @RequestParam(required = false) String searchKeyword,
+            @RequestParam(required = false) String nights,
+            @RequestParam(required = false) String startDate,
             Model model
     ) {
         log.info("GET search - Destination: {}, Nights: {}, StartDate: {}", searchKeyword, nights, startDate);
 
         // 여행지, 숙박일로 elasticsearch 에 조회
         List<ProductGroup> searchResult = this.service.search(searchKeyword, nights, startDate);
-//        log.debug("search result: {}", searchResult);
-        log.debug("result size: {}", searchResult.size());
 
+        // 검색어
+        model.addAttribute("searchKeyword", (searchKeyword == null || searchKeyword.isBlank()) ? "어디든지" : searchKeyword);
+        // 검색 결과 개수
+        model.addAttribute("searchResultCount", searchResult.size());
+        // 검색 결과
         model.addAttribute("searchResult", searchResult);
+
+        return "search";
     }
 
     @GetMapping("/{theme}")

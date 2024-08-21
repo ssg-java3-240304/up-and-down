@@ -45,15 +45,15 @@
             </header>
             <ul class="product-group">
                 <!-- Thymeleaf 를 사용하여 전달된 상품 목록을 반복하여 표시 -->
-                <li class="product" th:each="product : ${mostSearchedTop4}">
-                    <a th:href="@{product/{id}(id = ${product.getId})}">
+                <li class="product" th:each="productGroup : ${mostSearchedTop4}">
+                    <a th:href="@{product/{id}(id = ${productGroup.getId})}">
                         <!-- 이미지 URL 을 동적으로 설정 -->
-                        <img th:attr="src=${product.representativeImage}" alt="상품 이미지"/>
-                        <p class="title" th:text="${product.representativeTitle}">패키지 여행 제목</p>
-                        <p class="content" th:text="${product.representativeContent}">상세 내용</p>
+                        <img th:attr="src=${productGroup.representativeImage}" src="" alt="상품 이미지"/>
+                        <p class="title" th:text="${productGroup.representativeTitle}">패키지 여행 제목</p>
+                        <p class="content" th:text="${productGroup.representativeContent}">상세 내용</p>
                         <p class="price-text">
                             <!-- 가격을 동적으로 설정 -->
-                            <span class="price" th:text="${product.representativePrice}">0</span>원
+                            <span class="price" th:text="${productGroup.representativePrice}">0</span>원
                         </p>
                     </a>
                 </li>

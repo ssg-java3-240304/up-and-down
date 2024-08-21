@@ -21,7 +21,7 @@ public class SearchService {
 
         // 검색 키워드, 숙박일수, 시작 날짜를 기준으로 검색
         if (searchKeyword == null || searchKeyword.isBlank()) {
-            if ("all".equals(nights)) {
+            if ("all".equals(nights) || nights == null) {
                 if (startDate != null && !startDate.isBlank()) {
                     // 검색어가 없고, 숙박일수가 "all"이며, 시작 날짜가 주어진 경우
                     // 시작 날짜 이후의 모든 상품 그룹을 조회
@@ -43,7 +43,7 @@ public class SearchService {
                 }
             }
         } else {
-            if ("all".equals(nights)) {
+            if ("all".equals(nights) || nights == null) {
                 if (startDate != null && !startDate.isBlank()) {
                     // 검색어가 있고, 숙박일수가 "all"이며, 시작 날짜가 주어진 경우
                     // 검색어와 시작 날짜 이후의 상품 그룹을 조회

@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 
 @Embeddable
@@ -37,4 +38,9 @@ public class ProductInformation {
 
     @Column(name = "detail_url", length = 500)
     private String detailUrl; // 상품상세페이지
+
+    // 대표 가격 반환
+    public String getPriceString() {
+        return NumberFormat.getInstance().format(this.price);
+    }
 }
