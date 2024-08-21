@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ class ElasticsearchTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"제주도", "휴식", "자연", "로맨틱"})
-    @DisplayName("searchKeywords 로 조회")
+    @DisplayName("키워드로 조회")
     void testFindBySearchKeywords(String keyword) {
         // when
         List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(keyword);
@@ -70,7 +71,7 @@ class ElasticsearchTest {
     @ParameterizedTest
     @CsvSource({
             "제주도, 2",
-            "거제, 3"
+            "거제, 1"
     })
     @DisplayName("키워드, 숙박일로 조회")
     void testFindBySearchKeywordsAndNights(String searchKeywords, int nights) {
@@ -82,6 +83,27 @@ class ElasticsearchTest {
 
         assertThat(productGroupDocList).isNotNull();
         assertThat(productGroupDocList).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"2024-09-01", "2024-09-02", "2024-09-03"})
+    @DisplayName("여행 출발일로 조회")
+    void testFindByStartDate(String startDateStr) {
+        // given
+        LocalDate startDate = LocalDate.parse(startDateStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByStartDate(startDate);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+        // 각 항목의 startDate가 검색한 날짜와 일치하는지 확인
+        for (ProductGroupDoc productGroupDoc : productGroupDocList) {
+            assertThat(productGroupDoc.getStartDate()).isEqualTo(startDate);
+        }
     }
 
     @Test
@@ -174,6 +196,7 @@ class ElasticsearchTest {
             System.out.println("\tsearchKeywords=" + doc.getSearchKeywords() + ",");
             System.out.println("\tdestination='" + doc.getDestination() + "',");
             System.out.println("\tnights=" + doc.getNights() + ",");
+            System.out.println("\tstartDate=" + doc.getStartDate() + ",");
             System.out.println("\tproductList={");
             Map<Long, ProductInformation> productList;
             try {

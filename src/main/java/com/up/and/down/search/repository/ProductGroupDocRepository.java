@@ -4,6 +4,7 @@ import com.up.and.down.search.entity.ProductGroupDoc;
 import lombok.NonNull;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ProductGroupDocRepository extends ElasticsearchRepository<ProductGroupDoc, Long> {
@@ -11,9 +12,11 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     @NonNull
     List<ProductGroupDoc> findAll();
 
-    List<ProductGroupDoc> findBySearchKeywords(String keyword);
+    List<ProductGroupDoc> findBySearchKeywords(String keyword); // 키워드로 검색
 
-    List<ProductGroupDoc> findByNights(int nights); // 숙박일로 조회
+    List<ProductGroupDoc> findByNights(int nights); // 숙박일로 검색
+
+    List<ProductGroupDoc> findByStartDate(LocalDate startDate); // 여행출발일로 검색
 
     List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
 
