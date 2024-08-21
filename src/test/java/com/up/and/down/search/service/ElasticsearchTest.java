@@ -106,6 +106,27 @@ class ElasticsearchTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"2024-09-01", "2024-09-02", "2024-09-03"})
+    @DisplayName("여행 출발일 이후로 조회")
+    void testFindByStartDateAfter(String startDateStr) {
+        // given
+        LocalDate startDate = LocalDate.parse(startDateStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByStartDateAfter(startDate);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        assertThat(productGroupDocList).isNotEmpty();
+        // 각 항목의 startDate가 검색한 날짜 이후인지 확인
+        for (ProductGroupDoc productGroupDoc : productGroupDocList) {
+            assertThat(productGroupDoc.getStartDate()).isAfterOrEqualTo(startDate);
+        }
+    }
+
     @Test
     @DisplayName("아이디 조회")
     void testFindById() {
@@ -131,14 +152,14 @@ class ElasticsearchTest {
     @DisplayName("상품 그룹 조회수 증가")
     void testIncreaseViewCount() {
         // given
-        List<Long> idList = List.of(1L, 3L, 5L, 7L, 9L);
+        List<ProductGroupDoc> productGroupDocList = this.repo.findAll();
 
         // when
-        for (int i = 0; i < idList.size(); i++) {
+        for (int i = 0; i < 10; i++) {
             int curId = i;
             // id에 해당하는 ProductGroupDoc 의 조회수를 가져옴
-            ProductGroupDoc productGroupDoc = this.repo.findById(idList.get(i)).orElseThrow(
-                    () -> new RuntimeException("ProductGroupDoc not found with id: " + idList.get(curId))
+            ProductGroupDoc productGroupDoc = this.repo.findById(productGroupDocList.get(i).getId()).orElseThrow(
+                    () -> new RuntimeException("ProductGroupDoc not found with id: " + productGroupDocList.get(curId))
             );
             int curViewCount = productGroupDoc.getViewCount();
 
@@ -148,8 +169,8 @@ class ElasticsearchTest {
             
             // then
             // 조회수가 증가했는지 확인
-            ProductGroupDoc updateProductGroupDoc = this.repo.findById(idList.get(i)).orElseThrow(
-                    () -> new RuntimeException("ProductGroupDoc not found with id: " + idList.get(curId))
+            ProductGroupDoc updateProductGroupDoc = this.repo.findById(productGroupDocList.get(i).getId()).orElseThrow(
+                    () -> new RuntimeException("ProductGroupDoc not found with id: " + productGroupDocList.get(curId))
             );
             assertThat(updateProductGroupDoc.getViewCount()).isEqualTo(curViewCount + 1);
             System.out.println("check success!!!");

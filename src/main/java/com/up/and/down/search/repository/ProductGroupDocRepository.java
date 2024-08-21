@@ -18,9 +18,11 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
 
     List<ProductGroupDoc> findByStartDate(LocalDate startDate); // 여행출발일로 검색
 
+    List<ProductGroupDoc> findByStartDateAfter(LocalDate startDate); // 여행 출발일 이후 검색
+
     List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
 
-    List<ProductGroupDoc> findAllByOrderByViewCountDesc();
+    List<ProductGroupDoc> findAllByOrderByViewCountDesc(); // 조회수 순 검색
 
     List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
 }
