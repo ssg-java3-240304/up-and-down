@@ -1,10 +1,10 @@
 package com.up.and.down.search.repository;
 
-import com.up.and.down.product.entity.Destination;
 import com.up.and.down.search.entity.ProductGroupDoc;
 import lombok.NonNull;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ProductGroupDocRepository extends ElasticsearchRepository<ProductGroupDoc, Long> {
@@ -12,15 +12,23 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     @NonNull
     List<ProductGroupDoc> findAll();
 
-    List<ProductGroupDoc> findByDestination(Destination destination); // 여행지로 조회
+    List<ProductGroupDoc> findBySearchKeywords(String searchKeyword); // 키워드로 검색
 
-    List<ProductGroupDoc> findByNights(int nights); // 숙박일로 조회
+    List<ProductGroupDoc> findByNights(int nights); // 숙박일로 검색
+
+    List<ProductGroupDoc> findByStartDate(LocalDate startDate); // 여행출발일로 검색
+
+    List<ProductGroupDoc> findByStartDateAfter(LocalDate startDate); // 여행 출발일 이후 검색
+
+    List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeyword, int nights); // 키워드, 숙박일
+
+    List<ProductGroupDoc> findBySearchKeywordsAndStartDateAfter(String searchKeyword, LocalDate startDate); // 키워드, 여행 출발일 이후
+
+    List<ProductGroupDoc> findByNightsAndStartDateAfter(int nights, LocalDate startDate); // 숙박일, 여행 출발일 이후
+
+    List<ProductGroupDoc> findBySearchKeywordsAndNightsAndStartDateAfter(String searchKeyword, int nights, LocalDate startDate); // 키워드, 숙박일, 여행 출발일
+
+    List<ProductGroupDoc> findAllByOrderByViewCountDesc(); // 조회수 순 검색
 
     List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
-
-    List<ProductGroupDoc> findByDestinationAndNights(Destination destination, int nights);
-
-    List<ProductGroupDoc> findBySearchKeywords(String keyword);
-
-    List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
 }
