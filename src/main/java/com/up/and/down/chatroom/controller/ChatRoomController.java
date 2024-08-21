@@ -1,10 +1,7 @@
 package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
-import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
-import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
-import com.up.and.down.chatroom.dto.ChatRoomRegistRequestDto;
-import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
+import com.up.and.down.chatroom.dto.*;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.user.member.entity.Member;
@@ -14,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -174,9 +172,20 @@ public class ChatRoomController {
 
 
     // 수정페이지
-    @GetMapping("/update")
-    public String update(){
+    @GetMapping("/update/{chatRoomId}")
+    public String update(@PathVariable("chatRoomId") Long chatRoomId, Model model){
         log.info("GET /chatroom/update");
+        ChatRoomDetailResponseDto dto = chatRoomService.findById(chatRoomId); // ChatRoomDetailResponseDto 조회용도
+        log.debug("dto = {}", dto);
+        model.addAttribute("chatRoom", dto);
         return "chatroom/update";
+    }
+    @PostMapping("/update/{chatRoomId}")
+    public String update(@ModelAttribute ChatRoomUpdateRequestDto dto,
+                         RedirectAttributes redirectAttributes){
+        log.debug("dto = {}", dto);
+        chatRoomService.update(dto);
+        redirectAttributes.addFlashAttribute("message", "채팅방 소개글을 수정했습니다.");
+        return "redirect:/chat-rooms/" + dto.getChatRoomId();
     }
 }

@@ -1,9 +1,6 @@
 package com.up.and.down.chatroom.service;
 
-import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
-import com.up.and.down.chatroom.dto.ChatRoomListResponseDto;
-import com.up.and.down.chatroom.dto.ChatRoomRegistRequestDto;
-import com.up.and.down.chatroom.dto.ChatRoomResponseDto;
+import com.up.and.down.chatroom.dto.*;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.entity.ChatRoom;
 import com.up.and.down.chatroom.repository.ChatRoomRepository;
@@ -178,5 +175,15 @@ public class ChatRoomService {
         ChatRoom chatRoom = dto.toChatRoom(creatorId);
         log.debug("saved chatRoom = {}", chatRoom);
         chatRoomRepository.save(chatRoom);
+    }
+
+    // 채팅방 소개글 수정페이지
+    public ChatRoomDetailResponseDto findById(Long chatRoomId) {
+        return ChatRoomDetailResponseDto.fromChatRoom(chatRoomRepository.findById(chatRoomId).orElseThrow());
+    }
+    public void update(ChatRoomUpdateRequestDto dto) {
+        ChatRoom chatRoom = chatRoomRepository.findById(dto.getChatRoomId()).orElseThrow();
+        chatRoom.update(dto); // 채팅방 정보 업데이트
+        chatRoomRepository.save(chatRoom); // 업데이트된 정보 저장
     }
 }

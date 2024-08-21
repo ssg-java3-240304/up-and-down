@@ -56,7 +56,12 @@
         <!-- 날짜, 닉네임, 참여인원수 -->
         <div class="info-bar mt-4">
             <!-- 등록일시 -->
-            <p class="create-date mb-0" th:text="${#temporals.format(chatRoom.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Creation Date</p>
+            <p class="create-date mb-0">
+                <!-- 조건부로 createdAt과 updatedAt을 동시에 표시 -->
+                <span th:text="${#temporals.format(chatRoom.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Creation Date</span>
+                <span th:if="${chatRoom.updatedAt != null}"> | </span>
+                <span th:if="${chatRoom.updatedAt != null}" th:text="${#temporals.format(chatRoom.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">Updated Date</span>
+            </p>
             <div class="user-info text-end">
                 <!-- 닉네임 -->
                 <p class="nickname mb-0" th:text="${chatRoom.nickname}">Nickname</p>
