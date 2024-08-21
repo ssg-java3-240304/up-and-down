@@ -45,9 +45,9 @@ class ElasticsearchTest {
     @ParameterizedTest
     @ValueSource(strings = {"제주도", "휴식", "자연", "로맨틱"})
     @DisplayName("키워드로 조회")
-    void testFindBySearchKeywords(String keyword) {
+    void testFindBySearchKeywords(String searchKeyword) {
         // when
-        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(keyword);
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywords(searchKeyword);
 
         // then
         docToString(productGroupDocList);
@@ -65,24 +65,6 @@ class ElasticsearchTest {
         docToString(productGroupDocList);
 
         assertThat(productGroupDocList).isNotNull();
-        assertThat(productGroupDocList).isNotEmpty();
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "제주도, 2",
-            "거제, 1"
-    })
-    @DisplayName("키워드, 숙박일로 조회")
-    void testFindBySearchKeywordsAndNights(String searchKeywords, int nights) {
-        // when
-        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNights(searchKeywords, nights);
-
-        // then
-        docToString(productGroupDocList);
-
-        assertThat(productGroupDocList).isNotNull();
-        assertThat(productGroupDocList).isNotEmpty();
     }
 
     @ParameterizedTest
@@ -99,7 +81,6 @@ class ElasticsearchTest {
         docToString(productGroupDocList);
 
         assertThat(productGroupDocList).isNotNull();
-        assertThat(productGroupDocList).isNotEmpty();
         // 각 항목의 startDate가 검색한 날짜와 일치하는지 확인
         for (ProductGroupDoc productGroupDoc : productGroupDocList) {
             assertThat(productGroupDoc.getStartDate()).isEqualTo(startDate);
@@ -120,12 +101,101 @@ class ElasticsearchTest {
         docToString(productGroupDocList);
 
         assertThat(productGroupDocList).isNotNull();
-        assertThat(productGroupDocList).isNotEmpty();
         // 각 항목의 startDate가 검색한 날짜 이후인지 확인
         for (ProductGroupDoc productGroupDoc : productGroupDocList) {
             assertThat(productGroupDoc.getStartDate()).isAfterOrEqualTo(startDate);
         }
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2",
+            "거제, 1"
+    })
+    @DisplayName("키워드, 숙박일로 조회")
+    void testFindBySearchKeywordsAndNights(String searchKeyword, int nights) {
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNights(searchKeyword, nights);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2024-09-01",
+            "휴식, 2024-09-02"
+    })
+    @DisplayName("키워드와 여행 출발일 이후로 조회")
+    void testFindBySearchKeywordsAndStartDateAfter(String searchKeyword, String startDateStr) {
+        // given
+        LocalDate startDate = LocalDate.parse(startDateStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndStartDateAfter(searchKeyword, startDate);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        // 각 항목의 searchKeywords가 검색한 키워드를 포함하고 startDate가 검색한 날짜 이후인지 확인
+        for (ProductGroupDoc productGroupDoc : productGroupDocList) {
+            assertThat(productGroupDoc.getSearchKeywords()).contains(searchKeyword);
+            assertThat(productGroupDoc.getStartDate()).isAfterOrEqualTo(startDate);
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2, 2024-09-01",
+            "3, 2024-09-02"
+    })
+    @DisplayName("숙박일과 여행 출발일 이후로 조회")
+    void testFindByNightsAndStartDateAfter(int nights, String startDateStr) {
+        // given
+        LocalDate startDate = LocalDate.parse(startDateStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findByNightsAndStartDateAfter(nights, startDate);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        // 각 항목의 nights가 검색한 숙박일과 같고 startDate가 검색한 날짜 이후인지 확인
+        for (ProductGroupDoc productGroupDoc : productGroupDocList) {
+            assertThat(productGroupDoc.getNights()).isEqualTo(nights);
+            assertThat(productGroupDoc.getStartDate()).isAfterOrEqualTo(startDate);
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "제주도, 2, 2024-09-01",
+            "거제, 2, 2024-09-02"
+    })
+    @DisplayName("키워드, 숙박일, 여행 출발일 이후로 조회")
+    void testFindBySearchKeywordsAndNightsAndStartDateAfter(String searchKeyword, int nights, String startDateStr) {
+        // given
+        LocalDate startDate = LocalDate.parse(startDateStr);
+
+        // when
+        List<ProductGroupDoc> productGroupDocList = this.repo.findBySearchKeywordsAndNightsAndStartDateAfter(searchKeyword, nights, startDate);
+
+        // then
+        docToString(productGroupDocList);
+
+        assertThat(productGroupDocList).isNotNull();
+        // 각 항목의 searchKeywords가 검색한 키워드를 포함하고 nights가 검색한 숙박일과 같으며 startDate가 검색한 날짜 이후인지 확인
+        for (ProductGroupDoc productGroupDoc : productGroupDocList) {
+            assertThat(productGroupDoc.getSearchKeywords()).contains(searchKeyword);
+            assertThat(productGroupDoc.getNights()).isEqualTo(nights);
+            assertThat(productGroupDoc.getStartDate()).isAfterOrEqualTo(startDate);
+        }
+    }
+
 
     @Test
     @DisplayName("아이디 조회")

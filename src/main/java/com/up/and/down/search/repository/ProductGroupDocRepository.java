@@ -12,7 +12,7 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     @NonNull
     List<ProductGroupDoc> findAll();
 
-    List<ProductGroupDoc> findBySearchKeywords(String keyword); // 키워드로 검색
+    List<ProductGroupDoc> findBySearchKeywords(String searchKeyword); // 키워드로 검색
 
     List<ProductGroupDoc> findByNights(int nights); // 숙박일로 검색
 
@@ -20,7 +20,13 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
 
     List<ProductGroupDoc> findByStartDateAfter(LocalDate startDate); // 여행 출발일 이후 검색
 
-    List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeywords, int nights);
+    List<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeyword, int nights); // 키워드, 숙박일
+
+    List<ProductGroupDoc> findBySearchKeywordsAndStartDateAfter(String searchKeyword, LocalDate startDate); // 키워드, 여행 출발일 이후
+
+    List<ProductGroupDoc> findByNightsAndStartDateAfter(int nights, LocalDate startDate); // 숙박일, 여행 출발일 이후
+
+    List<ProductGroupDoc> findBySearchKeywordsAndNightsAndStartDateAfter(String searchKeyword, int nights, LocalDate startDate); // 키워드, 숙박일, 여행 출발일
 
     List<ProductGroupDoc> findAllByOrderByViewCountDesc(); // 조회수 순 검색
 
