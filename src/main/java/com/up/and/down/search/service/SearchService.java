@@ -91,5 +91,13 @@ public class SearchService {
 
         return productGroupDocPage.map(this.productGroupToEntityService::toEntity);
     }
+
+    public Page<ProductGroup> searchByThemeOrderByViewCount(String theme, Pageable pageable) {
+        return this.repo.findBySearchKeywordsOrderByViewCountDesc(theme, pageable).map(this.productGroupToEntityService::toEntity);
+    }
+
+    public Page<ProductGroup> searchByThemeOrderByLikeCount(String theme, Pageable pageable) {
+        return this.repo.findBySearchKeywordsOrderByLikeCountDesc(theme, pageable).map(this.productGroupToEntityService::toEntity);
+    }
 }
 
