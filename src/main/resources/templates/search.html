@@ -17,15 +17,19 @@
         <h1 class="search-word mb-20">검색어</h1>
         <!--검색창-->
         <div class="search-box">
-            <form action="">
-                <div class="input-field">
-                    <label for="travel-destination">여행지</label>
-                    <input type="text" id="travel-destination" placeholder="여행지입력">
-                </div>
-                <div class="input-field">
-                    <label for="travel-date">출발예정일</label>
-                    <input type="date" id="travel-date">
-                </div>
+            <form th:action="@{/search}" method="get" class="search-frm">
+                <input type="text" name="searchKeyword" id="searchKeyword" placeholder="어디로 떠나고 싶으세요?">
+                <select name="nights" id="nights" class="nights">
+                    <option value="all" selected>전체</option>
+                    <option value="0">당일여행</option>
+                    <option value="1">1박2일</option>
+                    <option value="2">2박3일</option>
+                    <option value="3">3박4일</option>
+                    <option value="4">4박5일</option>
+                    <option value="5">5박6일</option>
+                    <option value="6">6박7일</option>
+                </select>
+                <input type="date" name="startDate" id="start-date">
                 <button type="submit">검색하기</button>
             </form>
         </div>

@@ -24,22 +24,22 @@ main .banner-box .search-box .search-frm {
     display: flex;
     gap: 20px;
 }
-main .banner-box .search-box .search-frm .destination {
+main .banner-box .search-box .search-frm #searchKeyword {
     box-sizing: border-box;
-    flex: 1;
+    flex: 2;
     height: 60px;
     padding: 20px;
     font-size: 16px;
 }
-main .banner-box .search-box .search-frm .nights {
+main .banner-box .search-box .search-frm #nights {
     box-sizing: border-box;
-    width: 160px; height: 60px;
+    height: 60px;
     padding: 20px;
     font-size: 16px;
 }
-main .banner-box .search-box .search-frm .start-date {
+main .banner-box .search-box .search-frm #start-date {
     box-sizing: border-box;
-    width: 160px; height: 60px;
+    height: 60px;
     padding: 20px;
     font-size: 16px;
 }

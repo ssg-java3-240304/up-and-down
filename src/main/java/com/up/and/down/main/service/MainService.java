@@ -1,13 +1,11 @@
 package com.up.and.down.main.service;
 
 import com.up.and.down.product.entity.ProductGroup;
-import com.up.and.down.search.entity.ProductGroupDoc;
 import com.up.and.down.search.repository.ProductGroupDocRepository;
 import com.up.and.down.search.service.ProductGroupToEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
