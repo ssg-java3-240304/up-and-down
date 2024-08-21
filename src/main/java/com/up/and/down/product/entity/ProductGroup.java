@@ -65,13 +65,16 @@ public class ProductGroup {
 
     // 대표 제목 반환
     public String getRepresentativeTitle() {
-        return String.format("%s %d박%d일", this.destination.getKorName(), this.nights, this.nights + 1);
+        if (this.nights == 0) {
+            return String.format("%s 당일여행", this.destination.getKorName());
+        } else {
+            return String.format("%s %d박%d일", this.destination.getKorName(), this.nights, this.nights + 1);
+        }
     }
 
     // 대표 내용 반환
     public String getRepresentativeContent() {
-        ProductInformation cheapestProduct = getCheapestProduct();
-        return String.format("%s [%s]", "여행사", cheapestProduct.getStart_date());
+        return String.format("[%s]", this.startDate);
     }
 
     // 대표 가격 반환

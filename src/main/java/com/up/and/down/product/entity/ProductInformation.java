@@ -23,7 +23,7 @@ public class ProductInformation {
     private Integer nights; // 여행일
 
     @Field(type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd")
-    private LocalDate start_date; // 여행 시작일
+    private LocalDate startDate; // 여행 시작일
 
     private String title; // 제목
 
