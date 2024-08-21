@@ -14,7 +14,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Map;
 
-@Document(indexName = "product_group")
+//@Document(indexName = "product_group")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

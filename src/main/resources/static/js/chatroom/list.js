@@ -74,9 +74,16 @@ $(document).ready(function () {
             type: 'GET',
             success: function (data) {
                 // 사용자가 로그인되어 있다면 해당 탭 로드
-                $('.nav-link').removeClass('active');
-                $('.nav-link[data-tab="' + filter + '"]').addClass('active');
-                loadChatRooms(filter);
+                if (data === "Permission") {
+                    $('.nav-link').removeClass('active');
+                    $('.nav-link[data-tab="' + filter + '"]').addClass('active');
+                    loadChatRooms(filter);
+                    if(filter === 'our'){
+                        // app/chat-rooms/our/chatRoomList
+                       window.location.href = '/app/chat-rooms/'+filter+'chatRoomList'
+                    }
+
+                }
             },
             error: function (xhr) {
                 if (xhr.status === 401) { // 인증되지 않은 상태라면// 로그인 페이지로 리다이렉트하며, 메시지를 쿼리 파라미터로 전달
@@ -84,6 +91,23 @@ $(document).ready(function () {
                 }
             }
         });
+    }
+
+    //일단 우리 모임 탭만 눌렀을 때 채팅방 로드해주는 리스트 작성
+    function ourChatLoad(filter){
+        $.ajax({
+            url: 'chat-rooms/list/chatRoomList',
+            type: 'GET',
+            // 속한 채팅방이 존재할 때
+            success: function(){
+
+            },
+            //속한 채팅방이 존재하지 않을 때
+            error: function (){
+
+            }
+        })
+
     }
 
     // 채팅방 목록을 로드하는 함수 (탭 클릭, 검색, 필터링, 페이지네이션에 사용)

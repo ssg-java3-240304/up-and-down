@@ -36,7 +36,7 @@ public class ChatRoomResponseDto {
                 .memberCount(chatRoom.getMemberIdList().size())
                 .isCreator(chatRoom.getCreatorId().equals(memberId))
                 .isMember(chatRoom.getMemberIdList().contains(memberId))
-                .createdAt(chatRoom.getCreatedAt())
+//                .createdAt(chatRoom.getCreatedAt())
                 .updatedAt(chatRoom.getUpdatedAt())
                 .build();
     }

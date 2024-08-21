@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,6 +61,9 @@ public class MemberService {
         memberDto.insertMemberAccount(memberAccountInfoDto);
     }
 
+    public Optional<Member> findById(Long id){
+        return memberRepository.findById(id);
+    }
     public void register() {
         Member member = memberDto.toMember();
         log.info("member = {}", member);

@@ -1,5 +1,6 @@
 package com.up.and.down.chatroom.entity;
 
+import com.up.and.down.user.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,7 +8,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity(name = "ChatRoom")
@@ -45,10 +48,14 @@ public class ChatRoom {
             name = "tbl_chat_room_member_id",
             joinColumns = @JoinColumn(name = "chat_room_id")
     )
-    private Set<Long> memberIdList;
+    private Set<Long> memberIdList = new HashSet<>();
 
     @CreatedDate
-    private LocalDateTime createdAt; // 등록일시
     @LastModifiedDate
     private LocalDateTime updatedAt; // 수정일시
+
+    public int getMemberCount() {
+        return memberIdList.size();
+    }
+
 }
