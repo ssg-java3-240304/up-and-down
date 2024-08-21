@@ -129,13 +129,13 @@ main .theme-box .theme-group .theme {
     overflow: hidden;
 }
 main .theme-box .theme-group .theme.nature {
-    background-image: url(../images/index/nature.png);
+    background-image: url(https://kr.object.ncloudstorage.com/up-bucket/common/nature.png);
 }
 main .theme-box .theme-group .theme.relaxation {
-    background-image: url(../images/index/relaxation.png);
+    background-image: url(https://kr.object.ncloudstorage.com/up-bucket/common/relaxation.png);
 }
 main .theme-box .theme-group .theme.romantic {
-    background-image: url(../images/index/romantic.png);
+    background-image: url(https://kr.object.ncloudstorage.com/up-bucket/common/romantic.png);
 }
 main .theme-box .theme-group .theme .theme-text {
     position: absolute;
