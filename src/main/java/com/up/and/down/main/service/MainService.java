@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +18,8 @@ public class MainService {
     private final ProductGroupToEntityService productGroupToEntityService;
 
     public List<ProductGroup> findTop4ByOrderByViewCountDesc() {
-        List<ProductGroupDoc> mostSearchedTop4Doc = this.repo.findTop4ByOrderByViewCountDesc();
-
-        List<ProductGroup> mostSearchedTop4 = new ArrayList<>();
-        for (ProductGroupDoc productGroupDoc : mostSearchedTop4Doc) {
-                mostSearchedTop4.add(productGroupToEntityService.toEntity(productGroupDoc));
-        }
-
-        return mostSearchedTop4;
+        return this.repo.findTop4ByOrderByViewCountDesc().stream()
+                .map(this.productGroupToEntityService::toEntity)
+                .collect(Collectors.toList());
     }
 }

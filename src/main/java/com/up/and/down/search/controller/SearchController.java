@@ -22,14 +22,15 @@ public class SearchController {
 
     @GetMapping
     public void searchProduct(
-            @RequestParam(name = "searchKeywords") String searchKeywords,
-            @RequestParam(name = "nights") String nights,
+            @RequestParam() String searchKeyword,
+            @RequestParam() String nights,
+            @RequestParam() String startDate,
             Model model
     ) {
-        log.info("GET search - Destination: {}, Nights: {}", searchKeywords, nights);
+        log.info("GET search - Destination: {}, Nights: {}, StartDate: {}", searchKeyword, nights, startDate);
 
         // 여행지, 숙박일로 elasticsearch 에 조회
-        List<ProductGroup> searchResult = this.service.findBySearchKeywordsAndNights(searchKeywords, nights);
+        List<ProductGroup> searchResult = this.service.search(searchKeyword, nights, startDate);
         log.debug("search result: {}", searchResult);
         log.debug("result size: {}", searchResult.size());
 
