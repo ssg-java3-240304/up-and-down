@@ -14,7 +14,7 @@
 </head>
 <body>
     <main layout:fragment="main" class="mt-20">
-        <h1 class="mb-20" th:text="${searchKeyword}">검색어</h1>
+        <h1 class="mb-20" th:text="${searchKeywordTitle}">검색어</h1>
         <!--검색창-->
         <div class="search-box">
             <form th:action="@{/search}" method="get" class="search-frm">
@@ -37,8 +37,8 @@
         <div class="list-header mt-20 mb-10">
             <p>검색 결과 <span th:text="${searchResultCount}">100</span>개</p>
             <div class="sort">
-                <button type="button">인기순</button>
-                <button type="button">고객평점순</button>
+                <button type="button">조회수순</button>
+                <button type="button">좋아요순</button>
             </div>
         </div>
 
@@ -77,6 +77,30 @@
             <h2 class="mb-30">선택하신 조건에 맞는 검색결과가 없습니다.</h2>
             <p>조건을 변경해 보세요.</p>
         </div>
+
+        <footer>
+            <!-- 페이지네이션 -->
+            <div class="pagination" th:if="${totalPages > 1}">
+                <ul>
+                    <li th:if="${currentPage > 0}">
+                        <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, page=${currentPage - 1})}">이전</a>
+                    </li>
+                    <li th:if="${currentPage == 0}" class="disabled">
+                        <span>이전</span>
+                    </li>
+                    <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active' : ''">
+                        <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, page=${pageNum})}" th:text="${pageNum + 1}"></a>
+                    </li>
+                    <li th:if="${currentPage < totalPages - 1}">
+                        <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, page=${currentPage+1})}">다음</a>
+                    </li>
+                    <li th:if="${currentPage == totalPages - 1}" class="disabled">
+                        <span>다음</span>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+
     </main>
 </body>
 </html>

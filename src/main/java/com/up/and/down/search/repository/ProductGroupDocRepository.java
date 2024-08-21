@@ -2,6 +2,8 @@ package com.up.and.down.search.repository;
 
 import com.up.and.down.search.entity.ProductGroupDoc;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.time.LocalDate;
@@ -31,4 +33,19 @@ public interface ProductGroupDocRepository extends ElasticsearchRepository<Produ
     List<ProductGroupDoc> findAllByOrderByViewCountDesc(); // 조회수 순 검색
 
     List<ProductGroupDoc> findTop4ByOrderByViewCountDesc(); // 조회수 순 상위 4개
+
+    // 페이지네이션
+    Page<ProductGroupDoc> findBySearchKeywords(String searchKeyword, Pageable pageable);
+
+    Page<ProductGroupDoc> findByNights(int nights, Pageable pageable);
+
+    Page<ProductGroupDoc> findByStartDateAfter(LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndNights(String searchKeyword, int nights, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndNightsAndStartDateAfter(String searchKeyword, int nights, LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findByNightsAndStartDateAfter(int nights, LocalDate startDate, Pageable pageable);
+
+    Page<ProductGroupDoc> findBySearchKeywordsAndStartDateAfter(String searchKeyword, LocalDate startDate, Pageable pageable);
 }
