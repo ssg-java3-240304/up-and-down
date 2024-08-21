@@ -14,94 +14,99 @@
 </head>
 <body>
     <main layout:fragment="main" class="mt-20">
-        <h1 class="search-word mb-20">검색어</h1>
+        <h1 class="mb-20" th:text="${searchKeywordTitle}">검색어</h1>
         <!--검색창-->
         <div class="search-box">
-            <form action="">
-                <div class="input-field">
-                    <label for="travel-destination">여행지</label>
-                    <input type="text" id="travel-destination" placeholder="여행지입력">
-                </div>
-                <div class="input-field">
-                    <label for="travel-date">출발예정일</label>
-                    <input type="date" id="travel-date">
-                </div>
+            <form th:action="@{/search}" method="get" class="search-frm">
+                <input type="text" name="searchKeyword" id="searchKeyword" placeholder="어디로 떠나고 싶으세요?">
+                <select name="nights" id="nights" class="nights">
+                    <option value="all" selected>전체</option>
+                    <option value="0">당일여행</option>
+                    <option value="1">1박2일</option>
+                    <option value="2">2박3일</option>
+                    <option value="3">3박4일</option>
+                    <option value="4">4박5일</option>
+                    <option value="5">5박6일</option>
+                    <option value="6">6박7일</option>
+                </select>
+                <input type="date" name="startDate" id="start-date">
                 <button type="submit">검색하기</button>
             </form>
         </div>
         <!--정렬-->
         <div class="list-header mt-20 mb-10">
-            <p>검색 결과 <span class="search-count">100</span>개</p>
+            <p>검색 결과 <span th:text="${searchResultCount}">100</span>개</p>
             <div class="sort">
-                <button type="button">인기순</button>
-                <button type="button">고객평점순</button>
+                <a href="#" th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort='viewCount')}"
+                   th:classappend="${searchSort == 'viewCount'} ? 'active' : ''">
+                    조회수순
+                </a>
+                <a href="#" th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort='likeCount')}"
+                   th:classappend="${searchSort == 'likeCount'} ? 'active' : ''">
+                    좋아요순
+                </a>
             </div>
         </div>
 
+
         <!--검색 결과 리스트-->
-        <ul class="search-result-list">
-            <li>
-                <a th:href="@{/product}">
-                    <div class="product-image"></div>
+        <ul th:if="${searchResultCount > 0}" class="search-result-list">
+            <li th:each="productGroup : ${searchResult}">
+                <a th:href="@{product/{id}(id = ${productGroup.getId})}">
+                    <img class="product-image" th:attr="src=${productGroup.representativeImage}" src="" alt="상품 이미지"/>
                     <div class="product-info">
-                        <h2 class="title">패키지 여행 상품 제목</h2>
+                        <h2 class="title" th:text="${productGroup.representativeTitle}">패키지 여행 상품 제목</h2>
                         <div class="info-main">
-                            <p class="description">패키지 여행 상품 설명</p>
+                            <p class="description" th:text="${productGroup.representativeContent}">패키지 여행 상품 설명</p>
                             <div class="price-comparison-group">
-                                <div class="travel-agency">
-                                    <span class="travel-agency-name">인터파크 투어</span>
-                                    <span class="price">75,903원</span>
-                                </div>
-                                <div class="travel-agency">
-                                    <span class="travel-agency-name">인터파크 투어</span>
-                                    <span class="price">775,903원</span>
-                                </div>
-                                <div class="travel-agency">
-                                    <span class="travel-agency-name">인터파크 투어</span>
-                                    <span class="price">775,903원</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rating">
-                            <span class="star">★ </span>
-                            <span class="rating-avg">4.5 </span>
-                            (<span class="rating-count">200</span>)
-                        </p>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/product}">
-                    <div class="product-image"></div>
-                    <div class="product-info">
-                        <div class="badge"></div>
-                        <h2 class="title">패키지 여행 상품 제목</h2>
-                        <div class="info-main">
-                            <p class="description">패키지 여행 상품 설명</p>
-                            <div class="price-compare-group">
-                                <div class="travel-agency">
-                                    <span class="travel-agency-name">인터파크 투어</span>
-                                    <span class="price">75,903원</span>
-                                </div>
-                                <div class="travel-agency">
-                                    <span class="travel-agency-name">인터파크 투어</span>
-                                    <span class="price">775,903원</span>
-                                </div>
-                                <div class="travel-agency">
-                                    <span class="travel-agency-name">인터파크 투어</span>
-                                    <span class="price">775,903원</span>
+                                <div class="travel-agency" th:each="product : ${productGroup.getTop4CheapestProducts}">
+                                    <!-- 텍스트인 경우 -->
+                                    <span class="travel-agency-name"
+                                          th:if="${#strings.startsWith(product.travelAgency, 'http') == false}"
+                                          th:text="${product.travelAgency}">인터파크 투어</span>
+                                    <!-- 이미지 URL인 경우 -->
+                                    <img class="travel-agency-name"
+                                         th:if="${#strings.startsWith(product.travelAgency, 'http') == true}"
+                                         th:src="${product.travelAgency}"
+                                         alt="Travel Agency Logo" />
+                                    <span class="price"><span th:text="${product.getPriceString}">0</span>원</span>
                                 </div>
                             </div>
                         </div>
-                        <p class="rating">
-                            <span class="star">★ </span>
-                            <span class="rating-avg">4.5 </span>
-                            (<span class="rating-count">200</span>)
-                        </p>
                     </div>
                 </a>
             </li>
         </ul>
+
+        <!-- 검색 결과 없을 경우 -->
+        <div th:if="${searchResultCount == 0}" class="notice-box">
+            <h2 class="mb-30">선택하신 조건에 맞는 검색결과가 없습니다.</h2>
+            <p>조건을 변경해 보세요.</p>
+        </div>
+
+        <footer>
+            <!-- 페이지네이션 -->
+            <div class="pagination" th:if="${totalPages > 1}">
+                <ul>
+                    <li th:if="${currentPage > 0}">
+                        <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort=${searchSort}, page=${currentPage - 1})}">이전</a>
+                    </li>
+                    <li th:if="${currentPage == 0}" class="disabled">
+                        <span>이전</span>
+                    </li>
+                    <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active' : ''">
+                        <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort=${searchSort}, page=${pageNum})}" th:text="${pageNum + 1}"></a>
+                    </li>
+                    <li th:if="${currentPage < totalPages - 1}">
+                        <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort=${searchSort}, page=${currentPage+1})}">다음</a>
+                    </li>
+                    <li th:if="${currentPage == totalPages - 1}" class="disabled">
+                        <span>다음</span>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+
     </main>
 </body>
 </html>

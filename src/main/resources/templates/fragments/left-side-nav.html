@@ -10,8 +10,16 @@
 </head>
 <body>
     <aside th:fragment="leftSideNav" class="left-side-nav">
-        <div class="product-category-menu"></div>
-        <div class="ads-box"></div>
+        <div class="theme-menu">
+            <ul>
+                <li th:each="theme : ${themes}">
+                    <a th:href="@{/search/{theme}(theme=${theme.getLowerCase})}" th:text="|${theme.getDisplayName} ${theme.getDisplayKorName}|"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="ads-box">
+            <img src="https://kr.object.ncloudstorage.com/up-bucket/common/ads.png" alt="광고 이미지">
+        </div>
     </aside>
 </body>
 </html>
