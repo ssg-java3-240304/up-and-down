@@ -29,7 +29,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px; /* 채팅방 이름과 카테고리 사이의 간격 */
+    margin-bottom: 20px; /* 채팅방 이름과 카테고리 사이의 간격 */
 }
 
 #chat-header .chat-title {
@@ -93,14 +93,17 @@ body {
 
 .date-separator {
     text-align: center;
-    margin-bottom: 15px;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #555; /* 색상은 필요에 따라 변경 */
+    width: 100%; /* 전체 너비를 차지하도록 설정 */
+    box-sizing: border-box;
 }
 
 .message {
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
 .message .content {
@@ -112,6 +115,26 @@ body {
     border-radius: 5px;
     box-sizing: border-box;
     display: inline-block;
+    white-space: pre;
+}
+
+.sent-message {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.received-message {
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* 시간 스타일 */
+.message .sent-time {
+    font-size: 12px;
+    color: #888;
+    align-items: flex-end; /* 하단에 맞춰서 배치 */
+    gap: 10px; /* 간격 추가 */
+    white-space: nowrap; /* 시간이 여러 줄로 줄바꿈되지 않도록 설정 */
 }
 
 /* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */

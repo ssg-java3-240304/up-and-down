@@ -186,4 +186,23 @@ public class ChatRoomService {
         chatRoom.update(dto); // 채팅방 정보 업데이트
         chatRoomRepository.save(chatRoom); // 업데이트된 정보 저장
     }
+
+    // 채팅방에 입장
+    public void addMemberToChatRoom(Long chatRoomId, Long memberId) {
+        // 채팅방 조회
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다."));
+        // 채팅방 멤버 리스트에 새로운 멤버 추가
+//        if (chatRoom.getMemberIdList().contains(memberId)) {
+//            log.debug("이미 존재하는 memberId = {}", memberId);
+//        } else {
+//            chatRoom.getMemberIdList().add(memberId);
+//            chatRoomRepository.save(chatRoom);
+//            log.debug("채팅방{}에 멤버{} 추가", chatRoomId, memberId);
+//        }
+        chatRoom.getMemberIdList().add(memberId);
+        // 변경된 내용 db에 저장
+        chatRoomRepository.save(chatRoom);
+        log.debug("추가된 멤버id = {}, 해당 채팅방 = {}", memberId, chatRoomId);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "ChatRoom")
@@ -57,5 +58,11 @@ public class ChatRoom {
         this.category = dto.getCategory();
         this.description = dto.getDescription();
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void addMember(Long memberId){
+        if (this.memberIdList == null) {
+            this.memberIdList = new HashSet<>();
+        }
     }
 }

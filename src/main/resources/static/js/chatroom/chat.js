@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let page = 0;
     const size = 50; // 페이지당 메시지 수
     let loadingMessages = false; // 메시지 로딩 상태를 추적
+    let lastMessageDate = null; // lastMessageDate 변수를 정의하고 초기화합니다.
 
     const ws = new SockJS('/app/chat');
     const stompClient = Stomp.over(ws);
@@ -9,14 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     stompClient.connect({}, (frame) => {
         console.log("Connected: ", frame);
 
-        // 3. 채팅방 메시지 구독
+        // 2. 채팅방 메시지 구독
         stompClient.subscribe(`/sub/chat-rooms/${chatRoomId}`, (message) => {
             const data = JSON.parse(message.body);
             console.log('Received message: ', data);
-
-            // ID가 제대로 포함되어 있는지 확인
-            console.log("서버에서 받은 memberId:", data.memberId);
-            console.log("내 memberId:", memberId);
 
             // 메시지를 채팅 창에 추가
             const messagesElement = document.getElementById('messages');
@@ -28,13 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 마지막 메시지 내역 저장
             localStorage.setItem(`lastMessage_${chatRoomId}`, JSON.stringify(data));
-        });
-
-        // member 입장 메시지 구독 신청 (새로운 member가 들어왔을 때)
-        stompClient.subscribe(`/sub/${chatRoomId}/join`, (message) => {
-            const data = JSON.parse(message.body);
-            console.log('Member joined: ', data.nickname);
-            addMemberJoinMessage(data.nickname);
         });
     });
 
@@ -66,26 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // member 입장 시 메시지 추가
-    const addMemberJoinMessage = (nickname) => {
+    // 페이지 로드 시 스크롤을 맨 아래로 이동
+    window.addEventListener('load', () => {
         const messagesElement = document.getElementById('messages');
-        const messageElement = document.createElement('div');
-        messageElement.className = 'member-join-message';
-        messageElement.textContent = `${nickname}님이 들어왔습니다.`;
-        messagesElement.appendChild(messageElement);
-
-        // 스크롤을 맨 아래로 이동
         messagesElement.scrollTop = messagesElement.scrollHeight;
-    };
+    });
 
     // 스크롤 이벤트 리스너 설정
     const messagesElement = document.getElementById('messages');
-    // 새로 고침 시 최신 메시지로 자동 스크롤
-    function scrollToBottom() {
-        messagesElement.scrollTop = messagesElement.scrollHeight;
-    }
-    // 페이지가 로드되면 최신 메시지로 스크롤
-    scrollToBottom();
     messagesElement.addEventListener('scroll', () => {
         if (messagesElement.scrollTop === 0 && !loadingMessages) {
             loadingMessages = true;
@@ -93,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // AJAX 요청을 통해 이전 메시지 로드
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/chat-rooms/${chatRoomId}/messages?page=${page}&size=${size}`, true);
+            xhr.open('GET', `/chat-rooms/${chatRoomId}/messages?page=${page}&size=50`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
 
             xhr.onload = function() {
@@ -121,15 +99,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 메시지 요소를 생성하는 함수
     function createMessageElement(data) {
         const messageElement = document.createElement('div');
         messageElement.className = 'message';
-        // 메시지의 발신자에 따라 위치 설정
+
+        // 메시지 날짜 처리
+        const messageDate = new Date(data.now);
+        const formattedDate = messageDate.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+
+        if (formattedDate !== lastMessageDate) {
+            const dateSeparator = document.createElement('div');
+            dateSeparator.className = 'date-separator';
+
+            const dateParagraph = document.createElement('p');
+            dateParagraph.textContent = `${formattedDate} (${messageDate.toLocaleDateString('ko-KR', { weekday: 'long' })})`;
+
+            dateSeparator.appendChild(dateParagraph);
+            messageElement.appendChild(dateSeparator);
+
+            lastMessageDate = formattedDate;
+        }
+
         if (data.nickname === nickname) {
-            messageElement.classList.add('sent-message'); // 로그인한 사용자의 메시지
+            messageElement.classList.add('sent-message');
         } else {
-            messageElement.classList.add('received-message'); // 다른 사용자의 메시지
+            messageElement.classList.add('received-message');
         }
 
         const nicknameElement = document.createElement('p');
@@ -142,7 +140,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const timeElement = document.createElement('p');
         timeElement.className = 'sent-time';
-
         const utcDate = new Date(data.now);
         timeElement.textContent = utcDate.toLocaleString('ko-KR', {
             hour: '2-digit',

@@ -55,7 +55,7 @@ public class ChatService {
         List<Chat> chatPage = chatRepository.findChatMessageByChatRoomId(chatRoomId, pageable);
         // 로그 추가
         List<ChatDto> chatDtos = chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
-        chatDtos.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
+        chatDtos.forEach(chatDto -> log.debug("모든 채팅 메시지 ChatID: {}", chatDto.getId()));
         return chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
     }
 
@@ -65,7 +65,7 @@ public class ChatService {
         List<Chat> chatList = chatRepository.findLastChatByChatRoomId(chatRoomId, pageable);
         // 로그 추가
         List<ChatDto> chatDtos = chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
-        chatDtos.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
+        chatDtos.forEach(chatDto -> log.debug("최근 메시지 ChatID: {}", chatDto.getId()));
         return chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
     }
 }

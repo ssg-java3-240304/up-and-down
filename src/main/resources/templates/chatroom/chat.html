@@ -7,6 +7,7 @@
     <title>채팅방</title>
 
     <link rel="stylesheet" th:href="@{/css/chatroom/chat.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRsnORm/l4K8/Kl1xACc5n5Un6gfD7p6A/IT2GRkM" crossorigin="anonymous"></script>
 
     <!-- stomp -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -50,17 +51,19 @@
                         <p th:text="${#temporals.format(message.now, 'yyyy년 M월 d일 E요일')}">2024년 7월 30일 화요일</p>
                     </div>
                     <!-- 내가 보냈을 때, 상대방이 보냈을 때 메시지 위치 수정 필요 -->
-                    <div th:if="${message.nickname == nickname}"
-                         th:class="'sent-message message'">
+                    <div th:if="${message.nickname == nickname}" th:class="'sent-message message'">
                         <p class="member-name" th:text="${message.nickname}">닉네임</p>
-                        <div class="content" th:text="${message.message}">메시지 내용</div>
-                        <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
+                        <div class="message-content-time">
+                            <div class="content" th:text="${message.message}">메시지 내용</div>
+                            <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
+                        </div>
                     </div>
-                    <div th:if="${message.nickname != nickname}"
-                         th:class="'received-message message'">
+                    <div th:if="${message.nickname != nickname}" th:class="'received-message message'">
                         <p class="member-name" th:text="${message.nickname}">닉네임</p>
-                        <div class="content" th:text="${message.message}">메시지 내용</div>
-                        <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
+                        <div class="message-content-time">
+                            <div class="content" th:text="${message.message}">메시지 내용</div>
+                            <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
+                        </div>
                     </div>
                 </div>
             </div>

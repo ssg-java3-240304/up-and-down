@@ -2,6 +2,7 @@ package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
+import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.chatroom.service.ChatService;
 import com.up.and.down.user.member.entity.Member;
 import com.up.and.down.user.member.repository.MemberRepository;
@@ -10,10 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
@@ -26,6 +25,7 @@ import java.util.List;
 public class ChatStompController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
     private final MemberRepository memberRepository;
 
     /**
@@ -43,8 +43,11 @@ public class ChatStompController {
         log.debug("chatDto = {}", chatDto);
         log.debug("authentication = {}", authentication);
 
-        // 현재 인증된 사용자 정보 가져오기
+        // 1. 멤버id 가져오기
         Long memberId = ((AuthPrincipal) authentication.getPrincipal()).getUser().getId();
+
+        // 2. 채팅방에 멤버 추가하기
+        chatRoomService.addMemberToChatRoom(chatRoomId, memberId);
 
         // db에서 member조회하기
         Member member = memberRepository.findById(memberId)

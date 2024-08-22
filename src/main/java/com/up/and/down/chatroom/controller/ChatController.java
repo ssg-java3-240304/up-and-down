@@ -36,11 +36,16 @@ public class ChatController {
     public String chat(@PathVariable Long chatRoomId,
                        @AuthenticationPrincipal AuthPrincipal principal,
                        Model model){
-        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatRoomId);
 
         // 사용자 닉네임 가져오기
         Long memberId = principal.getUser().getId();
         String nickname = chatService.getNicknameById(memberId);
+
+        // 2. 채팅방에 멤버 추가하기
+        chatRoomService.addMemberToChatRoom(chatRoomId, memberId);
+        log.debug("채팅방{}에 멤버 추가 = {}", chatRoomId, memberId);
+
+        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatRoomId);
 
         // 최신 메시지 50개 가져오기
         List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatRoomId, 0, 50);
