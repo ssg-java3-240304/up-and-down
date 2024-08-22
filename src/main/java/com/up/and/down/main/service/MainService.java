@@ -16,6 +16,7 @@ public class MainService {
     private final ProductGroupToEntityService productGroupToEntityService;
 
     public List<ProductGroup> findTop4ByOrderByViewCountDesc() {
+        this.repo.findTop4ByOrderByViewCountDesc().forEach(System.out::println);
         return this.repo.findTop4ByOrderByViewCountDesc().stream()
                 .map(this.productGroupToEntityService::toEntity)
                 .collect(Collectors.toList());
