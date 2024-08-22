@@ -8,6 +8,8 @@ import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 
@@ -39,8 +41,19 @@ public class ProductInformation {
     @Column(name = "detail_url", length = 500)
     private String detailUrl; // 상품상세페이지
 
-    // 대표 가격 반환
+    // 가격 반환
     public String getPriceString() {
         return NumberFormat.getInstance().format(this.price);
+    }
+
+    // 상품 설명 반환
+    public String getContent() {
+        return String.format("출발 예정일 [%s]", this.startDate);
+    }
+
+    // 상품 상세 페이지 반환
+    public String getSourceSite() {
+        String url = this.detailUrl;
+        return URLEncoder.encode(url, StandardCharsets.UTF_8);
     }
 }

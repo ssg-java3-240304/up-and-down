@@ -29,7 +29,7 @@ public class SearchService {
                 }
             } else {
                 if (startDate != null && !startDate.isBlank()) {
-                    productGroupDocPage = this.repo.findByNightsOrderByViewCountDesc(Integer.parseInt(nights), pageable);
+                    productGroupDocPage = this.repo.findByNightsAndStartDateAfterOrderByViewCountDesc(Integer.parseInt(nights), LocalDate.parse(startDate), pageable);
                 } else {
                     productGroupDocPage = this.repo.findByNightsOrderByViewCountDesc(Integer.parseInt(nights), pageable);
                 }
@@ -67,7 +67,7 @@ public class SearchService {
                 }
             } else {
                 if (startDate != null && !startDate.isBlank()) {
-                    productGroupDocPage = this.repo.findByNightsOrderByLikeCountDesc(Integer.parseInt(nights), pageable);
+                    productGroupDocPage = this.repo.findByNightsAndStartDateAfterOrderByLikeCountDesc(Integer.parseInt(nights), LocalDate.parse(startDate), pageable);
                 } else {
                     productGroupDocPage = this.repo.findByNightsOrderByLikeCountDesc(Integer.parseInt(nights), pageable);
                 }
