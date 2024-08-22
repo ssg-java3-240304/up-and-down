@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <aside th:fragment="asideFragment">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="height: 100%">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/dashboard}">
+                <div class="sidebar-brand-text mx-3">Up Down</div>
+            </a>
+
+            <!-- Heading -->
+            <div class="sidebar-heading">본사</div>
+
+            <!-- Nav Item - 상품 관리 -->
+            <li class="nav-item" id="sideProduct">
+                <a class="nav-link" th:href="@{/admin/companyInfo}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>정보 관리</span></a>
+            </li>
+
+            <div class="sidebar-heading">관리자</div>
+
+            <!-- Nav Item - 주문 관리 -->
+            <li class="nav-item" id="sideOrder">
+                <a class="nav-link" th:href="@{/admin/accountManagement/adminInfo}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>계정 관리</span></a>
+            </li>
+
+            <div class="sidebar-heading">회원</div>
+
+            <li class="nav-item" id="sideSales">
+                <a class="nav-link" th:href="@{/admin/accountManagement/memberInfo}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>계정 관리</span></a>
+            </li>
+
+            <div class="sidebar-heading">상품</div>
+
+            <!-- Nav Item - 교환 -->
+            <li class="nav-item" id="sideRefund">
+                <a class="nav-link" th:href="@{/admin/refund/refundList}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>상품 관리</span></a>
+            </li>
+
+            <div class="sidebar-heading">커뮤니티</div>
+
+            <!-- Nav Item - 회원관리 -->
+            <li class="nav-item" id="sideUser">
+                <a class="nav-link" th:href="@{/admin/communityManagement}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>커뮤니티 관리</span></a>
+            </li>
+
+            <div class="sidebar-heading">통계</div>
+
+            <!-- Nav Item - 회원관리 -->
+            <li class="nav-item" id="sample">
+                <a class="nav-link" th:href="@{/admin/statistics}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>통계</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <div class="text-center d-none d-md-block" style="margin-top: auto; margin-bottom: 30px">
+                <a class="btn btn-primary" th:href="@{/login/logout}">로그아웃</a>
+            </div>
+        </ul>
+    </aside>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/header-only}">
+<head>
+    <meta charset="UTF-8">
+    <title>registMember</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            /*align-items: center;*/
+            margin-top: 10%;
+            /*height: 100vh;*/
+        }
+        .container {
+            width: 35%;
+            text-align: center;
+        }
+        .step-indicators {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* 왼쪽 정렬 */
+            margin-bottom: 20px;
+        }
+        .step-indicators div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            position: relative;
+        }
+        .step-indicators div.active {
+            border: 2px solid #007bff;
+            background-color: white;
+            color: #007bff;
+            margin-right: 70px;
+        }
+        .step-indicators div.active::after {
+            content: '완료';
+            position: absolute;
+            left: 40px;
+            font-size: 14px;
+            color: black;
+            white-space: nowrap;
+        }
+        .completion-message-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .completion-message {
+            border: 2px solid #007bff;
+            padding: 70px;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .completion-message h2 {
+            color: gray;
+            margin-bottom: 20px;
+        }
+        .completion-message h2 .highlight {
+            color: #007bff;
+        }
+        .completion-message p {
+            margin-bottom: 20px;
+        }
+        .completion-message .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<main layout:fragment="main">
+    <div class="wrapper">
+        <div class="container">
+            <div class="step-indicators">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div class="active">4</div>
+            </div>
+            <div class="completion-message-container">
+                <div class="completion-message">
+                    <h2>회원가입이 <span class="highlight">완료</span> 되었습니다.</h2>
+                    <p>지금 바로 최저가 여행 상품을 확인하실 수 있습니다.</p>
+                    <button class="btn"><a th:href="@{/}">메인페이지</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

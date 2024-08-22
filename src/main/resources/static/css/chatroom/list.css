@@ -1,0 +1,228 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.nav-tabs .nav-link {
+    font-weight: bold;
+    color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+    color: #007bff;
+    border-color: #dee2e6 #dee2e6 #f8f9fa;
+    background-color: #f8f9fa;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-container {
+    display: flex;
+    width: 700px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+    align-items: center;
+}
+
+.search-select {
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    width: 160px;
+}
+
+.search-input {
+    border: none;
+    padding: 10px;
+    flex: 1;
+    font-size: 14px;
+    outline: none;
+    width: 450px;
+}
+
+.search-button {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.category-button {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #495057;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.category-button.active {
+    background-color: #66CDAA;
+    color: #fff;
+    border-color: #66CDAA;
+}
+
+.summary-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.regist-button-container {
+    display: inline-block;
+    padding: 5px;
+    background-color: #66CDAA;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* 중앙 정렬 */
+    transition: box-shadow 0.3s ease;
+}
+
+.create-button {
+    display: inline-block;
+    color: white !important;
+    padding: 5px 9px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.create-button-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.create-button:hover {
+    background-color: inherit;
+    color: white; /* 텍스트 색상 변하지 않도록 설정 */
+}
+
+/* 목록 스타일 */
+.list-container {
+    margin-bottom: 20px;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    gap: 15px;
+}
+
+.list-item-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.list-title {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.list-nickname {
+    font-size: 0.9rem;
+    color: #888;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.list-categories {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.category-badge {
+    background-color: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #495057;
+    margin: 0 5px;
+}
+
+.list-participants {
+    font-size: 14px;
+    color: #495057;
+    white-space: nowrap;
+    font-weight: bold;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* 참여중인 모임이 없을 경우 */
+.no-results {
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    font-size: 18px; /* 텍스트 크기 조절 */
+    color: #555; /* 텍스트 색상 */
+    margin-top: 20px; /* 상단 여백 */
+    padding: 20px; /* 안쪽 여백 */
+    background-color: #f9f9f9; /* 배경 색상 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    border-radius: 5px; /* 테두리 둥글게 */
+}
+
+.pagination .page-link {
+    color: #66CDAA;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #66CDAA;
+    border-color: #66CDAA;
+    color: #fff;
+}
+
+.pagination .page-link:hover {
+    background-color: #4ea889;
+    color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #dee2e6;
+}

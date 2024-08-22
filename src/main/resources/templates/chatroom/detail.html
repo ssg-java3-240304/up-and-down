@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/header-n-side}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <title>Community Detail</title>
+
+    <link rel="stylesheet" th:href="@{/css/chatroom/detail.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+
+    <script layout:fragment="js"></script>
+    <script th:src="@{/js/chatroom/detail.js}"></script>
+</head>
+<body>
+    <main layout:fragment="main" class="mt-20">
+        <!-- 탭 -->
+        <ul class="nav nav-tabs d-flex w-100">
+            <li class="nav-item flex-fill">
+                <a class="nav-link text-center d-flex justify-content-center align-items-center" data-tab="all"
+                   th:classappend="${param.tab == 'all'} ? 'active' : ''"
+                   th:href="@{/chat-rooms/list}">전체</a>
+            </li>
+            <li class="nav-item flex-fill">
+                <a class="nav-link text-center d-flex justify-content-center align-items-center" data-tab="our"
+                   th:classappend="${param.tab == 'our'} ? 'active' : ''"
+                   th:href="@{/chat-rooms/our}">우리모임</a>
+            </li>
+            <li class="nav-item flex-fill">
+                <a class="nav-link text-center d-flex justify-content-center align-items-center" data-tab="mine"
+                   th:classappend="${param.tab == 'mine'} ? 'active' : ''"
+                   th:href="@{/chat-rooms/my}">내모임</a>
+            </li>
+        </ul>
+
+        <!-- 목록 버튼 -->
+        <div class="button-container mt-4 text-end">
+            <a th:href="@{/chat-rooms/list}" class="list-button">목록</a>
+        </div>
+
+        <!-- 제목과 카테고리 -->
+        <div class="header text-center mt-4">
+            <h2 class="mb-0"><strong th:text="${chatRoom.name}">Chat Room Name</strong></h2>
+            <div class="categories mt-2">
+                <span th:each="category: ${chatRoom.category}" class="category-badge" th:text="${category}">Category</span>
+            </div>
+        </div>
+
+        <!-- 날짜, 닉네임, 참여인원수 -->
+        <div class="info-bar mt-4">
+            <!-- 등록일시 -->
+            <p class="create-date mb-0" th:text="${#temporals.format(chatRoom.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Creation Date</p>
+            <div class="user-info text-end">
+                <!-- 닉네임 -->
+                <p class="nickname mb-0" th:text="${chatRoom.nickname}">Nickname</p>
+                <!-- 참여인원수 -->
+                <p class="total-participants mb-0">참여인원수: <span th:text="${chatRoom.memberCount}">0</span> 명</p>
+            </div>
+        </div>
+
+        <!-- 본문내용 -->
+        <div class="details mt-4 p-3 border">
+            <p th:text="${chatRoom.description}">Description</p>
+        </div>
+
+        <!-- 참여하기 버튼 -->
+        <div class="button-container bottom-center">
+            <!-- 채팅방장인 경우 -->
+            <div sec:authorize="isAuthenticated()">
+                <th:block th:if="${chatRoom.isCreator}">
+                    <a th:href="@{/chat-rooms/update/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-update">수정하기</a>
+                </th:block>
+            </div>
+
+            <!-- 채팅방 멤버인 경우 -->
+            <div sec:authorize="isAuthenticated()">
+                <th:block th:if="${chatRoom.isMember}">
+                    <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-chat">채팅방</a>
+                </th:block>
+            </div>
+
+            <!-- 로그인된 경우, 채팅방에 참여하지 않은 경우 -->
+            <div sec:authorize="isAuthenticated()">
+                <th:block th:if="${!chatRoom.isMember && !chatRoom.isCreator}">
+                    <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-join">참여하기</a>
+                </th:block>
+            </div>
+
+            <!-- 비회원일 경우 -->
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/auth/login}" class="btn btn-join">참여하기</a>
+            </div>
+        </div>
+
+        <script>
+            document.querySelector('h1').style.fontSize = '2rem';
+            document.querySelector('h1').style.fontWeight = '700';
+            document.querySelector('body').style.fontFamily = 'Noto Sans KR, sans-serif';
+            document.querySelector('body').style.color = '#252525';
+            document.querySelector('body').style.lineHeight = '1';
+        </script>
+    </main>
+</body>
+</html>

@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    # 저장소의 커밋된 master브랜치 내려받기
+    # 저장소의 커밋된 master브랜치 내려받
     - name : Checkout
       uses: actions/checkout@v3
       with:
@@ -25,17 +25,14 @@ jobs:
     # Gradle 실행 권한 부여
     - name: Grant permission for gradlew
       run: |
-        cd up-down/upProject
         chmod +x ./gradlew || echo "gradlew file not found"
     # Gradle Build (테스트 생략)
     - name: Build with Gradle
       run: |
-        cd up-down/upProject
         ./gradlew clean build -x test
     # 빌드된 jar파일을 도커 이미지로 빌드 및 도커 허브에 발행(푸시)
     - name: Docker build and publish
       run: |
-        cd up-down/upProject
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }} .
         docker push ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
@@ -58,8 +55,28 @@ jobs:
         port: ${{ secrets.NCP_PORT }}
         script: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          sudo docker stop $(sudo docker ps -a -q)
-          sudo docker rm -f $(sudo docker ps -a -q)
+          
+          if [ "$(sudo docker ps -q --filter "name=${{vars.APP_NAME}}")" ]; then
+              sudo docker stop ${{vars.APP_NAME}}
+              sudo docker rm ${{vars.APP_NAME}}
+            fi
+          
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
-          sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
-          sudo docker image prune -f
+          sudo docker run -d -p 8080:8080 \
+            -e "SPRING_PROFILES_ACTIVE=prod" \
+            -e "PROD_DB_URL=${{ secrets.PROD_DB_URL }}" \
+            -e "PROD_DB_USERNAME=${{ secrets.PROD_DB_USERNAME }}" \
+            -e "PROD_DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" \
+            -e "SMS_KEY=${{ secrets.SMS_KEY }}" \
+            -e "SMS_SECRET=${{ secrets.SMS_SECRET }}" \
+            -e "NAVER_KEY=${{ secrets.NAVER_KEY }}" \
+            -e "NAVER_SECRET=${{ secrets.NAVER_SECRET }}" \
+            -e "KAKAO_KEY=${{ secrets.KAKAO_KEY }}" \
+            -e "KAKAO_SECRET=${{ secrets.KAKAO_SECRET }}" \
+            -e "GOOGLE_KEY=${{ secrets.GOOGLE_KEY }}" \
+            -e "GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}" \
+            -e "ELASTIC_USERNAME=${{ secrets.ELASTIC_USERNAME }}" \
+            -e "ELASTIC_PASSWORD=${{ secrets.ELASTIC_PASSWORD }}" \
+            --name ${{ vars.APP_NAME }} \
+            ${{ secrets.DOCKER_USERNAME }}/${{ vars.APP_NAME }}
+            sudo docker image prune -f
