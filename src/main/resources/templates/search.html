@@ -52,22 +52,22 @@
         <!--검색 결과 리스트-->
         <ul th:if="${searchResultCount > 0}" class="search-result-list">
             <li th:each="productGroup : ${searchResult}">
-                <a th:href="@{product/{id}(id = ${productGroup.getId})}">
+                <a th:href="@{/product/{id}(id = ${productGroup.getId})}">
                     <img class="product-image" th:attr="src=${productGroup.cheapestProductImage}" src="" alt="상품 이미지"/>
                     <div class="product-info">
-                        <h2 class="title" th:text="${productGroup.title}">패키지 여행 상품 제목</h2>
+                        <h2 class="title" th:text="${productGroup.getTitle()}">패키지 여행 상품 제목</h2>
                         <div class="info-main">
-                            <p class="description" th:text="${productGroup.content}">패키지 여행 상품 설명</p>
+                            <p class="description" th:text="${productGroup.getContent}">패키지 여행 상품 설명</p>
                             <div class="price-comparison-group">
                                 <div class="travel-agency" th:each="product : ${productGroup.getTop4CheapestProducts}">
                                     <!-- 텍스트인 경우 -->
                                     <span class="travel-agency-name"
-                                          th:if="${#strings.startsWith(product.travelAgency, 'http') == false}"
-                                          th:text="${product.travelAgency}"></span>
+                                          th:if="${#strings.startsWith(product.getTravelAgency, 'http') == false}"
+                                          th:text="${product.getTravelAgency}"></span>
                                     <!-- 이미지 URL인 경우 -->
                                     <img class="travel-agency-name"
-                                         th:if="${#strings.startsWith(product.travelAgency, 'http') == true}"
-                                         th:src="${product.travelAgency}"
+                                         th:if="${#strings.startsWith(product.getTravelAgency, 'http') == true}"
+                                         th:src="${product.getTravelAgency}"
                                          alt="Travel Agency Logo" />
                                     <span class="price"><span th:text="${product.getPriceString}">0</span>원</span>
                                 </div>

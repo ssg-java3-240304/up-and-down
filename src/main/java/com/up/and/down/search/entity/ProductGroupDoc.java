@@ -1,11 +1,6 @@
 package com.up.and.down.search.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.up.and.down.product.entity.Destination;
-import com.up.and.down.product.entity.ProductGroup;
-import com.up.and.down.product.entity.ProductInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.util.Map;
 
 //@Document(indexName = "product_group")
 @Data
