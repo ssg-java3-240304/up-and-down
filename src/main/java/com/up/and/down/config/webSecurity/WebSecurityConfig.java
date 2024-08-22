@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**", "/scss/**", "/vendor/**");
+        return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/scss/**", "/vendor/**");
     }
 
     @Bean
@@ -31,7 +31,6 @@ public class WebSecurityConfig {
          */
         http.authorizeHttpRequests((registry) -> {
             registry
-//                    .requestMatchers("/**").permitAll() // 누구나 허용
                     .requestMatchers(
                             "/",
                             "/search/**",
@@ -45,8 +44,6 @@ public class WebSecurityConfig {
                             "/admin/dashboard"
                     ).permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
-//                    .requestMatchers("/admin/**", "/stomp/**").authenticated() // 인증된 사용자만 허용 - 실제 적용
-                    .requestMatchers("/admin/**").authenticated() // 인증된 사용자만 허용
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
         });
