@@ -67,7 +67,7 @@ public class SearchController {
 
     @GetMapping("/{theme}")
     public String searchByTheme(
-            @PathVariable("theme") String theme,
+            @PathVariable String theme,
             @RequestParam(defaultValue = "viewCount") String searchSort,
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             Model model

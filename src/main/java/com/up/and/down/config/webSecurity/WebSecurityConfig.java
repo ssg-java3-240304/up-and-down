@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                     .requestMatchers(
                             "/",
                             "/search/**",
-                            "/product",
+                            "/product/**",
                             "/chat-rooms/chat",
                             "/chat/**",
                             "/api/public",

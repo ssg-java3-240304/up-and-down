@@ -14,242 +14,86 @@
 </head>
 <body>
     <main layout:fragment="main" class="mt-20">
-        <!-- 상품이미지 -->
-        <div class="product-image"></div>
-        <!-- 상품배지 -->
-        <div class="badge">
-            <p>바다</p>
-            <p>힐링</p>
-        </div>
-        <!-- 상품제목 -->
-        <h1 class="title">패키지 여행 상품 제목</h1>
-        <!-- 상품설명 -->
-        <p class="description">패키지 여행 상품 설명</p>
-        <div class="action">
-            <!-- 좋아요 -->
-            <button type="button">
-                <img th:src="@{/images/product/heart-outline.png}" alt="좋아요 버튼">
-            </button>
-            <!-- 공유하기 -->
-            <button type="button">
-                <img th:src="@{/images/product/share.png}" alt="공유 버튼">
-            </button>
-        </div>
-        <div class="price-box">
-            <span class="price">942,990원</span>
-            <a href="" class="source-site-btn">최저가 구매하기</a>
-        </div>
-        <!-- 탭 리스트 -->
-        <ul class="tab-list">
-            <li class="on">
-                <a href="#price-compare-area">가격비교</a>
-            </li>
-            <li>
-                <a href="#comment-area">상품의견</a>
-            </li>
-            <li>
-                <a href="#related-product-area">연관상품</a>
-            </li>
-        </ul>
-        <!-- 가격비교 -->
-        <ul class="price-compare" id="price-compare-area">
-            <li class="travel-agency">
-                <div class="logo"></div>
-                <div class="info">
-                    <h2><span class="price">942,990</span>원</h2>
-                    <p class="title">패키지 여행 상품 제목</p>
-                    <p class="description">패키지 여행 상품 설명</p>
-                </div>
-                <a href="" class="source-site-btn">구매하기</a>
-            </li>
-            <li class="travel-agency">
-                <div class="logo"></div>
-                <div class="info">
-                    <h2><span class="price">942,990</span>원</h2>
-                    <p class="title">패키지 여행 상품 제목</p>
-                    <p class="description">패키지 여행 상품 설명</p>
-                </div>
-                <a href="" class="source-site-btn">구매하기</a>
-            </li>
-            <li class="travel-agency">
-                <div class="logo"></div>
-                <div class="info">
-                    <h2><span class="price">942,990</span>원</h2>
-                    <p class="title">패키지 여행 상품 제목</p>
-                    <p class="description">패키지 여행 상품 설명</p>
-                </div>
-                <a href="" class="source-site-btn">구매하기</a>
-            </li>
-            <li class="travel-agency">
-                <div class="logo"></div>
-                <div class="info">
-                    <h2><span class="price">942,990</span>원</h2>
-                    <p class="title">패키지 여행 상품 제목</p>
-                    <p class="description">패키지 여행 상품 설명</p>
-                </div>
-                <a href="" class="source-site-btn">구매하기</a>
-            </li>
-        </ul>
-        <!-- 상품의견 -->
-        <div class="comment-area" id="comment-area">
-            <h1>상품의견</h1>
-            <!-- 댓글 작성란 -->
-            <form action="" class="comment-input">
-                <div class="profile-image"></div>
-                <div class="input-field">
-                    <p class="star">★ ★ ★ ★ ★</p>
-                    <input type="text" placeholder="이상품에 대해 자유롭게 의견을 나눠주세요.">
-                    <div class="button-group">
-                        <button type="button">취소</button>
-                        <button type="submit">등록</button>
-                    </div>
-                </div>
-            </form>
-            <!-- 정렬 및 필터 -->
-            <div class="sort-filter-group">
-                <div class="sort-group">
-                    <button type="button">최신순</button>
-                    <button type="button">인기순</button>
-                </div>
-                <form action="" class="filter">
-                    <input type="text" placeholder="상품의견 내 검색">
-                    <button type="submit">
-                        <img th:src="@{/images/product/reading-glasses.png}" alt="돋보기">
-                    </button>
-                </form>
+        <!-- productGroup 이 null 아닌 경우 상품 데이터 노출 -->
+        <div th:if="${productGroup != null}">
+            <!-- 상품이미지 -->
+            <div class="product-image">
+                <img th:src="${productGroup.getRepresentativeImage}" alt="상품 이미지">
             </div>
-            <!-- 댓글목록 -->
-            <ul class="comment-list">
-                <!-- 댓글 -->
-                <li class="comment">
-                    <div class="profile-image"></div>
-                    <div class="content-group">
-                        <div class="content-top">
-                            <span class="nickname">글쓴이</span>
-                            <span class="star">★ ★ ★ ★ ★</span>
-                            <span class="create-date">2024.07.17 12:41:12</span>
-                        </div>
-                        <p class="content">
-                          안녕하세요 램에 대해 질문좀 드릴게요. 제가 앞전에 이 램을 한개 사서 꼈거든요.
-                        </p>
-                        <div class="content-bottom">
-                            <button type="button">답글</button>
-                        </div>
-                    </div>
-                    <button type="button" class="kebab-menu-icon">
-                        <img th:src="@{/images/product/kebab-menu-icon.png}" alt="케밥 아이콘">
-                    </button>
+            <!-- 상품배지 -->
+            <div class="badge">
+                <p>바다</p>
+                <p>힐링</p>
+            </div>
+            <!-- 상품제목 -->
+            <h1 class="title">패키지 여행 상품 제목</h1>
+            <!-- 상품설명 -->
+            <p class="description">패키지 여행 상품 설명</p>
+            <div class="action">
+                <!-- 좋아요 -->
+                <button type="button">
+                    <img th:src="@{/images/product/heart-outline.png}" alt="좋아요 버튼">
+                </button>
+                <!-- 공유하기 -->
+                <button type="button">
+                    <img th:src="@{/images/product/share.png}" alt="공유 버튼">
+                </button>
+            </div>
+            <div class="price-box">
+                <span class="price">942,990원</span>
+                <a href="" class="source-site-btn">최저가 구매하기</a>
+            </div>
+            <!-- 탭 리스트 -->
+            <ul class="tab-list">
+                <li class="on">
+                    <a href="#price-compare-area">가격비교</a>
                 </li>
-                <!-- 답글 -->
-                <li class="reply">
-                    <img th:src="@{/images/product/reply-icon.png}" alt="답글 아이콘">
-                    <div class="comment">
-                        <div class="profile-image"></div>
-                        <div class="content-group">
-                            <div class="content-top">
-                                <span class="nickname">글쓴이</span>
-                                <span class="create-date">2024.07.17 12:41:12</span>
-                            </div>
-                            <p class="content">
-                                안녕하세요 램에 대해 질문좀 드릴게요. 제가 앞전에 이 램을 한개 사서 꼈거든요.
-                            </p>
-                        </div>
-                        <button type="button" class="kebab-menu-icon">
-                            <img th:src="@{/images/product/kebab-menu-icon.png}" alt="케밥 아이콘">
-                        </button>
-                    </div>
-                </li>
-                <li class="comment">
-                    <div class="profile-image"></div>
-                    <div class="content-group">
-                        <div class="content-top">
-                            <span class="nickname">글쓴이</span>
-                            <span class="star">★ ★ ★ ★ ★</span>
-                            <span class="create-date">2024.07.17 12:41:12</span>
-                        </div>
-                        <p class="content">
-                            안녕하세요 램에 대해 질문좀 드릴게요. 제가 앞전에 이 램을 한개 사서 꼈거든요.
-                        </p>
-                        <div class="content-bottom">
-                            <button type="button">답글</button>
-                        </div>
-                    </div>
-                    <button type="button" class="kebab-menu-icon">
-                        <img th:src="@{/images/product/kebab-menu-icon.png}" alt="케밥 아이콘">
-                    </button>
-                </li>
-                <!-- 답글 작성란 -->
                 <li>
-                    <form action="" class="reply-input">
-                        <img th:src="@{/images/product/reply-icon.png}" alt="답글 아이콘">
-                        <div class="comment-input">
-                            <div class="profile-image"></div>
-                            <div class="input-field">
-                                <input type="text" placeholder="이 제품을 사용해 보셨나요? 이 제품에 대해 굼금한 점이 있나요?">
-                                <div class="button-group">
-                                    <button type="button">취소</button>
-                                    <button type="submit">등록</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <a href="#related-product-area">연관상품</a>
                 </li>
             </ul>
-        </div>
-        <!-- 연관상품 -->
-        <div class="related-product" id="related-product-area">
-            <h1>연관상품</h1>
-            <div class="relation-section">
-                <p class="title">다른 고객이 함께 본 상품</p>
-                <div class="product-group">
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
+            <!-- 가격비교 -->
+            <ul class="price-compare" id="price-compare-area">
+                <li class="travel-agency">
+                    <div class="logo"></div>
+                    <div class="info">
+                        <h2><span class="price">0</span>원</h2>
+                        <p class="title">패키지 여행 상품 제목</p>
+                        <p class="description">패키지 여행 상품 설명</p>
                     </div>
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
-                    </div>
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
-                    </div>
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
+                    <a href="" class="source-site-btn">구매하기</a>
+                </li>
+            </ul>
+            <!-- 연관상품 -->
+            <div class="related-product" id="related-product-area">
+                <h1>연관상품</h1>
+                <div class="relation-section">
+                    <p class="title">다른 고객이 함께 본 상품</p>
+                    <div class="product-group">
+                        <div class="product">
+                            <div class="product-image"></div>
+                            <p class="title">패키지 여행 상품 목록</p>
+                            <p class="price">0원</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="relation-section">
-                <p class="title">카테고리 인기 상품</p>
-                <div class="product-group">
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
-                    </div>
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
-                    </div>
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
-                    </div>
-                    <div class="product">
-                        <div class="product-image"></div>
-                        <p class="title">패키지 여행 상품 목록</p>
-                        <p class="price">38,720원</p>
+                <div class="relation-section">
+                    <p class="title">카테고리 인기 상품</p>
+                    <div class="product-group">
+                        <div class="product">
+                            <div class="product-image"></div>
+                            <p class="title">패키지 여행 상품 목록</p>
+                            <p class="price">0원</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- productGroup 이 null 경우 이전 화면으로 이동 -->
+        <script th:if="${productGroup == null}">
+            alert('상품 정보를 불러오지 못했습니다.');
+            window.history.back();
+        </script>
     </main>
 </body>
 </html>

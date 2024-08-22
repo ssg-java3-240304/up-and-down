@@ -70,10 +70,15 @@ main .most-searched .product-group {
 main .most-searched .product-group .product {
     width: 300px;
 }
-main .most-searched .product-group .product img {
+main .most-searched .product-group .product .product-image {
     width: 300px; height: 300px;
-    background-size: cover;
+    border-radius: 10px;
     margin-bottom: 10px;
+    overflow: hidden;
+}
+main .most-searched .product-group .product img {
+    width: 100%; height: 100%;
+    object-fit: cover;
 }
 main .most-searched .product-group p {
     margin-bottom: 10px;
