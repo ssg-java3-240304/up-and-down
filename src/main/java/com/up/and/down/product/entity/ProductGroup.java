@@ -3,12 +3,11 @@ package com.up.and.down.product.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -62,13 +61,13 @@ public class ProductGroup {
                 .orElseThrow(() -> new NoSuchElementException("No products found in the product list"));
     }
 
-    // 대표 이미지 반환
-    public String getRepresentativeImage() {
+    // 가장 저렴한 객체 이미지 반환
+    public String getCheapestProductImage() {
         return getCheapestProduct().getThumbnailUrl();
     }
 
-    // 대표 제목 반환
-    public String getRepresentativeTitle() {
+    // 제목 반환
+    public String getTitle() {
         if (this.nights == 0) {
             return String.format("%s 당일여행", this.destination.getKorName());
         } else {
@@ -76,14 +75,27 @@ public class ProductGroup {
         }
     }
 
-    // 대표 내용 반환
-    public String getRepresentativeContent() {
+    // 내용 반환
+    public String getContent() {
         return String.format("출발 예정일 [%s]", this.startDate);
     }
 
-    // 대표 가격 반환
-    public String getRepresentativePrice() {
+    // 가장 저렴한 객체 이미지 가격 반환
+    public String getCheapestProductPrice() {
         return NumberFormat.getInstance().format(getCheapestProduct().getPrice());
+    }
+
+    // 가장 저렴한 객체 사이트 반환
+    public String getCheapestProductSourceSite() {
+        String url = getCheapestProduct().getDetailUrl();
+        return URLEncoder.encode(url, StandardCharsets.UTF_8);
+    }
+
+    // 상품 목록 반환 - 가격이 싼 순서로
+    public Collection<ProductInformation> getProductInformationList() {
+        return this.productList.values().stream()
+                .sorted(Comparator.comparing(ProductInformation::getPrice))
+                .collect(Collectors.toList());
     }
 
     // 저렴한 순으로 4개의 ProductInformation 반환

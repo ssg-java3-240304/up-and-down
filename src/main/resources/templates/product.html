@@ -18,30 +18,31 @@
         <div th:if="${productGroup != null}">
             <!-- 상품이미지 -->
             <div class="product-image">
-                <img th:src="${productGroup.getRepresentativeImage}" alt="상품 이미지">
+                <img th:src="${productGroup.cheapestProductImage}" alt="상품 이미지">
             </div>
             <!-- 상품배지 -->
-            <div class="badge">
-                <p>바다</p>
-                <p>힐링</p>
-            </div>
+            <ul class="badge">
+                <li th:each="badge : ${productGroup.getSearchKeywords.getKeywordSet}">
+                    <p th:text="${badge}"></p>
+                </li>
+            </ul>
             <!-- 상품제목 -->
-            <h1 class="title">패키지 여행 상품 제목</h1>
+            <h1 class="title" th:text="${productGroup.getTitle()}">패키지 여행 상품 제목</h1>
             <!-- 상품설명 -->
-            <p class="description">패키지 여행 상품 설명</p>
+            <p class="description" th:text="${productGroup.getContent}">패키지 여행 상품 설명</p>
             <div class="action">
                 <!-- 좋아요 -->
                 <button type="button">
-                    <img th:src="@{/images/product/heart-outline.png}" alt="좋아요 버튼">
+                    <img src="https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png" alt="좋아요 버튼">
                 </button>
                 <!-- 공유하기 -->
                 <button type="button">
-                    <img th:src="@{/images/product/share.png}" alt="공유 버튼">
+                    <img src="https://kr.object.ncloudstorage.com/up-bucket/product/share.png" alt="공유 버튼">
                 </button>
             </div>
             <div class="price-box">
-                <span class="price">942,990원</span>
-                <a href="" class="source-site-btn">최저가 구매하기</a>
+                <span class="price"><span th:text="${productGroup.getCheapestProductPrice()}">0</span>원</span>
+                <a th:href="@{|/product/source?redirectUrl=${productGroup.getCheapestProductSourceSite}|}" class="source-site-btn">최저가 구매하기</a>
             </div>
             <!-- 탭 리스트 -->
             <ul class="tab-list">
@@ -54,14 +55,24 @@
             </ul>
             <!-- 가격비교 -->
             <ul class="price-compare" id="price-compare-area">
-                <li class="travel-agency">
-                    <div class="logo"></div>
-                    <div class="info">
-                        <h2><span class="price">0</span>원</h2>
-                        <p class="title">패키지 여행 상품 제목</p>
-                        <p class="description">패키지 여행 상품 설명</p>
+                <li th:each="productInformation : ${productGroup.getProductInformationList}" class="travel-agency">
+                    <div class="logo">
+                        <!-- 텍스트인 경우 -->
+                        <p class="travel-agency-name"
+                              th:if="${#strings.startsWith(productInformation.travelAgency, 'http') == false}"
+                              th:text="${productInformation.travelAgency}"></p>
+                        <!-- 이미지 URL인 경우 -->
+                        <img class="travel-agency-name"
+                             th:if="${#strings.startsWith(productInformation.travelAgency, 'http') == true}"
+                             th:src="${productInformation.travelAgency}"
+                             alt="Travel Agency Logo"/>
                     </div>
-                    <a href="" class="source-site-btn">구매하기</a>
+                    <div class="info">
+                        <h2><span class="price" th:text="${productInformation.getPriceString}">0</span>원</h2>
+                        <p class="title" th:text="${productInformation.getTitle}">패키지 여행 상품 제목</p>
+                        <p class="description" th:text="${productInformation.getContent}">패키지 여행 상품 설명</p>
+                    </div>
+                    <a th:href="@{|/product/source?redirectUrl=${productInformation.getSourceSite}|}" class="source-site-btn">구매하기</a>
                 </li>
             </ul>
             <!-- 연관상품 -->
@@ -69,23 +80,31 @@
                 <h1>연관상품</h1>
                 <div class="relation-section">
                     <p class="title">다른 고객이 함께 본 상품</p>
-                    <div class="product-group">
-                        <div class="product">
-                            <div class="product-image"></div>
-                            <p class="title">패키지 여행 상품 목록</p>
-                            <p class="price">0원</p>
-                        </div>
-                    </div>
+                    <ul class="product-group">
+                        <li th:each="productGroup : ${relatedProductGroups}" class="product">
+                            <a th:href="@{/product/{id}(id = ${productGroup.getId})}">
+                                <div class="product-image">
+                                    <img th:src="${productGroup.getCheapestProductImage()}" alt="상품 이미지">
+                                </div>
+                                <p class="title" th:text="${productGroup.getTitle()}">패키지 여행 상품 목록</p>
+                                <p class="price"><span th:text="${productGroup.getCheapestProductPrice()}">0</span>원</p>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
                 <div class="relation-section">
                     <p class="title">카테고리 인기 상품</p>
-                    <div class="product-group">
-                        <div class="product">
-                            <div class="product-image"></div>
-                            <p class="title">패키지 여행 상품 목록</p>
-                            <p class="price">0원</p>
-                        </div>
-                    </div>
+                    <ul class="product-group">
+                        <li th:each="productGroup : ${popularProductGroups}" class="product">
+                            <a th:href="@{/product/{id}(id = ${productGroup.getId})}">
+                                <div class="product-image">
+                                    <img th:src="${productGroup.getCheapestProductImage()}" alt="상품 이미지">
+                                </div>
+                                <p class="title" th:text="${productGroup.getTitle()}">패키지 여행 상품 목록</p>
+                                <p class="price"><span th:text="${productGroup.getCheapestProductPrice()}">0</span>원</p>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

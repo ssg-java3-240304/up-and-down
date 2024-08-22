@@ -1,11 +1,11 @@
 /* 상품이미지 */
-main div > .product-image {
+main > div > .product-image {
     width: 100%; height: 400px;
     border-radius: 10px;
     background-color: #D9D9D9;
     overflow: hidden;
 }
-main div > .product-image img {
+main > div > .product-image img {
     width: 100%; height: 100%;
     object-fit: cover;
 }
@@ -13,6 +13,9 @@ main div > .product-image img {
 .badge {
     margin: 20px;
     font-size: 0;
+
+    display: flex;
+    gap: 10px;
 }
 .badge p {
     display: inline-block;
@@ -20,16 +23,15 @@ main div > .product-image img {
     padding: 5px;
     border: 1px solid #808080;
     border-radius: 10px;
-    margin-right: 10px;
     font-size: 16px;
     color: #808080;
 }
 /* 상품제목 */
-main div > .title {
+main > div > .title {
     margin: 20px;
 }
 /* 상품설명 */
-main div > .description {
+main > div > .description {
     margin: 20px;
     color: #808080;
 }
@@ -48,6 +50,7 @@ main div > .description {
     margin: 20px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 20px;
 }
 .price-box .price {
@@ -85,6 +88,9 @@ main div > .description {
     color: #265AB4;
 }
 /* 가격비교 */
+.price-compare {
+    margin-bottom: 50px;
+}
 .travel-agency {
     box-sizing: border-box;
     width: 100%;
@@ -97,7 +103,15 @@ main div > .description {
     width: 100px; height: 100px;
     border-radius: 10px;
     margin-right: 10px;
-    background-color: #D9D9D9;
+}
+.travel-agency .logo p.travel-agency-name {
+    width: 100%; height: 100%;
+    text-align: center;
+    line-height: 50px;
+}
+.travel-agency .logo img.travel-agency-name {
+    width: 100%; height: 100%;
+    object-fit: contain;
 }
 .travel-agency .info {
     box-sizing: border-box;
@@ -109,7 +123,7 @@ main div > .description {
     justify-content: space-between;
 }
 .travel-agency .info .title {
-    font-size: 24px;
+    font-weight: 700; font-size: 16px;
 }
 .travel-agency .info .description {
     font-size: 16px;
@@ -122,6 +136,14 @@ main div > .description {
     color: #fff;
 }
 /* 연관상품 */
+.related-product {
+    margin-bottom: 50px;
+}
+.related-product h1 {
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #808080;
+}
 .relation-section {
     box-sizing: border-box;
     padding: 20px 0;
@@ -141,10 +163,15 @@ main div > .description {
     width: 200px; height: 200px;
     margin-bottom: 10px;
     border-radius: 10px;
-    background-color: #D9D9D9;
+    overflow: hidden;
+}
+.relation-section .product-group .product .product-image img {
+    width: 100%; height: 100%;
+    object-fit: contain;
 }
 .relation-section .product-group .product .title {
     margin-bottom: 10px;
+    font-weight: 700;
 }
 .relation-section .product-group .product .price {
     float: right;
