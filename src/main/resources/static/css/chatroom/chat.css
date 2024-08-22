@@ -1,221 +1,152 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background-color: #f7f7f7;
-}
-
-#chat-container {
-    width: 90%;
-    max-width:1300px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* 채팅방 */
+.chat-box {
     box-sizing: border-box;
-}
+    height: calc(100vh - 100px);
+    border: 1px solid #808080;
+    border-top: none;
 
-#chat-header {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    background-color: #ffffff;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-/* 채팅방 이름과 참여 인원수를 한 줄로 배치 */
-#chat-header .header-top {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+}
+/* 채팅방 - 헤더 */
+.chat-box .content-header {
+    box-sizing: border-box;
+    padding: 20px;
+}
+/* 헤더 - 상단 */
+.chat-box .content-header .header-top {
+    margin-bottom: 10px;
+
+    display: flex;
     justify-content: center;
-    margin-bottom: 20px; /* 채팅방 이름과 카테고리 사이의 간격 */
-}
-
-#chat-header .chat-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-}
-
-#chat-header .members-num {
-    font-size: 16px;
-    color: #777;
-    margin-left: 10px;
-}
-
-/* 카테고리를 채팅방 이름 아래에 배치 */
-#categories {
-    display: flex;
-    justify-content: center; /* 카테고리를 중앙에 배치 */
-    margin-top: 10px;
-}
-
-#categories ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
+    align-items: center;
     gap: 10px;
 }
-
-.category-label {
+/* 채팅방 인원수 */
+.chat-box .content-header .header-top .current-room-member {
+    font-weight: 700;
+    color: #808080;
+}
+/* 헤더 - 카테고리 */
+.chat-box .content-header .chat-category-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.chat-box .content-header .chat-category-box .chat-category-badge {
+    display: inline-block;
     padding: 5px 10px;
-    background-color: #E0E0E0;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-}
-
-.category-label:hover {
-    background-color: #C0C0C0;
-}
-
-.chat-box {
-    width: 100%;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    height: 730px;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-
-.parent-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.date-separator {
-    text-align: center;
-    margin: 10px 0;
-    font-weight: bold;
-    color: #555; /* 색상은 필요에 따라 변경 */
-    width: 100%; /* 전체 너비를 차지하도록 설정 */
-    box-sizing: border-box;
-}
-
-.message {
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-.message .content {
-    margin-top: 5px;
-    max-width: 70%;
-    word-wrap: break-word;
-    background-color: #f1f1f1;
-    padding: 10px;
-    border-radius: 5px;
-    box-sizing: border-box;
-    display: inline-block;
-    white-space: pre;
-}
-
-.sent-message {
-    align-items: flex-end;
-    text-align: right;
-}
-
-.received-message {
-    align-items: flex-start;
-    text-align: left;
-}
-
-/* 시간 스타일 */
-.message .sent-time {
-    font-size: 12px;
-    color: #888;
-    align-items: flex-end; /* 하단에 맞춰서 배치 */
-    gap: 10px; /* 간격 추가 */
-    white-space: nowrap; /* 시간이 여러 줄로 줄바꿈되지 않도록 설정 */
-}
-
-/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
-.sent-message .content {
-    background-color: #66CDAA; !important; /* 메시지의 배경색을 밝게 설정 */
-    color: white;
-}
-
-/* 메시지의 실제 배경색을 설정하는 .content의 배경색을 사용 */
-.message.received-message .content {
-    background-color: #f1f1f1; !important; /* 메시지의 배경색을 밝게 설정 */
-}
-
-/* 입장 메시지 스타일 추가 */
-.member-join-message {
-    font-style: italic;
-    color: #888;
-    text-align: center;
-    margin: 10px 0;
-}
-
-.message .member-name {
-    font-weight: bold;
-}
-
-.message .sent-time {
-    font-size: 12px;
-    color: #888;
-}
-
-.chat-input {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-    box-sizing: border-box;
-    width: 100%;
-}
-
-#message-input {
-    flex: 1;
-    min-height: 30px;
-    max-height: 100px;
-    overflow-y: auto;
-    padding: 10px;
-    box-sizing: border-box;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
-    background-color: #f9f9f9;
-    color: black;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    margin-right: 10px;
-    box-sizing: border-box;
-}
-
-.chat-input button {
-    width: 35px; /* 크기 조정 */
-    height: 35px; /* 크기 조정 */
+    border-radius: 13px;
     background-color: #D9D9D9;
-    border-radius: 50%;
+}
+/* 채팅방 - 컨텐츠 */
+.chat-box .content-body {
+    flex: 1;
+    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+    padding: 20px;
+}
+/* 채팅방 기록 */
+.chat-box .content-body .chat-log-box {
+    height: 100%;
+
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
-    cursor: pointer;
-    border: none;
-    position: relative;
-    color: #D9D9D9;
 }
-
-.chat-input button::before {
-    content: '\279C';
-    font-size: 20px;
-    color: #777;
+/* 채팅방 날짜 표시 */
+.chat-box .content-body .chat-log-box .date-notice {
+    height: 50px;
 }
+.chat-box .content-body .chat-log-box .date-notice span {
+    padding: 5px 20px;
+    border-radius: 16px;
+    background-color: #D9D9D9;
+    line-height: 50px;
+}
+/* 채팅방 입장 표시 */
+.chat-box .content-body .chat-log-box .enter-member {
+    height: 50px;
+}
+.chat-box .content-body .chat-log-box .enter-member span {
+    padding: 5px 20px;
+    border-radius: 16px;
+    background-color: #D9D9D9;
+    line-height: 50px;
+}
+/* 채팅 */
+.chat-box .content-body .chat-log-box .chat {
+    width: 100%;
 
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+/* 채팅 상단 */
+.chat-box .content-body .chat-log-box .chat .chat-top {
+    display: flex;
+    align-items: flex-end;
+}
+/* 채팅 사용자 이름 */
+.chat-box .content-body .chat-log-box .chat .username {
+    padding: 0 10px;
+    font-weight: 700; font-size: 18px;
+}
+/* 채팅 내용 */
+.chat-box .content-body .chat-log-box .chat .chat-content {
+    padding: 10px;
+    border-radius: 10px;
+}
+/* 채팅 시간 */
+.chat-box .content-body .chat-log-box .chat .chat-time {
+    font-size: 14px;
+    color: #808080;
+}
+/* 채팅:자신 */
+.chat-box .content-body .chat-log-box .chat.mine {
+    align-items: flex-end;
+}
+/* 채팅:자신 상단 */
+.chat-box .content-body .chat-log-box .chat.mine .chat-top {
+    flex-direction: row-reverse;
+}
+/* 채팅:자신 내용 */
+.chat-box .content-body .chat-log-box .chat.mine .chat-content {
+    background-color: #66CDAA;
+    color: #fff;
+}
+/* 채팅:상대 */
+.chat-box .content-body .chat-log-box .chat.other {
+    align-items: flex-start;
+}
+/* 채팅:상대 내용 */
+.chat-box .content-body .chat-log-box .chat.other .chat-content {
+    background-color: #D9D9D9;
+}
+/* 채팅방 - 푸터 */
+.chat-box .content-footer {
+    padding: 20px;
+}
+/* 채팅 입력폼 */
+.chat-box .content-footer .chat-input-field {
+    display: flex;
+    gap: 20px;
+}
+/* 채팅 입력란 */
+.chat-box .content-footer .chat-input-field input {
+    flex: 1;
+    padding: 10px 20px;
+    border-radius: 25px;
+}
+/* 채팅 제출 버튼 */
+.chat-box .content-footer .chat-input-field .submit-btn {
+    box-sizing: border-box;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+
+    background-color: #D9D9D9;
+}
+.chat-box .content-footer .chat-input-field .submit-btn img {
+    width: 30px; height: 30px;
+}

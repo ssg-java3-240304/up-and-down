@@ -27,13 +27,15 @@
     <script th:src="@{/js/chatroom/chat.js}"></script>
 </head>
 <body>
-    <main layout:fragment="main" class="mt-20">
+    <main layout:fragment="main">
         <div class="chat-box">
-            <header>
+            <header class="content-header">
+                <!-- 제목 -->
                 <div class="header-top">
-                    <h1 class="title">채팅방 이름</h1>
+                    <h1>채팅방 이름</h1>
                     <p class="current-room-member">(25)</p>
                 </div>
+                <!-- 카테고리 -->
                 <ul class="chat-category-box">
                     <li class="chat-category-badge">바다</li>
                     <li class="chat-category-badge">힐링</li>
@@ -41,81 +43,42 @@
             </header>
             <div class="content-body">
                 <ul class="chat-log-box">
-                    <li class="chat-log date-notice">
+                    <!-- 채팅 날짜 표시 -->
+                    <li class="date-notice">
                         <span>2024년 7월 30일 화요일</span>
                     </li>
-                    <li class="chat-log enter-member">
+                    <!-- 입장 표시 -->
+                    <li class="enter-member">
                         <span>ㅇㅇ 님이 들어왔습니다</span>
                     </li>
-                    <li class="chat-log chat mine">
-                        <p class="username">사용자</p>
+                    <!-- 채팅:자신 -->
+                    <li class="chat mine">
+                        <div class="chat-top">
+                            <p class="username">사용자</p>
+                            <p class="chat-time">21:01:01</p>
+                        </div>
                         <p class="chat-content">여기에 그래도 내용이 많이 들어가면 봐줄만할걸? 그리고 이거 너무 넓어</p>
-                        <p class="chat-time">21:01:01</p>
                     </li>
-                    <li class="chat-log chat other">
-                        <p class="username">다른 사용자</p>
+                    <!-- 채팅:상대 -->
+                    <li class="chat other">
+                        <div class="chat-top">
+                            <p class="username">다른 사용자</p>
+                            <p class="chat-time">21:01:01</p>
+                        </div>
                         <p class="chat-content">다른 내용이 들어올 예정입니다. ㅎㅎ!</p>
-                        <p class="chat-time">21:01:01</p>
                     </li>
                 </ul>
             </div>
-            <footer>
+            <footer class="content-footer">
+                <!-- 채팅 입력란 -->
                 <form action="" class="chat-input-field">
                     <input type="text" placeholder="메시지를 입력해주세요.">
-                    <button type="submit">
-                        <img src="" alt="보내기 버튼 이미지">
+                    <button type="submit" class="submit-btn">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/chat/direction-arrow.png" alt="보내기 버튼 이미지">
                     </button>
                 </form>
             </footer>
         </div>
-
-<!--        <div id="chat-container">-->
-<!--            <div id="chat-header">-->
-<!--                <div class="header-top">-->
-<!--                    &lt;!&ndash; 채팅방 이름 &ndash;&gt;-->
-<!--                    <span id="currentRoomNumber" class="chat-title" th:text="${chatRoomName}">채팅방 이름</span>-->
-<!--                    &lt;!&ndash; member 수 &ndash;&gt;-->
-<!--                    <span class="members-num" th:text="'(' + ${memberCount} + ')'">(25)</span>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; 카테고리 표시 &ndash;&gt;-->
-<!--                <div id="categories">-->
-<!--                    <ul>-->
-<!--                        <li th:each="category : ${chatRoomCategories}">-->
-<!--                            <span class="category-label" th:text="${category.displayName}">카테고리 이름</span>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div id="messages" class="chat-box">-->
-<!--                &lt;!&ndash; 날짜 표시 &ndash;&gt;-->
-<!--                <div th:each="message, iterStat : ${messages}" class="message">-->
-<!--                    <div th:if="${iterStat.index == 0 || !#temporals.format(messages[iterStat.index - 1].now, 'yyyyMMdd').equals(#temporals.format(message.now, 'yyyyMMdd'))}" class="date-separator">-->
-<!--                        <p th:text="${#temporals.format(message.now, 'yyyy년 M월 d일 E요일')}">2024년 7월 30일 화요일</p>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; 내가 보냈을 때, 상대방이 보냈을 때 메시지 위치 수정 필요 &ndash;&gt;-->
-<!--                    <div th:if="${message.nickname == nickname}" th:class="'sent-message message'">-->
-<!--                        <p class="member-name" th:text="${message.nickname}">닉네임</p>-->
-<!--                        <div class="message-content-time">-->
-<!--                            <div class="content" th:text="${message.message}">메시지 내용</div>-->
-<!--                            <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div th:if="${message.nickname != nickname}" th:class="'received-message message'">-->
-<!--                        <p class="member-name" th:text="${message.nickname}">닉네임</p>-->
-<!--                        <div class="message-content-time">-->
-<!--                            <div class="content" th:text="${message.message}">메시지 내용</div>-->
-<!--                            <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="chat-input">-->
-<!--                <div id="message-input" contenteditable="true" placeholder="메시지를 입력해주세요."></div>-->
-<!--                <button id="send-button" class="arrow-button" type="button"></button>-->
-<!--            </div>-->
-<!--        </div>-->
     </main>
 </body>
 </html>
