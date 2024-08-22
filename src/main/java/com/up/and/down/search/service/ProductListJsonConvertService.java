@@ -20,6 +20,7 @@ public class ProductListJsonConvertService {
     }
 
     public Map<Long, ProductInformation> convertJsonToProductList(String productInformationJson) throws JsonProcessingException {
+        System.out.println(productInformationJson);
         return objectMapper.readValue(productInformationJson, new TypeReference<Map<Long, ProductInformation>>() {});
     }
 }
