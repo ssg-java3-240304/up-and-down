@@ -8,19 +8,3 @@ spring:
     username: ${PROD_DB_USERNAME}
     password: ${PROD_DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-coolsms:
-  api:
-    key: ${SMS_KEY}
-    secret: ${SMS_SECRET}
-
-sns:
-  naver:
-    key: ${NAVER_KEY}
-    secret: ${NAVER_SECRET}
-  kakao:
-    key: ${KAKAO_KEY}
-    secret: ${KAKAO_SECRET}
-  google:
-    key: ${GOOGLE_KEY}
-    secret: ${GOOGLE_SECRET}

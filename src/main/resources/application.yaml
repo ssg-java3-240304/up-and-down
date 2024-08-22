@@ -24,6 +24,7 @@ spring:
     username: ${ELASTIC_USERNAME}
     password: ${ELASTIC_PASSWORD}
 
+
 logging:
   level:
     root: info
@@ -32,3 +33,19 @@ logging:
 server:
   servlet:
     context-path: /app
+
+coolsms:
+  api:
+    key: ${SMS_KEY}
+    secret: ${SMS_SECRET}
+
+sns:
+  naver:
+    key: ${NAVER_KEY}
+    secret: ${NAVER_SECRET}
+  kakao:
+    key: ${KAKAO_KEY}
+    secret: ${KAKAO_SECRET}
+  google:
+    key: ${GOOGLE_KEY}
+    secret: ${GOOGLE_SECRET}
