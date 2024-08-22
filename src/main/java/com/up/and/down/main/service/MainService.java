@@ -21,6 +21,7 @@ public class MainService {
         log.info("findTop4ByOrderByViewCountDesc start");
         this.repo.findTop4ByOrderByViewCountDesc().forEach(productGroupDoc -> {
             log.debug("productGroupDoc productListJson: {}", productGroupDoc.getProductListJson());
+            log.debug("productGroupDoc likeCount: {}", productGroupDoc.getLikeCount());
         });
         return this.repo.findTop4ByOrderByViewCountDesc().stream()
                 .map(this.productGroupToEntityService::toEntity)
