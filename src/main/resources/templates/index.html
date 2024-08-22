@@ -49,13 +49,13 @@
                     <a th:href="@{product/{id}(id = ${productGroup.getId})}">
                         <!-- 이미지 URL 을 동적으로 설정 -->
                         <div class="product-image">
-                            <img th:attr="src=${productGroup.representativeImage}" src="" alt="상품 이미지"/>
+                            <img th:attr="src=${productGroup.cheapestProductImage}" src="" alt="상품 이미지"/>
                         </div>
-                        <p class="title" th:text="${productGroup.representativeTitle}">패키지 여행 제목</p>
-                        <p class="content" th:text="${productGroup.representativeContent}">상세 내용</p>
+                        <p class="title" th:text="${productGroup.title}">패키지 여행 제목</p>
+                        <p class="content" th:text="${productGroup.content}">상세 내용</p>
                         <p class="price-text">
                             <!-- 가격을 동적으로 설정 -->
-                            <span class="price" th:text="${productGroup.representativePrice}">0</span>원
+                            <span class="price" th:text="${productGroup.cheapestProductPrice}">0</span>원
                         </p>
                     </a>
                 </li>

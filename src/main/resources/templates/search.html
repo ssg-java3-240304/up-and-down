@@ -53,17 +53,17 @@
         <ul th:if="${searchResultCount > 0}" class="search-result-list">
             <li th:each="productGroup : ${searchResult}">
                 <a th:href="@{product/{id}(id = ${productGroup.getId})}">
-                    <img class="product-image" th:attr="src=${productGroup.representativeImage}" src="" alt="상품 이미지"/>
+                    <img class="product-image" th:attr="src=${productGroup.cheapestProductImage}" src="" alt="상품 이미지"/>
                     <div class="product-info">
-                        <h2 class="title" th:text="${productGroup.representativeTitle}">패키지 여행 상품 제목</h2>
+                        <h2 class="title" th:text="${productGroup.title}">패키지 여행 상품 제목</h2>
                         <div class="info-main">
-                            <p class="description" th:text="${productGroup.representativeContent}">패키지 여행 상품 설명</p>
+                            <p class="description" th:text="${productGroup.content}">패키지 여행 상품 설명</p>
                             <div class="price-comparison-group">
                                 <div class="travel-agency" th:each="product : ${productGroup.getTop4CheapestProducts}">
                                     <!-- 텍스트인 경우 -->
                                     <span class="travel-agency-name"
                                           th:if="${#strings.startsWith(product.travelAgency, 'http') == false}"
-                                          th:text="${product.travelAgency}">인터파크 투어</span>
+                                          th:text="${product.travelAgency}"></span>
                                     <!-- 이미지 URL인 경우 -->
                                     <img class="travel-agency-name"
                                          th:if="${#strings.startsWith(product.travelAgency, 'http') == true}"
