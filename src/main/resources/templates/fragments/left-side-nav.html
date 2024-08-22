@@ -10,7 +10,7 @@
 </head>
 <body>
     <aside th:fragment="leftSideNav" class="left-side-nav">
-        <div class="theme-menu">
+        <div th:if="${themes != null}" class="theme-menu">
             <ul>
                 <li th:each="theme : ${themes}">
                     <a th:href="@{/search/{theme}(theme=${theme.getLowerCase})}" th:text="|${theme.getDisplayName} ${theme.getDisplayKorName}|"></a>
