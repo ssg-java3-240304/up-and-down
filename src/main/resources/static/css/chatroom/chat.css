@@ -41,39 +41,36 @@
 }
 /* 채팅방 - 컨텐츠 */
 .chat-box .content-body {
+    box-sizing: border-box;
     flex: 1;
     border-top: 1px solid #D9D9D9;
     border-bottom: 1px solid #D9D9D9;
     padding: 20px;
+
+    /* 스크롤 영역 */
+    overflow-y: auto; /* 수직 스크롤을 활성화합니다 */
 }
 /* 채팅방 기록 */
 .chat-box .content-body .chat-log-box {
-    height: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    gap: 20px;
 }
 /* 채팅방 날짜 표시 */
-.chat-box .content-body .chat-log-box .date-notice {
-    height: 50px;
-}
-.chat-box .content-body .chat-log-box .date-notice span {
-    padding: 5px 20px;
-    border-radius: 16px;
-    background-color: #D9D9D9;
-    line-height: 50px;
-}
+.chat-box .content-body .chat-log-box .date-notice,
 /* 채팅방 입장 표시 */
 .chat-box .content-body .chat-log-box .enter-member {
-    height: 50px;
+    height: 40px;
 }
+.chat-box .content-body .chat-log-box .date-notice span,
+/* 채팅방 입장 표시 */
 .chat-box .content-body .chat-log-box .enter-member span {
     padding: 5px 20px;
     border-radius: 16px;
     background-color: #D9D9D9;
-    line-height: 50px;
+    line-height: 40px;
 }
 /* 채팅 */
 .chat-box .content-body .chat-log-box .chat {
