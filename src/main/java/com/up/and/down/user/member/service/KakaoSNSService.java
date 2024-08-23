@@ -32,7 +32,7 @@ public class KakaoSNSService {
     public String reqSnsApi() {
         String clientId = kakaoKey;//애플리케이션 클라이언트 아이디값";
 //        String redirectURI = "http://localhost:8080/app/member/kakao_login";
-        String redirectURI = "http://175.45.205.36:8080/app/member/kakao_login";
+        String redirectURI = "http://211.188.54.220:8080/app/member/kakao_login";
         String apiURL = "https://kauth.kakao.com/oauth/authorize?response_type=code";
         apiURL += "&client_id=" + clientId;
         apiURL += "&redirect_uri=" + redirectURI;
@@ -58,7 +58,7 @@ public class KakaoSNSService {
             String sb = "grant_type=authorization_code" +
                     "&client_id=" + kakaoKey +// REST_API_KEY
 //                    "&redirect_uri=http://localhost:8080/app/member/kakao_login" + // REDIRECT_URI
-                    "&redirect_uri=http://175.45.205.36:8080/app/member/kakao_login" + // REDIRECT_URI
+                    "&redirect_uri=http://211.188.54.220:8080/app/member/kakao_login" + // REDIRECT_URI
                     "&code=" + code +
                     "&client_secret=" + kakaoSecret;
             bufferedWriter.write(sb);
