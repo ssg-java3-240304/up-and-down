@@ -6,6 +6,7 @@ const $chatContent = document.getElementById('chat-content');
 
 
 document.addEventListener("DOMContentLoaded", function() {
+    displayChatLog();
     scrollToBottom();
 });
 
@@ -22,6 +23,16 @@ window.addEventListener('beforeunload', function (event) {
         });
     }
 });
+
+// 채팅 로그 출력
+const displayChatLog = function () {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `/chatroom/chat/data/${chatroomId}`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function () {
+        console.log("response success!!!");
+    };
+}
 
 // 채팅 화면 스크롤 하단으로 이동
 const scrollToBottom = function () {

@@ -16,62 +16,24 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/chatroom")
+@RequestMapping("/chatroom/chat")
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
     private final ChatService chatService;
     private final ChatRoomService chatRoomService;
 
-    /**
-     * 웹 브라우저에서 주소를 입력하면 특정 사람에게 알림 메시지를 보내는 역할 (채팅방 페이지 보여주고, 메시지 불러오기)
-     *
-     * 1. 채팅방 페이지 보여주기
-     * 2. 그렇다면 메시지를 불러오는 건 비동기처리로 해야함. -> json
-     */
-
-    // 채팅창 페이지 보여주기
-    @GetMapping("/chat/{chatroomId}")
-    public String chat(@PathVariable Long chatroomId,
-                       @AuthenticationPrincipal AuthPrincipal principal,
-                       Model model){
-
-        // 사용자 닉네임 가져오기
-        Long memberId = principal.getUser().getId();
-        String nickname = chatService.getNicknameById(memberId);
-
-        // 2. 채팅방에 멤버 추가하기
-        chatRoomService.addMemberToChatRoom(chatroomId, memberId);
-        log.debug("채팅방{}에 멤버 추가 = {}", chatroomId, memberId);
-
-        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatroomId);
-
-        // 최신 메시지 50개 가져오기
-        List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatroomId, 0, 50);
-        model.addAttribute("messages", lastMessages);
-
-        model.addAttribute("chatRoomId", chatroomId); // 채팅방 id
-        model.addAttribute("memberId", memberId); // memberId
-        model.addAttribute("nickname", nickname); // 닉네임
-        model.addAttribute("chatRoomName", chatRoomInfo.getName()); // 실제 채팅방 이름
-        model.addAttribute("chatRoomCategories", chatRoomInfo.getCategories()); // 카테고리
-        model.addAttribute("memberCount", chatRoomInfo.getMemberCount()); // 실제 멤버 수
-
+    @GetMapping()
+    public String chat(){
         return "chatroom/chat";
     }
 
-    // 마지막 채팅 메시지 가져오기
-    @GetMapping("/{chatRoomId}/messages")
+    @GetMapping("/data/{chatroomId}")
     @ResponseBody
-    public List<ChatDto> chatList(@PathVariable("chatRoomId") Long chatRoomId,
-                                  @RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "50") int size) {
-        log.debug("chatRoomId = {}", chatRoomId);
-        List<ChatDto> chatMessages = chatService.findChatMessageByChatRoomId(chatRoomId, page, size);
-
-        // ID가 null로 나오는지 로그 확인
-//        chatMessages.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
-
-        return chatMessages;
+    public List<ChatDto> getChatLog(
+            @PathVariable Long chatroomId
+    ) {
+        log.info("GET chat log - chatroomId: {}", chatroomId);
+        return null;
     }
 }
