@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDto {
-    private String empNum;
-    private String password;
-    private String phone;
+public class BrowserCountDto {
+    private String browserInfo;
+    private long visitCount;
 }

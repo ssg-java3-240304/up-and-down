@@ -1,12 +1,12 @@
 package com.up.and.down.config.webSecurity;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,6 +15,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
+    private final LoginAttemptService loginAttemptService;
+
+    @Autowired
+    public WebSecurityConfig(LoginAttemptService loginAttemptService) {
+        this.loginAttemptService = loginAttemptService;
+    }
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/scss/**", "/vendor/**");
@@ -41,7 +48,8 @@ public class WebSecurityConfig {
                             "/member/**",
                             "/sns_api",
                             "/chat-rooms/list",
-                            "/admin/dashboard"
+                            "/admin/dashboard",
+                            "/admin/stat/**"
                     ).permitAll() // 누구나 허용
                     .requestMatchers("/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
@@ -80,6 +88,6 @@ public class WebSecurityConfig {
     // 로그인 후 리다이렉트 경로 설정
     @Bean
     public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
+        return new CustomAuthenticationSuccessHandler(loginAttemptService);
     }
 }
