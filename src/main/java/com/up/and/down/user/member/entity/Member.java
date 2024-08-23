@@ -3,9 +3,11 @@ package com.up.and.down.user.member.entity;
 import com.up.and.down.user.Authority;
 import com.up.and.down.user.User;
 import jakarta.persistence.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity

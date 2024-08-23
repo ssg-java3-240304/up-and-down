@@ -1,5 +1,6 @@
 package com.up.and.down.user.admin.dto;
 
+import com.up.and.down.product.entity.Destination;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDto {
-    private String empNum;
-    private String password;
-    private String phone;
+public class ProductDestinationInfo {
+    private Destination destination;
+    private Long count;
 }
