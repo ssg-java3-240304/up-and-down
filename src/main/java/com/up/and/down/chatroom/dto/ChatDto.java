@@ -18,7 +18,7 @@ public class ChatDto {
     private String message; // 메시지 내용
     private LocalDateTime createdAt; // 시간
 
-    public Chat toChatEntity(){
+    public Chat toEntity(){
         return Chat.builder()
                 .chatRoomId(this.chatRoomId)
                 .memberId(this.memberId)

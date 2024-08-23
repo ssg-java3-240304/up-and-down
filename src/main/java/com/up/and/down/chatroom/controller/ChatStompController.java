@@ -1,12 +1,10 @@
 package com.up.and.down.chatroom.controller;
 
-import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.chatroom.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
@@ -36,20 +34,11 @@ public class ChatStompController {
         log.debug("authentication = {}", authentication);
         log.debug("chatDto = {}", chatDto);
 
-        // 생성시간 입력
         chatDto.setCreatedAt(LocalDateTime.now());
 
-        // 1. 멤버 id 가져오기
-//        Long memberId = ((AuthPrincipal) authentication.getPrincipal()).getUser().getId();
+        this.chatService.save(chatDto);
 
-        // 2. 채팅방에 멤버 추가하기
-
-        // db에서 member조회하기
-
-//        chatDto.setCreatedAt(LocalDateTime.now());  // 현재 시간을 메시지에 설정
-
-//        chatService.saveMessage(chatDto); // 메시지 db에 저장
-
-        messagingTemplate.convertAndSend("/sub/chatroom/chat", chatDto);
+        // 구독자에게 메세지 전송
+        this.messagingTemplate.convertAndSend("/sub/chatroom/chat", chatDto);
     }
 }
