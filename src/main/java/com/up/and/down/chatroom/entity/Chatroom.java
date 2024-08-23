@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "ChatRoom")
-@Table(name = "tbl_chat_room")
+@Table(name = "tbl_chatroom")
 @Data
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -31,8 +31,8 @@ public class Chatroom {
             targetClass = Category.class
     )
     @CollectionTable(
-            name = "tbl_chat_room_category",
-            joinColumns = @JoinColumn(name = "chat_room_id")
+            name = "tbl_chatroom_category",
+            joinColumns = @JoinColumn(name = "chatroom_id")
     )
     @Enumerated(EnumType.STRING)
     private Set<Category> category; // 카테고리
@@ -43,8 +43,8 @@ public class Chatroom {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "tbl_chat_room_member_id",
-            joinColumns = @JoinColumn(name = "chat_room_id")
+            name = "tbl_chatroom_member_id",
+            joinColumns = @JoinColumn(name = "chatroom_id")
     )
     private Set<Long> memberIdList;
 
