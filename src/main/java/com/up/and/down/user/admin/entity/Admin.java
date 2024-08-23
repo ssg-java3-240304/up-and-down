@@ -51,5 +51,6 @@ public class Admin extends User {
         super.setUserId(adminDto.getEmpNum());
         super.setPassword(adminDto.getPassword());
         super.setPhone(adminDto.getPhone());
+        super.setAuthorities(Set.of(Authority.ADMIN));
     }
 }
