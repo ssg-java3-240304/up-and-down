@@ -41,12 +41,12 @@ public class ChatService {
         log.debug("Saved chatId: {}", savedChat.getId());
 
         // 저장된 메시지 정보 사용해서 chatDto 갱신하기
-        ChatDto savedChatDto = ChatDto.toChatDto(savedChat);
+//        ChatDto savedChatDto = ChatDto.toChatDto(savedChat);
 
         // ChatDto의 id를 로그로 출력하여 확인
-        log.debug("ChatDto ID after saving: {}", savedChatDto.getId());
+//        log.debug("ChatDto ID after saving: {}", savedChatDto.getId());
 
-        messagingTemplate.convertAndSend("/sub/chat-rooms/" + chatDto.getChatRoomId(), savedChatDto);
+//        messagingTemplate.convertAndSend("/sub/chat-rooms/" + chatDto.getChatRoomId(), savedChatDto);
     }
 
     // chatRoomId로 모든 채팅 메시지 가져오기
@@ -54,9 +54,10 @@ public class ChatService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
         List<Chat> chatPage = chatRepository.findChatMessageByChatRoomId(chatRoomId, pageable);
         // 로그 추가
-        List<ChatDto> chatDtos = chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
-        chatDtos.forEach(chatDto -> log.debug("모든 채팅 메시지 ChatID: {}", chatDto.getId()));
-        return chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+//        List<ChatDto> chatDtos = chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+//        chatDtos.forEach(chatDto -> log.debug("모든 채팅 메시지 ChatID: {}", chatDto.getId()));
+//        return chatPage.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+        return null;
     }
 
     // 최근 메시지 가져오기
@@ -64,8 +65,9 @@ public class ChatService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         List<Chat> chatList = chatRepository.findLastChatByChatRoomId(chatRoomId, pageable);
         // 로그 추가
-        List<ChatDto> chatDtos = chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
-        chatDtos.forEach(chatDto -> log.debug("최근 메시지 ChatID: {}", chatDto.getId()));
-        return chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+//        List<ChatDto> chatDtos = chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+//        chatDtos.forEach(chatDto -> log.debug("최근 메시지 ChatID: {}", chatDto.getId()));
+//        return chatList.stream().map(ChatDto::toChatDto).collect(Collectors.toList());
+        return null;
     }
 }

@@ -5,7 +5,6 @@ import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.chatroom.service.ChatService;
-import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +16,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/chat-rooms")
+@RequestMapping("/chatroom")
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
@@ -32,8 +31,8 @@ public class ChatController {
      */
 
     // 채팅창 페이지 보여주기
-    @GetMapping("/chat/{chatRoomId}")
-    public String chat(@PathVariable Long chatRoomId,
+    @GetMapping("/chat/{chatroomId}")
+    public String chat(@PathVariable Long chatroomId,
                        @AuthenticationPrincipal AuthPrincipal principal,
                        Model model){
 
@@ -42,16 +41,16 @@ public class ChatController {
         String nickname = chatService.getNicknameById(memberId);
 
         // 2. 채팅방에 멤버 추가하기
-        chatRoomService.addMemberToChatRoom(chatRoomId, memberId);
-        log.debug("채팅방{}에 멤버 추가 = {}", chatRoomId, memberId);
+        chatRoomService.addMemberToChatRoom(chatroomId, memberId);
+        log.debug("채팅방{}에 멤버 추가 = {}", chatroomId, memberId);
 
-        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatRoomId);
+        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatroomId);
 
         // 최신 메시지 50개 가져오기
-        List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatRoomId, 0, 50);
+        List<ChatDto> lastMessages = chatService.findLastChatByChatRoomId(chatroomId, 0, 50);
         model.addAttribute("messages", lastMessages);
 
-        model.addAttribute("chatRoomId", chatRoomId); // 채팅방 id
+        model.addAttribute("chatRoomId", chatroomId); // 채팅방 id
         model.addAttribute("memberId", memberId); // memberId
         model.addAttribute("nickname", nickname); // 닉네임
         model.addAttribute("chatRoomName", chatRoomInfo.getName()); // 실제 채팅방 이름
@@ -71,7 +70,7 @@ public class ChatController {
         List<ChatDto> chatMessages = chatService.findChatMessageByChatRoomId(chatRoomId, page, size);
 
         // ID가 null로 나오는지 로그 확인
-        chatMessages.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
+//        chatMessages.forEach(chatDto -> log.debug("ChatDto ID: {}", chatDto.getId()));
 
         return chatMessages;
     }

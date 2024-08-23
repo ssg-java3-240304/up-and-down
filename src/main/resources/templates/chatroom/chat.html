@@ -7,7 +7,7 @@
     <title>채팅방</title>
 
     <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRsnORm/l4K8/Kl1xACc5n5Un6gfD7p6A/IT2GRkM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- stomp -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -18,13 +18,13 @@
     <!-- js -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        const chatRoomId = [[${chatRoomId}]]; // 서버에서 전달된 채팅방 ID
+        const chatroomId = [[${chatroomId}]]; // 서버에서 전달된 채팅방 ID
         const memberId = [[${memberId}]];
-        const nickname = [[${nickname}]]; // 닉네임
-        console.log({chatRoomId}, {memberId}, {nickname});
+        const nickname = [[${nickname}]];
+        console.log({chatroomId}, {memberId}, {nickname});
         /*]]>*/
     </script>
-    <script th:src="@{/js/chatroom/chat.js}"></script>
+    <script defer th:src="@{/js/chatroom/chat.js}"></script>
 </head>
 <body>
     <main layout:fragment="main">
@@ -32,16 +32,15 @@
             <header class="content-header">
                 <!-- 제목 -->
                 <div class="header-top">
-                    <h1>채팅방 이름</h1>
-                    <p class="current-room-member">(25)</p>
+                    <h1 th:text="${chatRoomName}">채팅방 이름</h1>
+                    <p class="current-room-member" th:text="${memberCount}">(0)</p>
                 </div>
                 <!-- 카테고리 -->
                 <ul class="chat-category-box">
-                    <li class="chat-category-badge">바다</li>
-                    <li class="chat-category-badge">힐링</li>
+                    <li th:each="category : ${chatRoomCategories}" class="chat-category-badge" th:text="${category.getDisplayName}">카테고리</li>
                 </ul>
             </header>
-            <div class="content-body">
+            <div class="content-body scroll-hidden">
                 <ul class="chat-log-box">
                     <!-- 채팅 날짜 표시 -->
                     <li class="date-notice">
@@ -71,8 +70,8 @@
             </div>
             <footer class="content-footer">
                 <!-- 채팅 입력란 -->
-                <form action="" class="chat-input-field">
-                    <input type="text" placeholder="메시지를 입력해주세요.">
+                <form class="chat-input-frm">
+                    <input type="text" id="chat-content" placeholder="메시지를 입력해주세요.">
                     <button type="submit" class="submit-btn">
                         <img src="https://kr.object.ncloudstorage.com/up-bucket/chat/direction-arrow.png" alt="보내기 버튼 이미지">
                     </button>

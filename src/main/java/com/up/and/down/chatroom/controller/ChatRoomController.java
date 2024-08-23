@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +23,7 @@ import java.util.Set;
 
 @Slf4j
 @Controller
-@RequestMapping("/chat-rooms")
+@RequestMapping("/chatroom")
 @RequiredArgsConstructor
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
@@ -55,7 +54,7 @@ public class ChatRoomController {
     }
 
     // 전체 채팅방 목록
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public Page<ChatRoomListResponseDto> getAllChatRooms(@PageableDefault(page = 0, size = 10) Pageable pageable,
                                                          @RequestParam(required = false) String searchType, // 제목, 제목+내용

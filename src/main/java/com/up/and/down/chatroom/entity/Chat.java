@@ -23,6 +23,5 @@ public class Chat {
     private Long memberId; // 채팅 멤버 id(fk)
     private String nickname; // 닉네임
     private String message; // 메시지 내용
-    @CreatedDate
     private LocalDateTime createdAt; // 생성시간
 }
