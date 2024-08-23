@@ -27,11 +27,34 @@ window.addEventListener('beforeunload', function (event) {
 // 채팅 로그 출력
 const displayChatLog = function () {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `/chatroom/chat/data/${chatroomId}`, true);
+    xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
+
     xhr.onload = function () {
-        console.log("response success!!!");
+        if (xhr.status === 200) {  // 성공적으로 응답을 받았을 경우
+            console.log("response success!!!");
+            const messages = JSON.parse(xhr.responseText); // JSON 응답을 객체로 변환
+
+            console.log(messages);
+            for (const message of messages) {
+                $chatLogBox.appendChild(createChatElement(message));
+            }
+
+            scrollToBottom();
+
+            // 마지막 메시지 내역 저장
+            localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(data));
+        } else {
+            console.error('Failed to load chat log');
+        }
     };
+
+    xhr.onerror = function () {
+        console.error('Request error');
+
+    }
+
+    xhr.send();
 }
 
 // 채팅 화면 스크롤 하단으로 이동
@@ -77,7 +100,7 @@ const sendMessage = function () {
 
     if (msg) {
         const msgData = {
-            chatRoomId: chatroomId,
+            chatroomId: chatroomId,
             memberId: memberId,
             nickname: nickname,
             message: msg,

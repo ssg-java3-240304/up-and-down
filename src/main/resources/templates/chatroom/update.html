@@ -33,9 +33,9 @@
         </li>
     </ul>
 
-    <form th:action="@{/chat-rooms/update/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" method="post">
+    <form th:action="@{/chat-rooms/update/{chatRoomId}(chatRoomId=${chatRoom.getChatroomId})}" method="post">
         <!-- chatRoomId -->
-        <input type="hidden" name="chatRoomId" th:value="${chatRoom.chatRoomId}"/>
+        <input type="hidden" name="chatRoomId" th:value="${chatRoom.getChatroomId}"/>
         <!-- 제목 -->
         <div class="form-group mt-3">
             <input name="name" type="text" class="form-control" placeholder="제목을 입력하세요" th:value="${chatRoom.name}"/>

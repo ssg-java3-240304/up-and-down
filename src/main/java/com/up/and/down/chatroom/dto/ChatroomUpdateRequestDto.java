@@ -11,8 +11,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomUpdateRequestDto {
-    private Long chatRoomId;
+public class ChatroomUpdateRequestDto {
+    private Long chatroomId;
     private String name;
     private Set<Category> category;
     private String description;

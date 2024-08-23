@@ -27,4 +27,9 @@ public class ChatService {
         Chat chat = chatDto.toEntity();
         this.chatRepo.save(chat); // 저장후 반환된 엔티티 사용하기
     }
+
+    public List<ChatDto> findByChatroomId(Long chatroomId) {
+        List<Chat> chatList = this.chatRepo.findByChatroomId(chatroomId);
+        return chatList.stream().map(Chat::toDto).toList();
+    }
 }

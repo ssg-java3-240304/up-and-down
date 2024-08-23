@@ -2,9 +2,10 @@ package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
-import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
+import com.up.and.down.chatroom.dto.ChatroomInfoDto;
 import com.up.and.down.chatroom.service.ChatRoomService;
 import com.up.and.down.chatroom.service.ChatService;
+import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,11 +21,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
+    private final ChatRoomService chatroomService;
     private final ChatService chatService;
-    private final ChatRoomService chatRoomService;
 
-    @GetMapping()
-    public String chat(){
+    @GetMapping("/{chatroomId}")
+    public String chat(
+            @PathVariable Long chatroomId,
+            @AuthenticationPrincipal AuthPrincipal principal,
+            Model model
+    ){
+        log.info("GET chat - chatroomId: {}", chatroomId);
+
+        ChatroomInfoDto chatroomInfo = this.chatroomService.getChatRoomInfoById(chatroomId);
+
+        Long memberId = principal.getUser().getId();
+        String nickname = ((Member) principal.getUser()).getNickname();
+
+        model.addAttribute("chatroomName", chatroomInfo.getName());
+        model.addAttribute("memberCount", chatroomInfo.getMemberCount());
+        model.addAttribute("chatRoomCategories", chatroomInfo.getCategories());
+
+        model.addAttribute("memberId", memberId);
+        model.addAttribute("nickname", nickname);
+
         return "chatroom/chat";
     }
 
@@ -33,7 +52,11 @@ public class ChatController {
     public List<ChatDto> getChatLog(
             @PathVariable Long chatroomId
     ) {
-        log.info("GET chat log - chatroomId: {}", chatroomId);
-        return null;
+        log.info("GET chat log data - chatroomId: {}", chatroomId);
+
+        List<ChatDto> chatDtoList = this.chatService.findByChatroomId(chatroomId);
+        log.debug("chatDtoList: {}", chatDtoList);
+
+        return chatDtoList;
     }
 }

@@ -1,6 +1,6 @@
 package com.up.and.down.chatroom.entity;
 
-import com.up.and.down.chatroom.dto.ChatRoomUpdateRequestDto;
+import com.up.and.down.chatroom.dto.ChatroomUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,11 +19,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class ChatRoom {
+public class Chatroom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chatRoomId;
+    private Long chatroomId;
     private String name; // 채팅방이름
 
     @ElementCollection(
@@ -53,7 +53,7 @@ public class ChatRoom {
     @LastModifiedDate
     private LocalDateTime updatedAt; // 수정일시
 
-    public void update(ChatRoomUpdateRequestDto dto) {
+    public void update(ChatroomUpdateRequestDto dto) {
         this.name = dto.getName();
         this.category = dto.getCategory();
         this.description = dto.getDescription();
