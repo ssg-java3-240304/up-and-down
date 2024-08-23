@@ -17,8 +17,7 @@
 </head>
 
 <body>
-
-<main layout:fragment="main" id="chatroom-container" class="mt-20">
+    <main layout:fragment="main" id="chatroom-container" class="mt-20">
         <!-- 탭 -->
         <ul class="nav nav-tabs d-flex w-100">
             <li class="nav-item flex-fill">
@@ -72,14 +71,12 @@
 
         <!-- 목록 -->
         <div id="list-container" class="list-container">
-            <!-- 결과 없음 메시지 -->
-            <div class="no-results" th:if="${chatRooms.totalElements == 0}">
-                <p>결과가 없습니다.</p>
-            </div>
+            <!-- 결과 없음 메시지 컨테이너 추가 -->
+            <div class="no-results d-none" id="no-results"></div>
 
 
-            <!-- 채팅방 목록 -->
-            <div th:each="chatRoom : ${chatRooms.content}" th:if="${chatRooms.totalElements > 0}" class="list-item">
+<!-- th:attr="onclick='window.location.href=\'/app/chat-rooms/' + ${chatRoom.chatRoomId} + '\''"-->
+            <div th:each="chatRoom : ${chatRooms}" class="list-item">
                 <div class="list-item-content d-flex align-items-center justify-content-end">
                     <div class="d-flex align-items-center w-100">
                         <!-- 제목 -->
