@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
@@ -17,11 +18,5 @@ public class AuthController {
         return "login/memberLogin";
     }
 
-    @GetMapping("/app/auth/login")
-    public String checkLgoin() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return "No Permssion";
-        } else return "Permission";
-    }
+
 }

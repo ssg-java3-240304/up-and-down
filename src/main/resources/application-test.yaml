@@ -9,6 +9,8 @@ spring:
     password: sh
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
+
 coolsms:
   api:
     key: ${SMS_KEY}

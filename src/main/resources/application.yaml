@@ -19,13 +19,16 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 100
+#  elasticsearch:
+#    uris: 101.79.11.20:9200
+#    username: ${ELASTIC_USERNAME}
+#    password: ${ELASTIC_PASSWORD}
   elasticsearch:
     uris: 101.79.11.20:9200
-    username: ${ELASTIC_USERNAME}
-    password: ${ELASTIC_PASSWORD}
+    username: elastic #${ELASTIC_USERNAME}
+    password: DbE83KDs_RTwi9OKW6y7 #${ELASTIC_PASSWORD
 
 
- }
 
 logging:
   level:

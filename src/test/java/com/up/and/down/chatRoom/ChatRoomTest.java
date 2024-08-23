@@ -1,6 +1,7 @@
 package com.up.and.down.chatRoom;
 
 import com.up.and.down.chatroom.dto.ShowChatRoomDto;
+import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.entity.ChatRoom;
 import com.up.and.down.chatroom.repository.ChatRoomRepository;
 import com.up.and.down.chatroom.service.ChatRoomService;
@@ -14,10 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,21 +25,25 @@ public class ChatRoomTest {
     private ChatRoomRepository chatRoomRepository;
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
     private ChatRoomService chatRoomService;
 
-    @Test
-    @DisplayName("모든 채팅방 조회 ")
-    void test() {
-        List<ShowChatRoomDto> list = chatRoomService.findAllChatRooms();
 
-        for (ShowChatRoomDto chatRoom : list) {
-            System.out.println(chatRoom.toString());
-        }
-        Assertions.assertThat(list).isNotNull();
-    }
+//    @Test
+//    @DisplayName("모든 채팅방 조회 ")
+//    void test() {
+//        List<ShowChatRoomDto> list = chatRoomService.findAllChatRooms();
+//
+//        for (ShowChatRoomDto chatRoom : list) {
+//            System.out.println(chatRoom.toString());
+//        }
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
     @Test
-    @DisplayName("채팅룸 생성 ")
+    @DisplayName("채팅방 생성")
     void test1() {
         ChatRoom chatRoom = ChatRoom.builder()
                 .creatorId(3L)
@@ -54,24 +56,6 @@ public class ChatRoomTest {
         Assertions.assertThat(count).isEqualTo(chatRoom.getMemberCount());
 
     }
-
-
-
-
-
-//    @Test
-//    @DisplayName("채팅 DTO로 변경해서 사용 ")
-//    void testDto() {
-//
-//        List<ShowChatRoomDto> list = chatRoomService.findAllChatRoomList();
-//        for (ShowChatRoomDto dto : list) {
-//            System.out.println(dto.toString());
-//        }
-//        Assertions.assertThat(list).isNotNull();
-//    }
-
-    @Autowired
-    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("아이디 조회")
@@ -100,4 +84,88 @@ public class ChatRoomTest {
         Assertions.assertThat(nickname).isEqualTo("오행동");
 
     }
+
+    @Test
+    @DisplayName("내가 방장인 채팅방 조회하기")
+    void test4() {
+
+        Long userId = 2L ;
+        List<ChatRoom> list = chatRoomRepository.findByCreatorId(userId);
+        list.forEach(System.out::println);
+
+        Assertions.assertThat(list).isNotNull();
+    }
+
+
+
+    @Test
+    @DisplayName("내가 속해있는 채팅방에서 카테고리별 조회")
+    void test5() {
+        Long userId = 1L;
+        Category category = Category.HIKING;
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContainingAndCategoryIn(userId, categories);
+
+        list.forEach(System.out::println);
+        Assertions.assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("내가 방장인 채팅방에서 카테고리별 조회")
+    void test6() {
+        Long userId = 1L;
+        Category category = Category.HIKING;
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        List<ChatRoom> list = chatRoomRepository.findByCreatorIdAndCategoryIn(userId, categories);
+        list.forEach(System.out::println);
+        Assertions.assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("모든 채팅방 카테고리별 조회")
+    void test7() {
+        Category category = Category.HIKING;
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        List<ChatRoom> list = chatRoomRepository.findAllByCategoryIn(categories);
+        list.forEach(System.out::println);
+        Assertions.assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("검색어만 있는 경우 ")
+    void test8() {
+        String keyword = "축구";
+        List<ChatRoom> list = chatRoomRepository.findAllByNameContaining(keyword);
+        list.forEach(System.out::println);
+        Assertions.assertThat(list).isNotNull();
+    }
+
+    @Test
+    @DisplayName("둘다 존재하는 경우  ")
+    void test9() {
+        Category category = Category.HIKING;
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        String keyword = "축구";
+        List<ChatRoom> list = chatRoomRepository.findAllByCategoryInAndNameContaining(categories,keyword);
+        list.forEach(System.out::println);
+        Assertions.assertThat(list).isNotNull();
+    }
+
+
+
+
+
+
+
+
+
+
 }
