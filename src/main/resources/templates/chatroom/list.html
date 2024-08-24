@@ -64,7 +64,7 @@
             </div>
 
             <div class="regist-button-container">
-                <a th:href="@{/chat-rooms/regist}" class="create-button">만들기</a>
+                <a th:href="@{/chatroom/regist}" class="create-button">만들기</a>
             </div>
         </div>
 
@@ -74,7 +74,7 @@
             <div class="no-results d-none" id="no-results"></div>
 
             <div th:each="chatRoom : ${chatRooms}" class="list-item"
-                 th:attr="onclick='window.location.href=\'/app/chat-rooms/' + ${chatRoom.chatRoomId} + '\''">
+                 th:attr="onclick='window.location.href=\'/app/chatroom/' + ${chatRoom.chatroomId} + '\''">
                 <div class="list-item-content d-flex align-items-center justify-content-end">
                     <div class="d-flex align-items-center w-100">
                         <!-- 제목 -->

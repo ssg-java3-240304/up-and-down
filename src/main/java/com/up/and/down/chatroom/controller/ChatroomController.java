@@ -166,7 +166,7 @@ public class ChatroomController {
         // 채팅방 등록
         chatRoomService.registChatRoom(dto, creatorId);
         redirectAttributes.addFlashAttribute("message", "채팅방이 등록되었습니다");
-        return "redirect:/chat-rooms/list"; // 등록후에 메인페이지로 리다이렉트
+        return "redirect:/chatroom/list"; // 등록후에 메인페이지로 리다이렉트
     }
 
 
@@ -185,6 +185,6 @@ public class ChatroomController {
         log.debug("dto = {}", dto);
         chatRoomService.update(dto);
         redirectAttributes.addFlashAttribute("message", "채팅방 소개글을 수정했습니다.");
-        return "redirect:/chat-rooms/" + dto.getChatroomId();
+        return "redirect:/chatroom/" + dto.getChatroomId();
     }
 }
