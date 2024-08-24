@@ -1,4 +1,3 @@
-const $currentRoomMember = document.querySelector(".current-room-member"); // 채팅방 참여 인원
 const $contentBody = document.querySelector('.content-body');
 const $chatLogBox = document.querySelector('.chat-log-box');
 const $chatInputFrm = document.querySelector(".chat-input-frm");
@@ -72,10 +71,6 @@ const scrollToBottom = function () {
     $contentBody.scrollTop = $contentBody.scrollHeight;
 }
 
-// 채팅방 참여 인원 노출
-const updateCurrentMemberNum = function () {
-
-}
 
 // 채팅 날짜 표시
 const displayDate = function (dateString) {
