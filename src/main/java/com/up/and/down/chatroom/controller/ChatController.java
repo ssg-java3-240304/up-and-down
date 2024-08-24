@@ -3,7 +3,7 @@ package com.up.and.down.chatroom.controller;
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.dto.ChatroomInfoDto;
-import com.up.and.down.chatroom.service.ChatRoomService;
+import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.chatroom.service.ChatService;
 import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
-    private final ChatRoomService chatroomService;
+    private final ChatroomService chatroomService;
     private final ChatService chatService;
 
     @GetMapping("/{chatroomId}")

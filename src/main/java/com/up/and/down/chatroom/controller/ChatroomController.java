@@ -3,7 +3,7 @@ package com.up.and.down.chatroom.controller;
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.*;
 import com.up.and.down.chatroom.entity.Category;
-import com.up.and.down.chatroom.service.ChatRoomService;
+import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.Set;
 @RequestMapping("/chatroom")
 @RequiredArgsConstructor
 public class ChatroomController {
-    private final ChatRoomService chatRoomService;
+    private final ChatroomService chatRoomService;
 
     // [커뮤니티] 메인페이지 보여주기
     @GetMapping("/list")

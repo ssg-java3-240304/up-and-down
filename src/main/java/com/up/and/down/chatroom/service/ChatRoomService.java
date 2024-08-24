@@ -22,22 +22,22 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class ChatRoomService {
+public class ChatroomService {
     private final ChatroomRepository chatRoomRepository;
     private final MemberRepository memberRepository; // 닉네임 조회를 위해서 작성
 
     // 전체 목록 조회
     public Page<ChatroomListResponseDto> findAll(Pageable pageable, String nickname) {
-        Page<Chatroom> chatRooms = chatRoomRepository.findAll(pageable);
-        log.debug("chatRooms = {}", chatRooms.getContent());
+        Page<Chatroom> chatrooms = chatRoomRepository.findAll(pageable);
+        log.debug("chatrooms = {}", chatrooms.getContent());
 
-        return chatRooms.map(chatRoom -> {
-            String creatorNickname = memberRepository.findById(chatRoom.getCreatorId())
+        return chatrooms.map(chatroom -> {
+            String creatorNickname = memberRepository.findById(chatroom.getCreatorId())
                     .map(Member::getNickname)
                     .orElse("Unknown");
 
-            int participantCount = chatRoomRepository.countMembersByChatRoomId(chatRoom.getChatroomId());
-            return ChatroomListResponseDto.fromChatRoom(chatRoom, creatorNickname, participantCount);
+            int participantCount = chatRoomRepository.countMembersByChatRoomId(chatroom.getChatroomId());
+            return ChatroomListResponseDto.fromChatRoom(chatroom, creatorNickname, participantCount);
         });
     }
 
@@ -74,14 +74,14 @@ public class ChatRoomService {
 
     // 전체
     public Page<ChatroomListResponseDto> findAllChatRooms(Pageable pageable, String searchType, String keywords, Set<Category> categories, String nickname) {
-        Page<Chatroom> chatRooms;
+        Page<Chatroom> chatroom;
 
         if (categories != null && !categories.isEmpty()) {
-            chatRooms = chatRoomRepository.findByCategory(categories, pageable);
+            chatroom = chatRoomRepository.findByCategory(categories, pageable);
         } else {
-            chatRooms = search(pageable, searchType, keywords, null, null);
+            chatroom = search(pageable, searchType, keywords, null, null);
         }
-        return chatRooms.map(chatRoom -> {
+        return chatroom.map(chatRoom -> {
             int participantCount = chatRoomRepository.countMembersByChatRoomId(chatRoom.getChatroomId());
             return ChatroomListResponseDto.builder()
                     .chatroomId(chatRoom.getChatroomId())
@@ -98,38 +98,39 @@ public class ChatRoomService {
 
     // 우리모임
     public Page<ChatroomListResponseDto> findOurChatRooms(Long memberId, Pageable pageable, String searchType, String keywords, Set<Category> categories) {
-        Page<Chatroom> chatRooms;
+        Page<Chatroom> chatroom;
 
         if (categories != null && !categories.isEmpty()) {
-            chatRooms = chatRoomRepository.findByCategoryAndMember(categories, memberId, pageable);
+            chatroom = chatRoomRepository.findByCategoryAndMember(categories, memberId, pageable);
         } else {
-            chatRooms = search(pageable, searchType, keywords, memberId, null);
+            chatroom = search(pageable, searchType, keywords, memberId, null);
         }
-        return chatRooms.map(this::dto);
+        return chatroom.map(this::dto);
     }
 
     // 내모임
     public Page<ChatroomListResponseDto> findMyChatRooms(Long memberId, Pageable pageable, String searchType, String keywords, Set<Category> categories) {
-        Page<Chatroom> chatRooms;
+        Page<Chatroom> chatroom;
 
         if (categories != null && !categories.isEmpty()) {
-            chatRooms = chatRoomRepository.findByCategoryCreator(categories, memberId, pageable);
+            chatroom = chatRoomRepository.findByCategoryCreator(categories, memberId, pageable);
         } else {
-            chatRooms = search(pageable,searchType, keywords, memberId, null);
+            chatroom = search(pageable,searchType, keywords, memberId, null);
         }
-        return chatRooms.map(this::dto);
+        return chatroom.map(this::dto);
     }
 
     // 채팅방 인원수 가져오기
-    public int getChatRoomMemberCount(Long chatRoomId) {
-        Chatroom chatRoom = chatRoomRepository.findById(chatRoomId)
+    public int getChatRoomMemberCount(Long chatroomId) {
+        Chatroom chatRoom = chatRoomRepository.findById(chatroomId)
                 .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
         return chatRoom.getMemberIdList().size(); // 채팅방에 속한 멤버 수 계산
     }
 
     // 채팅방 상세페이지 및 채팅 페이지에 멤버수 보여주기
-    public ChatroomInfoDto getChatRoomInfoById(Long chatRoomId) {
-        Chatroom chatroom = chatRoomRepository.findById(chatRoomId)
+    public ChatroomInfoDto getChatRoomInfoById(Long chatroomId) {
+        log.debug("chatroomId = {}", chatroomId);
+        Chatroom chatroom = chatRoomRepository.findById(chatroomId)
                 .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
 
         return ChatroomInfoDto.builder()
@@ -139,68 +140,68 @@ public class ChatRoomService {
                 .build();
     }
 
-    private ChatroomListResponseDto dto(Chatroom chatRoom) {
+    private ChatroomListResponseDto dto(Chatroom chatroom) {
         return ChatroomListResponseDto.builder()
-                .chatroomId(chatRoom.getChatroomId())
-                .name(chatRoom.getName())
-                .category(chatRoom.getCategory())
-                .description(chatRoom.getDescription())
-                .creatorId(chatRoom.getCreatorId())
-                .chatroomMember(chatRoom.getMemberIdList().stream()
+                .chatroomId(chatroom.getChatroomId())
+                .name(chatroom.getName())
+                .category(chatroom.getCategory())
+                .description(chatroom.getDescription())
+                .creatorId(chatroom.getCreatorId())
+                .chatroomMember(chatroom.getMemberIdList().stream()
                         .map(ChatroomMember::new)
                         .collect(Collectors.toSet()))
-                .createdAt(chatRoom.getCreatedAt())
+                .createdAt(chatroom.getCreatedAt())
                 .build();
     }
 
     // 상세페이지
-    public ChatroomResponseDto findByChatRoom(Long chatRoomId, Long memberId) {
-        Chatroom chatRoom = chatRoomRepository.findById(chatRoomId)
+    public ChatroomResponseDto findByChatRoom(Long chatroomId, Long memberId) {
+        Chatroom chatroom = chatRoomRepository.findById(chatroomId)
                 .orElseThrow(() -> new EntityNotFoundException("채팅방이 존재하지 않습니다."));
 
-        String nickname = memberRepository.findById(chatRoom.getCreatorId())
+        String nickname = memberRepository.findById(chatroom.getCreatorId())
                 .map(Member::getNickname)
                 .orElse("Unknown");
 
         // 채팅방 멤버 수 계산
-        int memberCount = chatRoom.getMemberIdList().size();
+        int memberCount = chatroom.getMemberIdList().size();
 
-        return ChatroomResponseDto.fromChatroom(chatRoom, nickname, memberId);
+        return ChatroomResponseDto.fromChatroom(chatroom, nickname, memberId);
     }
 
     // 채팅방 등록 페이지
     public void registChatRoom(ChatroomRegistRequestDto dto, Long creatorId) {
-        Chatroom chatRoom = dto.toChatroom(creatorId);
-        log.debug("saved chatRoom = {}", chatRoom);
-        chatRoomRepository.save(chatRoom);
+        Chatroom chatroom = dto.toChatroom(creatorId);
+        log.debug("saved chatroom = {}", chatroom);
+        chatRoomRepository.save(chatroom);
     }
 
     // 채팅방 소개글 수정페이지
-    public ChatroomDetailResponseDto findById(Long chatRoomId) {
-        return ChatroomDetailResponseDto.fromChatroom(chatRoomRepository.findById(chatRoomId).orElseThrow());
+    public ChatroomDetailResponseDto findById(Long chatroomId) {
+        return ChatroomDetailResponseDto.fromChatroom(chatRoomRepository.findById(chatroomId).orElseThrow());
     }
     public void update(ChatroomUpdateRequestDto dto) {
-        Chatroom chatRoom = chatRoomRepository.findById(dto.getChatroomId()).orElseThrow();
-        chatRoom.update(dto); // 채팅방 정보 업데이트
-        chatRoomRepository.save(chatRoom); // 업데이트된 정보 저장
+        Chatroom chatroom = chatRoomRepository.findById(dto.getChatroomId()).orElseThrow();
+        chatroom.update(dto); // 채팅방 정보 업데이트
+        chatRoomRepository.save(chatroom); // 업데이트된 정보 저장
     }
 
     // 채팅방에 입장
-    public void addMemberToChatRoom(Long chatRoomId, Long memberId) {
+    public void addMemberToChatRoom(Long chatroomId, Long memberId) {
         // 채팅방 조회
-        Chatroom chatRoom = chatRoomRepository.findById(chatRoomId)
+        Chatroom chatroom = chatRoomRepository.findById(chatroomId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다."));
         // 채팅방 멤버 리스트에 새로운 멤버 추가
-//        if (chatRoom.getMemberIdList().contains(memberId)) {
+//        if (chatroom.getMemberIdList().contains(memberId)) {
 //            log.debug("이미 존재하는 memberId = {}", memberId);
 //        } else {
-//            chatRoom.getMemberIdList().add(memberId);
-//            chatRoomRepository.save(chatRoom);
-//            log.debug("채팅방{}에 멤버{} 추가", chatRoomId, memberId);
+//            chatroom.getMemberIdList().add(memberId);
+//            chatRoomRepository.save(chatroom);
+//            log.debug("채팅방{}에 멤버{} 추가", chatroomId, memberId);
 //        }
-        chatRoom.getMemberIdList().add(memberId);
+        chatroom.getMemberIdList().add(memberId);
         // 변경된 내용 db에 저장
-        chatRoomRepository.save(chatRoom);
-        log.debug("추가된 멤버id = {}, 해당 채팅방 = {}", memberId, chatRoomId);
+        chatRoomRepository.save(chatroom);
+        log.debug("추가된 멤버id = {}, 해당 채팅방 = {}", memberId, chatroomId);
     }
 }
