@@ -4,7 +4,6 @@ const $chatLogBox = document.querySelector('.chat-log-box');
 const $chatInputFrm = document.querySelector(".chat-input-frm");
 const $chatContent = document.getElementById('chat-content');
 
-
 document.addEventListener("DOMContentLoaded", function() {
     displayChatLog();
     scrollToBottom();
@@ -36,7 +35,18 @@ const displayChatLog = function () {
             const messages = JSON.parse(xhr.responseText); // JSON 응답을 객체로 변환
 
             console.log(messages);
+
+            // 마지맞 메시지 날짜 저장
+            let lastDate = null;
+
             for (const message of messages) {
+                const messageDate = formatCreatedAtToDateString(message.createdAt);
+
+                // 메시지 날짜가 바뀌면 화면에 표시
+                if (lastDate !== messageDate) {
+                    displayDate(messageDate);
+                    lastDate = messageDate; // 마지막 날짜 업데이트
+                }
                 $chatLogBox.appendChild(createChatElement(message));
             }
 
@@ -65,6 +75,14 @@ const scrollToBottom = function () {
 // 채팅방 참여 인원 노출
 const updateCurrentMemberNum = function () {
 
+}
+
+// 채팅 날짜 표시
+const displayDate = function (dateString) {
+    const dateNoticeElement = document.createElement('li');
+    dateNoticeElement.classList.add('date-notice');
+    dateNoticeElement.innerHTML = `<span>${dateString}</span>`;
+    $chatLogBox.appendChild(dateNoticeElement);
 }
 
 // STOMP : 등록
@@ -115,8 +133,19 @@ const sendMessage = function () {
     }
 }
 
+let lastDate = null;
 // chat 요소 생성
 const createChatElement = function (msgData) {
+
+    // 현재 메시지 날짜
+    const messageDate = formatCreatedAtToDateString(msgData.createdAt);
+
+    // 현재 메시지 날짜가 이전에 표시된 날짜와 다를 경우에만 날짜 표시
+    if (lastDate !== messageDate) {
+        displayDate(messageDate);  // 새로운 날짜 표시
+        lastDate = messageDate;    // lastDate를 현재 메시지의 날짜로 업데이트
+    }
+
     // li 요소 생성
     const chatElement = document.createElement('li');
     chatElement.classList.add('chat');
@@ -126,6 +155,12 @@ const createChatElement = function (msgData) {
         chatElement.classList.add('mine'); // 자신이 보낸 메시지인 경우
     } else {
         chatElement.classList.add('other'); // 다른 사용자가 보낸 메시지인 경우
+    }
+
+    // 날짜가 이전 메시지와 다를 경우 날짜 표시
+    if (lastDate !== messageDate) {
+        displayDate(messageDate);
+        lastDate = messageDate; // 마지막 날짜를 갱신
     }
 
     // innerHTML로 요소 내용 설정
@@ -154,6 +189,19 @@ const formatCreatedAtToTimeString = function (createdAt) {
     return `${hours}:${minutes}:${seconds}`;
 }
 
+// createdAt -> 날짜 표시로 변경
+const formatCreatedAtToDateString = function (createdAt) {
+    // Date 객체로 변환
+    const date = new Date(createdAt);
+
+    // 날짜 yyyy년MM월dd일 형식으로 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // 날짜 문자열 조합
+    return `${year}년 ${month}월 ${day}일`;
+}
 //     // 스크롤 이벤트 리스너 설정
 //     const messagesElement = document.getElementById('messages');
 //     messagesElement.addEventListener('scroll', () => {
