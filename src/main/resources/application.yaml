@@ -1,6 +1,6 @@
 spring:
   profiles:
-    default: prod
+    default: test
   application:
     name: up-and-down
   servlet:
@@ -19,14 +19,10 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 100
-#  elasticsearch:
-#    uris: 101.79.11.20:9200
-#    username: ${ELASTIC_USERNAME}
-#    password: ${ELASTIC_PASSWORD}
   elasticsearch:
     uris: 101.79.11.20:9200
-    username: elastic #${ELASTIC_USERNAME}
-    password: DbE83KDs_RTwi9OKW6y7 #${ELASTIC_PASSWORD
+    username: ${ELASTIC_USERNAME}
+    password: ${ELASTIC_PASSWORD}
 
 
 
@@ -44,7 +40,6 @@ coolsms:
   api:
     key: ${SMS_KEY}
     secret: ${SMS_SECRET}
-
 sns:
   naver:
     key: ${NAVER_KEY}

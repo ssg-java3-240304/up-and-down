@@ -41,7 +41,7 @@
                     </select>
                     <input type="text" id="searchQuery" placeholder="검색어를 입력하세요" class="search-input"/>
                     <button id="searchButton" class="search-button">
-                        <img src="/app/images/product/reading-glasses.png" alt="Search" class="search-icon">
+                        <img th:src="${imageUrl}" alt="Search" class="search-icon">
                     </button>
                 </div>
             </div>
@@ -98,31 +98,6 @@
                 </div>
             </div>
         </div>
-
-        <footer>
-        <!-- 페이지 -->
-            <div class="pagination" th:if="${chatRooms.totalPages > 0}">
-                <ul>
-                    <li th:if="${chatRooms.number > 0}">
-                        <a th:href="@{/search(page=${chatRooms.number - 1})}">이전</a>
-                    </li>
-                    <li th:if="${chatRooms.number == 0}" class="disabled">
-                        <span>이전</span>
-                    </li>
-                    <li th:each="pageNum : ${#numbers.sequence(0, chatRooms.totalPages - 1)}" th:classappend="${pageNum == chatRooms.number} ? 'active' : ''">
-                        <a th:href="@{/search(page=${pageNum})}" th:text="${pageNum + 1}"></a>
-                    </li>
-                    <li th:if="${chatRooms.number < chatRooms.totalPages - 1}">
-                        <a th:href="@{/search(page=${chatRooms.number + 1})}">다음</a>
-                    </li>
-                    <li th:if="${chatRooms.number == chatRooms.totalPages - 1}" class="disabled">
-                        <span>다음</span>
-                    </li>
-                </ul>
-            </div>
-        </footer>
-
-
 
         <script>
             document.querySelector('h1').style.fontSize = '2rem';

@@ -8,6 +8,7 @@ import com.up.and.down.chatroom.dto.ShowChatRoomDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.entity.ChatRoom;
 import com.up.and.down.chatroom.service.ChatRoomService;
+import com.up.and.down.common.ImageImport;
 import com.up.and.down.common.paging.PageCriteria;
 import com.up.and.down.user.User;
 import com.up.and.down.user.member.entity.Member;
@@ -37,6 +38,9 @@ import java.util.Set;
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
+    //이미지 호출하는 클래스 객체 생성
+
+
     @GetMapping("/loginCheck")
     @ResponseBody
     public String checkLgoin() {
@@ -52,9 +56,22 @@ public class ChatRoomController {
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             Model model
     ){
+        ImageImport imageImport = new ImageImport();
+
+        //이미지 가져오는 코드
+        String directoryName = "product";
+        String imageName = "reading-glasses.png";
+        String imageUrl = imageImport.getImageUrl(directoryName, imageName);
 
         Page<ShowChatRoomDto> chatRooms = chatRoomService.findAllChatRooms(pageable);
+
+        //페이징 정보 생성
+        String url = "chat-rooms/list";
+        PageCriteria pageCriteria = new PageCriteria(pageable.getPageNumber(), pageable.getPageSize(), (int) chatRooms.getTotalElements(), url);
+
         model.addAttribute("chatRooms", chatRooms);
+        model.addAttribute("imageUrl", imageUrl);
+        model.addAttribute("pageCriteria", pageCriteria);
 
         return "chatroom/list";
     }

@@ -11,11 +11,7 @@ $(document).ready(function () {
         let filter = 'all'
         filter = $(this).data('tab');
         console.log(`탭이 클릭되었습니다. Filter: ${filter}`);
-        // '전체' 탭 클릭 시 list 페이지로 리다이렉트
-        // if (filter === 'all') {
-        //     window.location.href = '/app/chat-rooms/list';
-        //     return;
-        // }
+
 
     // 로그인 체크가 필요한 탭에 대해서는 별도의 AJAX 요청 처리
         if (filter === 'our' || filter === 'mine') {
@@ -25,7 +21,7 @@ $(document).ready(function () {
             // 그 외의 탭은 바로 로드
             $('.nav-link').removeClass('active');
             $(this).addClass('active');
-            ourChatLoad(filter);
+            chatRoomUpdate(filter);
         }
     });
 
@@ -41,7 +37,7 @@ $(document).ready(function () {
                     console.log('로그인 상태 : ' +data)
                     $('.nav-link').removeClass('active');
                     $('.nav-link[data-tab="' + filter + '"]').addClass('active');
-                    ourChatLoad(filter);
+                    chatRoomUpdate(filter);
                 }
             },
             error: function (xhr) {
@@ -71,6 +67,50 @@ $(document).ready(function () {
                 console.log('데이터가 존재하지 않습니다.')
             }
         })
+    }
+
+    // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색)
+    function chatRoomUpdate(filter) {
+        let baseUrl = '/app/chat-api-rooms/'
+        if (filter === 'our') {
+            baseUrl += filter;
+        }else if (filter === 'mine') {
+            baseUrl += filter;
+        }else {
+            baseUrl += filter;
+        }
+
+        console.log('검색어 입력이 들어왔습니다.'+baseUrl);
+        //카테고리, 검색어 입력
+        let url = `${baseUrl}`;
+        let keyword = $('#searchQuery').val();
+        console.log("검색어 : ", keyword);
+        let categories = selectedCategories.join(',');
+
+        //카테고리 URL에 연결
+        if (categories.length > 0) {
+            url += `?categories=${encodeURIComponent(categories)}`;
+        }
+        //검색어 URL에 연결
+        if (keyword) {
+            // 만약 categories가 추가되지 않았으면 `?`로 시작하고, 추가되었다면 `&`로 이어지도록 설정
+            url += (url.includes('?') ? '&' : '?') + `keyword=${encodeURIComponent(keyword)}`;
+        }
+
+        console.log("console URL : " + url);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                console.log("Received data:", data);
+                uploadData(data,filter)
+                updateTotalCount(data.length);
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Request Error:', error);
+            }
+        });
+
     }
 
     //채팅방을 보여주는 함수
@@ -112,48 +152,7 @@ $(document).ready(function () {
             });
         }
     }
-    // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색)
-    function chatRoomUpdate(filter) {
-        let baseUrl = '/app/chat-api-rooms/'
-        if (filter === 'our') {
-            baseUrl += filter;
-        }else if (filter === 'mine') {
-            baseUrl += filter;
-        }else {
-            baseUrl += filter;
-        }
 
-        console.log('검색어 입력이 들어왔습니다.'+baseUrl);
-        //카테고리, 검색어 입력
-        let url = `${baseUrl}`;
-        let keyword = $('#searchQuery').val();
-        console.log("검색어 : ", keyword);
-        let categories = selectedCategories.join(',');
-
-        //카테고리 URL에 연결
-        if (categories.length > 0) {
-            url += `?categories=${encodeURIComponent(categories)}`;
-        }
-        //검색어 URL에 연결
-        if (keyword) {
-            // 만약 categories가 추가되지 않았으면 `?`로 시작하고, 추가되었다면 `&`로 이어지도록 설정
-            url += (url.includes('?') ? '&' : '?') + `keyword=${encodeURIComponent(keyword)}`;
-        }
-
-        console.log("console URL : " + url);
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (data) {
-                console.log("Received data:", data);
-                uploadData(data,filter)
-            },
-            error: function (xhr, status, error) {
-                console.error('AJAX Request Error:', error);
-            }
-        });
-
-    }
 
     // 채팅방 목록을 로드하는 함수 (탭 클릭, 검색, 필터링, 페이지네이션에 사용)
     //
