@@ -105,4 +105,15 @@ public class ProductGroup {
                 .limit(4)
                 .collect(Collectors.toList());
     }
+
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -98,6 +99,15 @@ public class SearchService {
 
     public Page<ProductGroup> searchByThemeOrderByLikeCount(String theme, Pageable pageable) {
         return this.repo.findBySearchKeywordsOrderByLikeCountDesc(theme, pageable).map(this.productGroupToEntityService::toEntity);
+    }
+
+    public ProductGroupDoc findById(Long productGroupId) {
+        return this.repo.findById(productGroupId).orElse(null);
+    }
+
+    @Transactional
+    public void update(ProductGroupDoc productGroupDoc) {
+        this.repo.save(productGroupDoc);
     }
 }
 

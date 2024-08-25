@@ -6,6 +6,8 @@ import com.up.and.down.product.entity.TravelTheme;
 import com.up.and.down.product.response.LikeResponse;
 import com.up.and.down.product.response.LikeState;
 import com.up.and.down.product.service.ProductService;
+import com.up.and.down.search.entity.ProductGroupDoc;
+import com.up.and.down.search.service.SearchService;
 import com.up.and.down.user.member.entity.Member;
 import com.up.and.down.user.member.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final SearchService searchService;
     private final UserService userService;
 
     @GetMapping
@@ -80,7 +83,8 @@ public class ProductController {
     @ResponseBody
     public LikeResponse like(
             @PathVariable Long productGroupId,
-            Authentication authentication
+            Authentication authentication,
+            Model model
     ) {
         log.info("GET product - like productGroupId: {}", productGroupId);
 
@@ -99,11 +103,18 @@ public class ProductController {
         // 사용자가 좋아요한 상품 그룹이 포함되어 있는지 확인
         boolean isLiked = member.getLikedProductGroup().contains(productGroupId);
 
+        ProductGroup productGroup = this.productService.findById(productGroupId);
+        ProductGroupDoc productGroupDoc = this.searchService.findById(productGroupId);
+
         if (isLiked) {
             // 좋아요가 이미 되어 있는 경우, 좋아요를 취소
             log.info("User is unliked");
             member.getLikedProductGroup().remove(productGroupId);
             userService.save(member); // 사용자 정보 업데이트
+            productGroup.decreaseLikeCount();
+            productService.update(productGroup);
+            productGroupDoc.decreaseLikeCount();
+            searchService.update(productGroupDoc);
             return LikeResponse.builder()
                     .authentication(true)
                     .likeState(LikeState.UN_LIKE)
@@ -113,6 +124,10 @@ public class ProductController {
             log.info("User is liked");
             member.getLikedProductGroup().add(productGroupId);
             userService.save(member); // 사용자 정보 업데이트
+            productGroup.increaseLikeCount();
+            productService.update(productGroup);
+            productGroupDoc.increaseLikeCount();
+            searchService.update(productGroupDoc);
             return LikeResponse.builder()
                     .authentication(true)
                     .likeState(LikeState.DO_LIKE)
