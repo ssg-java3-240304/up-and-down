@@ -1,10 +1,13 @@
 package com.up.and.down.product.controller;
 
+import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.product.entity.ProductGroup;
 import com.up.and.down.product.entity.TravelTheme;
 import com.up.and.down.product.response.LikeResponse;
 import com.up.and.down.product.response.LikeState;
 import com.up.and.down.product.service.ProductService;
+import com.up.and.down.user.member.entity.Member;
+import com.up.and.down.user.member.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URLEncoder;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +22,8 @@ import java.util.List;
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService service;
+    private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping
     public String productGroup() {
@@ -36,11 +39,11 @@ public class ProductController {
         log.info("GET product - productGroupId: {}", productGroupId);
 
         // 상품 id로 조회
-        ProductGroup productGroup = this.service.findById(productGroupId);
+        ProductGroup productGroup = this.productService.findById(productGroupId);
         // 다른 고객이 함께 본 상품 조회
-        List<ProductGroup> relatedProductGroups = this.service.findRelatedProductsTop4(productGroup.getNights());
+        List<ProductGroup> relatedProductGroups = this.productService.findRelatedProductsTop4(productGroup.getNights());
         // 카테고리 인기 상품 조회
-        List<ProductGroup> popularProductGroups = this.service.findByThemeTop4(productGroup.getSearchKeywords());
+        List<ProductGroup> popularProductGroups = this.productService.findByThemeTop4(productGroup.getSearchKeywords());
 
 
         // 상품그룹 등록
@@ -81,6 +84,30 @@ public class ProductController {
                     .build();
         }
 
-        return new LikeResponse();
+        // 인증된 사용자 정보 가져오기
+        Member member = (Member) ((AuthPrincipal) authentication.getPrincipal()).getUser();
+        Long memberId = member.getId();
+
+        // 사용자가 좋아요한 상품 그룹이 포함되어 있는지 확인
+        boolean isLiked = member.getLikedProductGroup().contains(productGroupId);
+
+        if (isLiked) {
+            // 좋아요가 이미 되어 있는 경우, 좋아요를 취소
+            member.getLikedProductGroup().remove(productGroupId);
+            userService.save(member); // 사용자 정보 업데이트
+            return LikeResponse.builder()
+                    .authentication(true)
+                    .likeState(LikeState.UN_LIKE)
+                    .build();
+        } else {
+            // 좋아요가 안되어 있는 경우, 좋아요를 추가
+            member.getLikedProductGroup().add(productGroupId);
+            userService.save(member); // 사용자 정보 업데이트
+            return LikeResponse.builder()
+                    .authentication(true)
+                    .likeState(LikeState.DO_LIKE)
+                    .build();
+        }
     }
+
 }

@@ -33,7 +33,11 @@ const like = function () {
         })
         .then(data => {
             if (data.authentication) {
-
+                if (data.likeState === "DO_LIKE") {
+                    $likeBtn.querySelector('img').src = "https://kr.object.ncloudstorage.com/up-bucket/product/heart-fill.png";
+                } else {
+                    $likeBtn.querySelector('img').src = "https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png";
+                }
             } else {
                 if (confirm("로그인이 필요한 서비스입니다. 로그인하시겠습니까?")) {
                     const url = encodeURIComponent(window.location.href);

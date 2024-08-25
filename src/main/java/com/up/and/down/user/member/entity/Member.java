@@ -24,6 +24,12 @@ public class Member extends User {
     private Gender gender; // 성별
     private LocalDate birth; // 생년월일
     private Marketing marketing; // 마케팅 정보 수신 동의 여부
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "tbl_member_liked_product_group",
+            joinColumns = @JoinColumn(name = "member_id")
+    )
+    private Set<Long> likedProductGroup; // 좋아요한 상품
 
     public Member(Long id, String name, String userId, String password, String phone, String email, Set<Authority> authorities, String memberId, String nickname, com.up.and.down.user.member.entity.Gender gender, LocalDate birth, Marketing marketing) {
             super(id, name, userId, password, phone, email, authorities);
