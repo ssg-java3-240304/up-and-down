@@ -40,7 +40,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             // 로그인 로그 저장
             loginAttemptService.recordLoginAttempt(memberId, request);
 
-            response.sendRedirect("/app/");
+            String redirectUrl = (String) request.getSession().getAttribute("redirectUrl");
+            log.debug(redirectUrl);
+            if (redirectUrl != null) {
+                request.getSession().removeAttribute("redirectUrl");
+                response.sendRedirect(redirectUrl);
+            } else {
+                response.sendRedirect("/app/");
+            }
         } else {
             response.sendRedirect("/app"); // 기본 경로 설정
         }

@@ -36,8 +36,9 @@ const like = function () {
 
             } else {
                 if (confirm("로그인이 필요한 서비스입니다. 로그인하시겠습니까?")) {
-                    // window.location.href = rootUrl + `/login/${window.location.href}`;
-                }
+                    const url = encodeURIComponent(window.location.href);
+                    console.log(rootUrl + `/auth/login?url=${url}`);
+                    window.location.href = rootUrl + `/auth/login?url=${url}`;              }
             }
         })
         .catch(error => {

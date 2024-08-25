@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                             "/admin/dashboard",
                             "/admin/stat/**"
                     ).permitAll() // 누구나 허용
-                    .requestMatchers("/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
+                    .requestMatchers("/auth/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
         });
