@@ -50,28 +50,31 @@ public class ChatRoomController {
         } else return "Permission";
     }
 
+
     //메인 페이지 조회 -> 동기처리
     @GetMapping("/list")
     public String findAllChatRoomList(
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             Model model
     ){
-        ImageImport imageImport = new ImageImport();
 
         //이미지 가져오는 코드
+        ImageImport imageImport = new ImageImport();
         String directoryName = "product";
         String imageName = "reading-glasses.png";
         String imageUrl = imageImport.getImageUrl(directoryName, imageName);
 
+        //페이징 정보 생성
         Page<ShowChatRoomDto> chatRooms = chatRoomService.findAllChatRooms(pageable);
 
-        //페이징 정보 생성
-        String url = "chat-rooms/list";
-        PageCriteria pageCriteria = new PageCriteria(pageable.getPageNumber(), pageable.getPageSize(), (int) chatRooms.getTotalElements(), url);
 
-        model.addAttribute("chatRooms", chatRooms);
+        // Model에 데이터 전달
         model.addAttribute("imageUrl", imageUrl);
-        model.addAttribute("pageCriteria", pageCriteria);
+        model.addAttribute("chatRooms", chatRooms);  // 실제 데이터 리스트
+        model.addAttribute("currentPage", chatRooms.getNumber());
+        model.addAttribute("totalPages", chatRooms.getTotalPages());
+        model.addAttribute("totalCount", chatRooms.getTotalElements());
+
 
         return "chatroom/list";
     }

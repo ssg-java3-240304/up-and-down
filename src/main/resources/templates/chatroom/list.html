@@ -61,7 +61,7 @@
         <!-- 전체수 & 만들기 버튼 -->
         <div class="summary-bar">
             <div class="total-chatroom-count">
-                전체 수 <span id="totalCount" th:text="${chatRooms.size}">0</span>개
+                전체 수 <span id="totalCount" th:text="${totalCount}">0</span>개
             </div>
 
             <div class="regist-button-container">
@@ -95,6 +95,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- 페이지 -->
+        <nav aria-label="Page navigation example" id="pagination">
+            <ul class="pagination justify-content-center">
+                <!-- Previous 버튼 -->
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${currentPage - 1}, size=${pageSize})}|" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- 페이지 번호 -->
+                <li th:each="page : ${#numbers.sequence(0, totalPages-1)}" class="page-item" th:classappend="${page == currentPage} ? 'active'">
+                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${page}, size=${pageSize})}|" th:text="${page + 1}">1</a>
+                </li>
+
+                <!-- Next 버튼 -->
+                <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${currentPage + 1}, size=${pageSize})}|" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <script>
             document.querySelector('h1').style.fontSize = '2rem';
