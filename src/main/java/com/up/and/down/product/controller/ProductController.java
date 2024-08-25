@@ -2,15 +2,15 @@ package com.up.and.down.product.controller;
 
 import com.up.and.down.product.entity.ProductGroup;
 import com.up.and.down.product.entity.TravelTheme;
+import com.up.and.down.product.response.LikeResponse;
+import com.up.and.down.product.response.LikeState;
 import com.up.and.down.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -62,5 +62,25 @@ public class ProductController {
     ) {
         log.info("GET product - redirectUrl: {}", redirectUrl);
         return "redirect:" + redirectUrl;
+    }
+
+    @GetMapping("/like/{productGroupId}")
+    @ResponseBody
+    public LikeResponse like(
+            @PathVariable Long productGroupId,
+            Authentication authentication
+    ) {
+        log.info("GET product - like productGroupId: {}", productGroupId);
+
+        // 로그인이 되어 있지 않은 경우
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.info("User is not authenticated");
+            return LikeResponse.builder()
+                    .authentication(false)
+                    .likeState(LikeState.NOT_LIKED)
+                    .build();
+        }
+
+        return new LikeResponse();
     }
 }

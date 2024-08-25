@@ -12,6 +12,9 @@
     <!-- css -->
     <link rel="stylesheet" th:href="@{/css/product.css}">
     <!-- js -->
+    <script>
+        const productGroupId = [[${productGroupId}]];
+    </script>
     <script defer th:src="@{/js/product.js}"></script>
 </head>
 <body>
@@ -34,7 +37,7 @@
             <p class="description" th:text="${productGroup.getContent}">패키지 여행 상품 설명</p>
             <div class="action">
                 <!-- 좋아요 -->
-                <button type="button">
+                <button type="button" class="like-btn">
                     <img src="https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png" alt="좋아요 버튼">
                 </button>
                 <!-- 공유하기 -->
