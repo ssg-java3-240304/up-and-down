@@ -32,16 +32,12 @@ const displayChatLog = function () {
         if (xhr.status === 200) {  // 성공적으로 응답을 받았을 경우
             console.log("response success!!!");
             const messages = JSON.parse(xhr.responseText); // JSON 응답을 객체로 변환
-
             console.log(messages);
 
             // 마지맞 메시지 날짜 저장
-            let lastDate = null;
-
             for (const message of messages) {
                 const messageDate = formatCreatedAtToDateString(message.createdAt);
 
-                // 메시지 날짜가 바뀌면 화면에 표시
                 if (lastDate !== messageDate) {
                     displayDate(messageDate);
                     lastDate = messageDate; // 마지막 날짜 업데이트
@@ -52,17 +48,14 @@ const displayChatLog = function () {
             scrollToBottom();
 
             // 마지막 메시지 내역 저장
-            localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(data));
+            localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(messages));
         } else {
             console.error('Failed to load chat log');
         }
     };
-
     xhr.onerror = function () {
         console.error('Request error');
-
     }
-
     xhr.send();
 }
 
@@ -70,7 +63,6 @@ const displayChatLog = function () {
 const scrollToBottom = function () {
     $contentBody.scrollTop = $contentBody.scrollHeight;
 }
-
 
 // 채팅 날짜 표시
 const displayDate = function (dateString) {
@@ -92,6 +84,12 @@ const stompRegister = function () {
         client.subscribe(`/sub/chatroom/chat`, (message) => {
             const data = JSON.parse(message.body);
             console.log('Parsed message: ', data);
+            const messageDate = formatCreatedAtToDateString(data.createdAt);
+
+            if (lastDate !== messageDate) {
+                displayDate(messageDate);
+                lastDate = messageDate; // 마지막 날짜 업데이트
+            }
 
             // 메시지를 채팅 창에 추가
             $chatLogBox.appendChild(createChatElement(data));
@@ -100,7 +98,7 @@ const stompRegister = function () {
 
             // 마지막 메시지 내역 저장
             localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(data));
-        })
+        });
     });
 
     return client;
@@ -121,6 +119,11 @@ const sendMessage = function () {
 
         stompClient.send(`/pub/chatroom/chat`, {}, JSON.stringify(msgData));
 
+        const messageDate = formatCreatedAtToDateString(new Date().toISOString());
+        if (lastDate !== messageDate) {
+            displayDate(messageDate);
+            lastDate = messageDate; // 마지막 날짜 업데이트
+        }
         scrollToBottom();
 
         // 마지막 메시지 내역 저장
@@ -132,15 +135,6 @@ let lastDate = null;
 // chat 요소 생성
 const createChatElement = function (msgData) {
 
-    // 현재 메시지 날짜
-    const messageDate = formatCreatedAtToDateString(msgData.createdAt);
-
-    // 현재 메시지 날짜가 이전에 표시된 날짜와 다를 경우에만 날짜 표시
-    if (lastDate !== messageDate) {
-        displayDate(messageDate);  // 새로운 날짜 표시
-        lastDate = messageDate;    // lastDate를 현재 메시지의 날짜로 업데이트
-    }
-
     // li 요소 생성
     const chatElement = document.createElement('li');
     chatElement.classList.add('chat');
@@ -150,12 +144,6 @@ const createChatElement = function (msgData) {
         chatElement.classList.add('mine'); // 자신이 보낸 메시지인 경우
     } else {
         chatElement.classList.add('other'); // 다른 사용자가 보낸 메시지인 경우
-    }
-
-    // 날짜가 이전 메시지와 다를 경우 날짜 표시
-    if (lastDate !== messageDate) {
-        displayDate(messageDate);
-        lastDate = messageDate; // 마지막 날짜를 갱신
     }
 
     // innerHTML로 요소 내용 설정
@@ -197,39 +185,3 @@ const formatCreatedAtToDateString = function (createdAt) {
     // 날짜 문자열 조합
     return `${year}년 ${month}월 ${day}일`;
 }
-//     // 스크롤 이벤트 리스너 설정
-//     const messagesElement = document.getElementById('messages');
-//     messagesElement.addEventListener('scroll', () => {
-//         if (messagesElement.scrollTop === 0 && !loadingMessages) {
-//             loadingMessages = true;
-//             page++;
-//
-//             // AJAX 요청을 통해 이전 메시지 로드
-//             const xhr = new XMLHttpRequest();
-//             xhr.open('GET', `/chat-rooms/${chatRoomId}/messages?page=${page}&size=50`, true);
-//             xhr.setRequestHeader('Content-Type', 'application/json');
-//
-//             xhr.onload = function() {
-//                 if (xhr.status === 200) {
-//                     const messages = JSON.parse(xhr.responseText);
-//                     const fragment = document.createDocumentFragment();
-//                     messages.forEach(data => {
-//                         const messageElement = createMessageElement(data);
-//                         fragment.appendChild(messageElement);
-//                     });
-//                     messagesElement.insertBefore(fragment, messagesElement.firstChild);
-//                     loadingMessages = false;
-//                 } else {
-//                     console.error('Failed to load messages');
-//                     loadingMessages = false;
-//                 }
-//             };
-//
-//             xhr.onerror = function() {
-//                 console.error('Request error');
-//                 loadingMessages = false;
-//             };
-//
-//             xhr.send();
-//         }
-//     });
