@@ -45,6 +45,20 @@ main > div > .description {
 .action button img {
     width: 30px; height: 30px;
 }
+.action .share-alert {
+    position: fixed;
+    bottom: 100px; left: 50%;
+    transform: translateX(-50%);
+
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0; /* 처음엔 숨겨진 상태 */
+    transition: opacity 1s; /* 서서히 사라지는 효과 */
+}
+.action .share-alert.notify {
+    opacity: 1; /* 나타날 때는 바로 보이도록 */
+}
 /* 구매하기 */
 .price-box {
     margin: 20px;
