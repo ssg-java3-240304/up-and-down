@@ -38,7 +38,10 @@
             <div class="action">
                 <!-- 좋아요 -->
                 <button type="button" class="like-btn">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png" alt="좋아요 버튼">
+                    <img th:src="${isLiked ?
+                                 'https://kr.object.ncloudstorage.com/up-bucket/product/heart-fill.png' :
+                                 'https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png'}"
+                         alt="좋아요 버튼">
                 </button>
                 <!-- 공유하기 -->
                 <button type="button" class="share-btn">

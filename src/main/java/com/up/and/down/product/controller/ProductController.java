@@ -34,12 +34,19 @@ public class ProductController {
     @GetMapping("/{productGroupId}")
     public String productGroupById(
             @PathVariable Long productGroupId,
+            Authentication authentication,
             Model model
     ) {
         log.info("GET product - productGroupId: {}", productGroupId);
 
         // 상품 id로 조회
         ProductGroup productGroup = this.productService.findById(productGroupId);
+        // 사용자가 좋아요를 눌렀는지 확인
+        boolean isLiked = false;
+        if (authentication != null && authentication.isAuthenticated()) {
+            Member member = (Member) ((AuthPrincipal) authentication.getPrincipal()).getUser();
+            isLiked = member.getLikedProductGroup().contains(productGroupId);
+        }
         // 다른 고객이 함께 본 상품 조회
         List<ProductGroup> relatedProductGroups = this.productService.findRelatedProductsTop4(productGroup.getNights());
         // 카테고리 인기 상품 조회
@@ -48,6 +55,8 @@ public class ProductController {
 
         // 상품그룹 등록
         model.addAttribute("productGroup", productGroup);
+        model.addAttribute("isLiked", isLiked);
+
         // 다른 고객이 함께 본 상품 등록
         model.addAttribute("relatedProductGroups", relatedProductGroups);
         // 카테고리 인기 상품 등록
@@ -86,13 +95,13 @@ public class ProductController {
 
         // 인증된 사용자 정보 가져오기
         Member member = (Member) ((AuthPrincipal) authentication.getPrincipal()).getUser();
-        Long memberId = member.getId();
 
         // 사용자가 좋아요한 상품 그룹이 포함되어 있는지 확인
         boolean isLiked = member.getLikedProductGroup().contains(productGroupId);
 
         if (isLiked) {
             // 좋아요가 이미 되어 있는 경우, 좋아요를 취소
+            log.info("User is unliked");
             member.getLikedProductGroup().remove(productGroupId);
             userService.save(member); // 사용자 정보 업데이트
             return LikeResponse.builder()
@@ -101,6 +110,7 @@ public class ProductController {
                     .build();
         } else {
             // 좋아요가 안되어 있는 경우, 좋아요를 추가
+            log.info("User is liked");
             member.getLikedProductGroup().add(productGroupId);
             userService.save(member); // 사용자 정보 업데이트
             return LikeResponse.builder()
@@ -109,5 +119,4 @@ public class ProductController {
                     .build();
         }
     }
-
 }
