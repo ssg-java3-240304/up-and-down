@@ -5,7 +5,6 @@ import com.up.and.down.user.member.dto.MemberDto;
 import com.up.and.down.user.member.dto.PrivacyInfoDto;
 import com.up.and.down.user.member.entity.Member;
 import com.up.and.down.user.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,18 +39,9 @@ public class MemberService {
         HashMap<String, String> params = new HashMap<>();
         params.put("to", to);
         params.put("from", "01021615694");
-//        params.put("type", "SMS");
         params.put("text", "[UpAndDown]" + "\n" + "인증번호[" + authorizationCode + "] 타인에게 절대 알려주지 마세요.");
 
-        // 임시 주석 처리
-        try {
-            coolsms.send(params);
-            return authorizationCode;
-        } catch (CoolsmsSystemException e) {
-            e.printStackTrace();
-            return "false";
-        }
-//        return authorizationCode;
+        return authorizationCode;
     }
 
     public void insertPrivacy(PrivacyInfoDto privacyInfoDto) {
@@ -62,17 +52,15 @@ public class MemberService {
         memberDto.insertMemberAccount(memberAccountInfoDto);
     }
 
-    public Optional<Member> findById(Long id){
-        return memberRepository.findById(id);
-    }
     public void register() {
         Member member = memberDto.toMember();
         log.info("member = {}", member);
-        // User의 권한 설정
         member.setMemberAuthority();
         log.info("member = {}", member);
-
-        // 회원 정보 저장
         memberRepository.save(member);
+    }
+
+    public Optional<Member> findById(Long id){
+        return memberRepository.findById(id);
     }
 }

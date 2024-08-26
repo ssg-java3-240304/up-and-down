@@ -24,6 +24,4 @@ public class ImageImport {
 
         return str.toString();
     }
-
-
 }

@@ -42,7 +42,7 @@
 
         <!-- 목록 버튼 -->
         <div class="button-container mt-4 text-end">
-            <a th:href="@{/chat-rooms/list}" class="list-button">목록</a>
+            <a th:href="@{/chatroom/list}" class="list-button">목록</a>
         </div>
 
         <!-- 제목과 카테고리 -->
@@ -56,46 +56,53 @@
         <!-- 날짜, 닉네임, 참여인원수 -->
         <div class="info-bar mt-4">
             <!-- 등록일시 -->
-            <p class="create-date mb-0" th:text="${#temporals.format(chatRoom.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Creation Date</p>
+            <p class="create-date mb-0">
+                <!-- 조건부로 createdAt과 updatedAt을 동시에 표시 -->
+                <span th:text="${#temporals.format(chatRoom.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Creation Date</span>
+                <span th:if="${chatRoom.updatedAt != null}"> | </span>
+                <span th:if="${chatRoom.updatedAt != null}" th:text="${#temporals.format(chatRoom.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">Updated Date</span>
+            </p>
             <div class="user-info text-end">
                 <!-- 닉네임 -->
                 <p class="nickname mb-0" th:text="${chatRoom.nickname}">Nickname</p>
                 <!-- 참여인원수 -->
-                <p class="total-participants mb-0">참여인원수: <span th:text="${chatRoom.memberCount}">0</span> 명</p>
+                <p class="total-participants mb-0">참여인원수: <span th:text="${chatRoomInfo.memberCount}">0</span> 명</p>
             </div>
         </div>
 
         <!-- 본문내용 -->
         <div class="details mt-4 p-3 border">
-            <p th:text="${chatRoom.description}">Description</p>
+            <p th:utext="${#strings.replace(chatRoom.description, '\n', '<br />')}">Description</p>
         </div>
 
         <!-- 참여하기 버튼 -->
         <div class="button-container bottom-center">
-            <!-- 채팅방장인 경우 -->
-            <div sec:authorize="isAuthenticated()">
-                <th:block th:if="${chatRoom.isCreator}">
-                    <a th:href="@{/chat-rooms/update/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-update">수정하기</a>
-                </th:block>
-            </div>
+            <div class="button-group">
+                <!-- 채팅방장인 경우 -->
+                <div sec:authorize="isAuthenticated()">
+                    <th:block th:if="${chatRoom.isCreator}">
+                        <a th:href="@{/chatroom/update/{chatRoomId}(chatRoomId=${chatRoom.getChatroomId})}" class="btn btn-update">수정하기</a>
+                    </th:block>
+                </div>
 
-            <!-- 채팅방 멤버인 경우 -->
-            <div sec:authorize="isAuthenticated()">
-                <th:block th:if="${chatRoom.isMember}">
-                    <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-chat">채팅방</a>
-                </th:block>
-            </div>
+                <!-- 채팅방 멤버인 경우 -->
+                <div sec:authorize="isAuthenticated()">
+                    <th:block th:if="${chatRoom.isMember}">
+                        <a th:href="@{/chatroom/chat/{chatRoomId}(chatRoomId=${chatRoom.getChatroomId})}" class="btn btn-chat">채팅방</a>
+                    </th:block>
+                </div>
 
-            <!-- 로그인된 경우, 채팅방에 참여하지 않은 경우 -->
-            <div sec:authorize="isAuthenticated()">
-                <th:block th:if="${!chatRoom.isMember && !chatRoom.isCreator}">
-                    <a th:href="@{/chat-rooms/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-join">참여하기</a>
-                </th:block>
-            </div>
+                <!-- 로그인된 경우, 채팅방에 참여하지 않은 경우 -->
+                <div sec:authorize="isAuthenticated()">
+                    <th:block th:if="${!chatRoom.isMember && !chatRoom.isCreator}">
+                        <a th:href="@{/chatroom/chat/{chatRoomId}(chatRoomId=${chatRoom.getChatroomId})}" class="btn btn-join">참여하기</a>
+                    </th:block>
+                </div>
 
-            <!-- 비회원일 경우 -->
-            <div sec:authorize="isAnonymous()">
-                <a th:href="@{/auth/login}" class="btn btn-join">참여하기</a>
+                <!-- 비회원일 경우 -->
+                <div sec:authorize="isAnonymous()">
+                    <a th:href="@{/auth/login}" class="btn btn-join">참여하기</a>
+                </div>
             </div>
         </div>
 

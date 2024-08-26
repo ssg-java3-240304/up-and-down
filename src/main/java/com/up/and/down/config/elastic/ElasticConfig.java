@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
 import org.springframework.lang.NonNull;
 
-//@Configuration
+@Configuration
 public class ElasticConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.uris}")
     private String[] elasticsearchUris;

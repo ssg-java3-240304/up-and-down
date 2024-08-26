@@ -6,69 +6,61 @@
 <head>
     <title>채팅방</title>
 
-    <link rel="stylesheet" th:href="@{/css/chatroom/chat.css}">
-
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- stomp -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script layout:fragment="js"></script>
+    <!-- css -->
+    <link rel="stylesheet" th:href="@{/css/chatroom/chat.css}">
+
+    <!-- js -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        const chatRoomId = [[${chatRoomId}]]; // 서버에서 전달된 채팅방 ID
+        const chatroomId = [[${chatroomId}]]; // 서버에서 전달된 채팅방 ID
         const memberId = [[${memberId}]];
-        const username = [[${username}]]; // 닉네임
-        console.log({chatRoomId}, {memberId}, {username});
+        const nickname = [[${nickname}]];
+        console.log({chatroomId}, {memberId}, {nickname});
         /*]]>*/
     </script>
-    <script th:src="@{/js/chatroom/chat.js}"></script>
+    <script defer th:src="@{/js/chatroom/chat.js}"></script>
 </head>
 <body>
-    <main layout:fragment="main" class="mt-20">
-        <div id="chat-container">
-            <div id="chat-header">
+    <main layout:fragment="main">
+        <div class="chat-box">
+            <header class="content-header">
+                <!-- 제목 -->
                 <div class="header-top">
-                    <!-- 채팅방 이름 -->
-                    <span id="currentRoomNumber" class="chat-title" th:text="${chatRoomName}">채팅방 이름</span>
-                    <!-- member 수 -->
-                    <span class="members-num" th:text="'(' + ${memberCount} + ')'">(25)</span>
+                    <h1 th:text="${chatroomName}">채팅방 이름</h1>
+                    <p class="current-room-member" th:text="${memberCount}">(0)</p>
                 </div>
-                <!-- 카테고리 표시 -->
-                <div id="categories">
-                    <ul>
-                        <li th:each="category : ${chatRoomCategories}">
-                            <span class="category-label" th:text="${category.displayName}">카테고리 이름</span>
-                        </li>
-                    </ul>
-                </div>
+                <!-- 카테고리 -->
+                <ul class="chat-category-box">
+                    <li th:each="category : ${chatRoomCategories}" class="chat-category-badge" th:text="${category.getDisplayName}">카테고리</li>
+                </ul>
+            </header>
+            <div class="content-body scroll-hidden">
+                <ul class="chat-log-box">
+<!--                    &lt;!&ndash; 채팅 날짜 표시 &ndash;&gt;-->
+<!--                    <li class="date-notice">-->
+<!--                        <span>2024년 7월 30일 화요일</span>-->
+<!--                    </li>-->
+<!--                    &lt;!&ndash; 입장 표시 &ndash;&gt;-->
+<!--                    <li class="enter-member">-->
+<!--                        <span>ㅇㅇ 님이 들어왔습니다</span>-->
+<!--                    </li>-->
+                </ul>
             </div>
-
-            <div id="messages" class="chat-box">
-                <!-- 날짜 표시 -->
-                <div th:each="message, iterStat : ${messages}" class="message">
-                    <div th:if="${iterStat.index == 0 || !#temporals.format(messages[iterStat.index - 1].now, 'yyyyMMdd').equals(#temporals.format(message.now, 'yyyyMMdd'))}" class="date-separator">
-                        <p th:text="${#temporals.format(message.now, 'yyyy년 M월 d일 E요일')}">2024년 7월 30일 화요일</p>
-                    </div>
-                    <!-- 내가 보냈을 때, 상대방이 보냈을 때 메시지 위치 수정 필요 -->
-                    <div th:if="${message.memberId == #authentication.principal.user.id}"
-                         th:class="'sent-message message'">
-                        <p class="member-name" th:text="${message.nickname}">닉네임</p>
-                        <div class="content" th:text="${message.message}">메시지 내용</div>
-                        <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
-                    </div>
-                    <div th:if="${message.memberId != #authentication.principal.user.id}"
-                         th:class="'other-message message'">
-                        <p class="member-name" th:text="${message.nickname}">닉네임</p>
-                        <div class="content" th:text="${message.message}">메시지 내용</div>
-                        <p class="sent-time" th:text="${#temporals.format(message.now, 'HH:mm:ss')}">시간</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chat-input">
-                <div id="message-input" contenteditable="true" placeholder="메시지를 입력해주세요."></div>
-                <button id="send-button" class="arrow-button" type="button"></button>
-            </div>
+            <footer class="content-footer">
+                <!-- 채팅 입력란 -->
+                <form class="chat-input-frm">
+                    <input type="text" id="chat-content" placeholder="메시지를 입력해주세요.">
+                    <button type="submit" class="submit-btn">
+                        <img src="https://kr.object.ncloudstorage.com/up-bucket/chat/direction-arrow.png" alt="보내기 버튼 이미지">
+                    </button>
+                </form>
+            </footer>
         </div>
     </main>
 </body>

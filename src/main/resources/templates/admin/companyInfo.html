@@ -4,39 +4,10 @@
       layout:decorate="~{layout/admin/default}">
 <head>
     <title>companyInfo</title>
-    <style>
-        #companyInfo {
-            margin-left: 31px !important;
-        }
-    </style>
 </head>
 <body>
     <main layout:fragment="main">
-        <div class="container-fluid">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary" id="companyInfo">본사 정보</h6>
-                </div>
-                <div class="card shadow">
-                    <div class="card-body" th:object="${adminCompanyInfo}">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>회사명:</strong> <span th:text="${adminCompanyInfo.companyName}"></span></p>
-                                <p><strong>대표자명:</strong> <span th:text="${adminCompanyInfo.exponentName}"></span></p>
-                                <p><strong>사업자등록번호:</strong> <span th:text="${adminCompanyInfo.businessNumber}"></span></p>
-                                <p><strong>통신판매업 신고번호:</strong> <span th:text="${adminCompanyInfo.mailOrderBusinessReportNumber}"></span></p>
-                                <p><strong>이메일:</strong> <span th:text="${adminCompanyInfo.email}"></span></p>
-                                <p><strong>고객센터 전화번호:</strong> <span th:text="${adminCompanyInfo.serviceNumber}"></span></p>
-                            </div>
-                        </div>
-                        <div class="btn-group-custom">
-<!--                            <a class="btn btn-primary" th:onclick="|location.href='@{/refund/refundList}';|">수정</a>-->
-                            <a class="btn btn-primary">수정</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1>companyInfo</h1>
     </main>
 </body>
 </html>

@@ -37,35 +37,37 @@
                 <div class="dropdown">
                     <select id="searchType" class="search-select">
                         <option value="name">제목</option>
+                        <option value="nameAndDescription">제목 + 내용</option>
                     </select>
                     <input type="text" id="searchQuery" placeholder="검색어를 입력하세요" class="search-input"/>
-                    <button id="searchButton" class="search-button">
-                        <img th:src="${imageUrl}" alt="Search" class="search-icon">
-                    </button>
+                    <button id="searchButton" class="search-button">검색</button>
                 </div>
             </div>
         </div>
 
         <!-- 카테고리 버튼 -->
         <div class="category-buttons">
-            <button type="button" data-category="HIKING" class="category-button">등산</button>
-            <button type="button" data-category="WALKING" class="category-button">산책</button>
-            <button type="button" data-category="CAMPING" class="category-button">캠핑</button>
-            <button type="button" data-category="FESTIVAL" class="category-button">축제</button>
-            <button type="button" data-category="BEACH" class="category-button">바다</button>
-            <button type="button" data-category="HEALING" class="category-button">힐링</button>
-            <button type="button" data-category="FISHING" class="category-button">낚시</button>
-            <button type="button" data-category="OTHER" class="category-button">기타</button>
+            <button type="button" data-category="ADVENTURE" class="category-button">모험</button>
+            <button type="button" data-category="RELAXATION" class="category-button">휴식</button>
+            <button type="button" data-category="CULTURE" class="category-button">문화</button>
+            <button type="button" data-category="NATURE" class="category-button">자연</button>
+            <button type="button" data-category="FOOD" class="category-button">맛집</button>
+            <button type="button" data-category="HISTORY" class="category-button">역사</button>
+            <button type="button" data-category="LUXURY" class="category-button">럭셔리</button>
+            <button type="button" data-category="FAMILY" class="category-button">가족</button>
+            <button type="button" data-category="ROMANTIC" class="category-button">로맨틱</button>
+            <button type="button" data-category="FESTIVAL" class="category-button">쇼핑</button>
+            <button type="button" data-category="SHOPPING" class="category-button">축제</button>
         </div>
 
         <!-- 전체수 & 만들기 버튼 -->
         <div class="summary-bar">
             <div class="total-chatroom-count">
-                전체 수 <span id="totalCount" th:text="${chatRooms.size}">0</span>개
+                전체 수 <span id="totalCount" th:text="${totalCount}">0</span>개
             </div>
 
             <div class="regist-button-container">
-                <a th:href="@{/chat-rooms/regist}" class="create-button">만들기</a>
+                <a th:href="@{/chatroom/regist}" class="create-button">만들기</a>
             </div>
         </div>
 
@@ -74,27 +76,50 @@
             <!-- 결과 없음 메시지 컨테이너 추가 -->
             <div class="no-results d-none" id="no-results"></div>
 
-
-<!-- th:attr="onclick='window.location.href=\'/app/chat-rooms/' + ${chatRoom.chatRoomId} + '\''"-->
-            <div th:each="chatRoom : ${chatRooms}" class="list-item">
+            <div th:each="chatRoom : ${chatRooms}" class="list-item"
+                 th:attr="onclick='window.location.href=\'/app/chatroom/' + ${chatRoom.chatroomId} + '\''">
                 <div class="list-item-content d-flex align-items-center justify-content-end">
                     <div class="d-flex align-items-center w-100">
                         <!-- 제목 -->
                         <h3 class="list-title m-0" th:text="${chatRoom.name}"><strong>Chatroom Name</strong></h3>
                         <!-- 닉네임 -->
-                        <span class="list-nickname ms-3" th:text="${chatRoom.nickName}">Nickname</span>
+                        <span class="list-nickname ms-3" th:text="${chatRoom.nickname}">Nickname</span>
                         <!-- 카테고리 -->
                         <div class="list-categories ms-3">
-                            <span class="category-badge" th:each="category : ${chatRoom.categories}" th:text="${category}">Category</span>
+                            <span class="category-badge" th:each="category : ${chatRoom.category}" th:text="${category}">Category</span>
                         </div>
-                    </div>
-                    <!-- 참여 인원수 (오른쪽 정렬) -->
-                    <div class="list-participants" style="margin-left:auto;">
-                        참여 인원수: <span th:text="${chatRoom.memberCount}">참여인원수</span>
+                        <!-- 참여 인원수 (오른쪽 정렬) -->
+                        <div class="list-participants" style="margin-left:auto;">
+                            참여 인원수: <span th:text="${chatRoom.memberCount}">참여인원수</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- 페이지 -->
+        <nav aria-label="Page navigation example" id="pagination">
+            <ul class="pagination justify-content-center">
+                <!-- Previous 버튼 -->
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${currentPage - 1}, size=${pageSize})}|" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- 페이지 번호 -->
+                <li th:each="page : ${#numbers.sequence(0, totalPages-1)}" class="page-item" th:classappend="${page == currentPage} ? 'active'">
+                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${page}, size=${pageSize})}|" th:text="${page + 1}">1</a>
+                </li>
+
+                <!-- Next 버튼 -->
+                <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${currentPage + 1}, size=${pageSize})}|" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <script>
             document.querySelector('h1').style.fontSize = '2rem';

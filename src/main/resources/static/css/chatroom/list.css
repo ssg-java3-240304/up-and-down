@@ -207,53 +207,22 @@ main {
 }
 
 .pagination .page-link {
-    color: #66CDAA;  /* 기본 글씨 색 */
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    background-color: #fff;
-    padding: 8px 12px;
-    text-decoration: none;
+    color: #66CDAA;
 }
 
-/* 활성화된 페이지 링크 */
 .pagination .page-item.active .page-link {
-    background-color: #66CDAA;  /* 활성화된 배경 색 */
-    color: #fff;  /* 활성화된 글씨 색 */
+    background-color: #66CDAA;
     border-color: #66CDAA;
+    color: #fff;
 }
 
-/* 페이지 링크 호버 스타일 */
 .pagination .page-link:hover {
-    background-color: #4ea889;  /* 호버 시 배경 색 */
-    color: #fff;  /* 호버 시 글씨 색 */
+    background-color: #4ea889;
+    color: #fff;
 }
 
-/* 비활성화된 페이지 링크 */
 .pagination .page-item.disabled .page-link {
-    color: #6c757d;  /* 비활성화된 글씨 색 */
+    color: #6c757d;
     background-color: #fff;
     border-color: #dee2e6;
-}
-
-/* 페이지네이션 컨테이너 스타일 */
-.pagination ul {
-    display: flex;
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.pagination .page-item {
-    margin: 0 5px;
-}
-
-.search-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-}
-
-.search-icon {
-    width: 30px; /* 원하는 크기로 조정 */
-    height: 30px; /* 원하는 크기로 조정 */
 }

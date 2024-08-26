@@ -2,7 +2,7 @@
 @import "default.css";
 
 /*헤더*/
-header {
+body > header {
     box-sizing: border-box;
     width: 100%; height: 100px;
     min-width: 1400px;
@@ -35,28 +35,14 @@ header .header-group ul {
 /*좌측 사이드 네비*/
 .left-side-nav {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
 }
-.left-side-nav .theme-menu {
+.left-side-nav .product-category-menu {
     float: right;
     box-sizing: border-box;
-    width: 200px;
-    padding: 20px;
-    border-radius: 10px;
+    width: 200px; height: 250px;
     margin: 20px;
+    border-radius: 10px;
     background-color: #265AB4;
-}
-.left-side-nav .theme-menu ul {
-    display: flex;
-    flex-direction: column;
-    /*align-items: center;*/
-    gap: 20px;
-}
-.left-side-nav .theme-menu ul li {
-    font-weight: 700;
-    color: #fff;
 }
 .left-side-nav .ads-box {
     float: right;
@@ -64,9 +50,6 @@ header .header-group ul {
     width: 200px; height: 400px;
     margin: 0 20px 20px;
     background-color: #D9D9D9;
-}
-.left-side-nav .ads-box img {
-    width: 100%; height: 100%;
 }
 /*main*/
 .layout > main {
@@ -82,7 +65,4 @@ header .header-group ul {
     width: 300px; height: 600px;
     margin: 20px;
     background-color: #D9D9D9;
-}
-.right-side-nav .ads-box img {
-    width: 100%; height: 100%;
 }

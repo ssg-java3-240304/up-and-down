@@ -1,23 +1,17 @@
 package com.up.and.down.user.admin.service;
 
-import com.up.and.down.user.admin.dto.*;
+import com.up.and.down.user.User;
+import com.up.and.down.user.admin.dto.AdminDto;
 import com.up.and.down.user.admin.entity.Admin;
-import com.up.and.down.user.admin.entity.Company;
 import com.up.and.down.user.admin.repository.AdminRepository;
-import com.up.and.down.user.admin.repository.CompanyRepository;
-import com.up.and.down.user.admin.repository.ProductStatRepository;
-import com.up.and.down.user.member.repository.LoginInfoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +19,6 @@ import java.util.List;
 @Slf4j
 public class AdminService {
     private final AdminRepository adminRepository;
-    private final CompanyRepository companyRepository;
-    private final LoginInfoRepository loginInfoRepository;
-    private final ProductStatRepository productStatRepository;
 
     @Value("${coolsms.api.key}")
     private String apiKey;
@@ -48,14 +39,14 @@ public class AdminService {
         params.put("text", "[UpAndDown]" + "\n" + "관리자 인증번호[" + authorizationCode + "] 타인에게 절대 알려주지 마세요.");
 
         // 임시 주석 처리
-        try {
-            coolsms.send(params);
-            return authorizationCode;
-        } catch (CoolsmsException e) {
-            e.printStackTrace();
-            return "false";
-        }
-//        return authorizationCode;
+//        try {
+//            coolsms.send(params);
+//            return authorizationCode;
+//        } catch (CoolsmsSystemException e) {
+//            e.printStackTrace();
+//            return "false";
+//        }
+        return authorizationCode;
     }
 
     public boolean adminRegister(AdminDto adminDto) {
@@ -79,32 +70,5 @@ public class AdminService {
             result = "noInfo";
         }
         return result;
-    }
-
-    public AdminCompanyInfoDto getAdminInfo() {
-        Company adminCompanyList = companyRepository.findById(1).orElseThrow();
-        return AdminCompanyInfoDto.fromAdminCompanyInfo(adminCompanyList);
-    }
-
-    public List<VisitCountDto> getVisitCountsForLastSixMonths() {
-        LocalDateTime sixMonthsAgo = LocalDateTime.now().minusMonths(6);
-        return loginInfoRepository.findVisitCountsByMonth(sixMonthsAgo);
-    }
-
-    public List<BrowserCountDto> findBrowserCounts() {
-        LocalDateTime sixMonthsAgo = LocalDateTime.now().minusMonths(6);
-        return loginInfoRepository.findBrowserCounts(sixMonthsAgo);
-    }
-
-    public List<VisitCountDto> getVisitCounts(LocalDateTime startDate, LocalDateTime endDate) {
-        return loginInfoRepository.getVisitCounts(startDate, endDate);
-    }
-
-    public List<BrowserCountDto> getBrowserCounts(LocalDateTime startDate, LocalDateTime endDate) {
-        return loginInfoRepository.getBrowserCounts(startDate, endDate);
-    }
-
-    public List<ProductDestinationInfo> getDestinationNViewCount() {
-        return productStatRepository.getDestinationNViewCount();
     }
 }
