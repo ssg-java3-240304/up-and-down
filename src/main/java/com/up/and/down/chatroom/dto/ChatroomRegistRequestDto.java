@@ -1,7 +1,7 @@
 package com.up.and.down.chatroom.dto;
 
 import com.up.and.down.chatroom.entity.Category;
-import com.up.and.down.chatroom.entity.ChatRoom;
+import com.up.and.down.chatroom.entity.Chatroom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomRegistRequestDto {
+public class ChatroomRegistRequestDto {
     private String name; // 채팅방 이름
     private Set<String> categories; // 카테고리
     private String description; // 소개글
@@ -31,8 +31,8 @@ public class ChatRoomRegistRequestDto {
     }
 
     // chatRoom 엔티티로 변환
-    public ChatRoom toChatRoom(Long creatorId){
-        return ChatRoom.builder()
+    public Chatroom toChatroom(Long creatorId){
+        return Chatroom.builder()
                 .name(this.name)
                 .category(this.toCategorySet()) // 카테고리 설정
                 .description(this.description)

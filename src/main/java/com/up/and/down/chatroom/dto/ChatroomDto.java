@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomDto {
-    private Long chatRoomId;
+public class ChatroomDto {
+    private Long chatroomId;
     private String name; // 채팅방 이름
     private Category category; // 카테고리
     private String content; // 소개글

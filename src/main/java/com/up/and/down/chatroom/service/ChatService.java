@@ -3,7 +3,6 @@ package com.up.and.down.chatroom.service;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.entity.Chat;
 import com.up.and.down.chatroom.repository.ChatRepository;
-import com.up.and.down.chatroom.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;

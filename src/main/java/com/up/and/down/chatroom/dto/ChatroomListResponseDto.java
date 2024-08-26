@@ -1,7 +1,7 @@
 package com.up.and.down.chatroom.dto;
 
 import com.up.and.down.chatroom.entity.Category;
-import com.up.and.down.chatroom.entity.ChatRoom;
+import com.up.and.down.chatroom.entity.Chatroom;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatRoomListResponseDto {
+public class ChatroomListResponseDto {
     private Long chatRoomId;
     private String name; // 채팅방 이름
     private Set<Category> category; // 카테고리
@@ -24,16 +24,15 @@ public class ChatRoomListResponseDto {
     private LocalDateTime createdAt;
     private String nickname;
 
-    public static ChatRoomListResponseDto fromChatRoom(ChatRoom chatRoom, String nickname, int participantCount) {
-        return ChatRoomListResponseDto.builder()
-                .chatRoomId(chatRoom.getChatRoomId())
-                .name(chatRoom.getName())
-                .category(chatRoom.getCategory())
-                .description(chatRoom.getDescription())
-                .creatorId(chatRoom.getCreatorId())
+    public static ChatroomListResponseDto fromChatRoom(Chatroom chatroom, String nickname, int participantCount) {
+        return ChatroomListResponseDto.builder()
+                .chatRoomId(chatroom.getChatRoomId())
+                .name(chatroom.getName())
+                .category(chatroom.getCategory())
+                .description(chatroom.getDescription())
+                .creatorId(chatroom.getCreatorId())
                 .memberCount(participantCount)
                 .nickname(nickname)
-//                .createdAt(chatRoom.getCreatedAt())
                 .build();
     }
 }

@@ -2,8 +2,8 @@ package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
-import com.up.and.down.chatroom.dto.ChatRoomInfoDto;
-import com.up.and.down.chatroom.service.ChatRoomService;
+import com.up.and.down.chatroom.dto.ChatroomInfoDto;
+import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.chatroom.service.ChatService;
 import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class ChatController {
     private final ChatService chatService;
-    private final ChatRoomService chatRoomService;
+    private final ChatroomService chatroomService;
 
     /**
      * 웹 브라우저에서 주소를 입력하면 특정 사람에게 알림 메시지를 보내는 역할 (채팅방 페이지 보여주고, 메시지 불러오기)
@@ -36,7 +36,7 @@ public class ChatController {
     public String chat(@PathVariable Long chatRoomId,
                        @AuthenticationPrincipal AuthPrincipal principal,
                        Model model){
-        ChatRoomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfo(chatRoomId);
+        ChatroomInfoDto chatRoomInfo = chatroomService.getChatRoomInfo(chatRoomId);
 
         // 사용자 닉네임 가져오기
         Long memberId = principal.getUser().getId();

@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class ChatRoom {
+public class Chatroom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
