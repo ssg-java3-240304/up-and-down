@@ -3,8 +3,11 @@ const $chatLogBox = document.querySelector('.chat-log-box');
 const $chatInputFrm = document.querySelector(".chat-input-frm");
 const $chatContent = document.getElementById('chat-content');
 
+let currentPage = 0;
+let isLoading = false;
+
 document.addEventListener("DOMContentLoaded", function() {
-    displayChatLog();
+    displayChatLog(currentPage);
     scrollToBottom();
     enterMessage();
 });
@@ -23,10 +26,25 @@ window.addEventListener('beforeunload', function (event) {
     }
 });
 
+// 무한스크롤 이벤트 리스너 추가
+$contentBody.addEventListener("scroll", function() {
+    if ($contentBody.scrollTop <= 100 && !isLoading) { // 스크롤이 맨 위에 가까워지고, 로딩 중이 아닐 때
+        loadMoreChatLogs();
+    }
+});
+const loadMoreChatLogs = function() {
+    if (!isLoading) { // 로딩 중이 아닐 때만 로드
+        isLoading = true;
+        currentPage++;
+        displayChatLog(currentPage);
+        isLoading = false; // 로드 후 다시 false로 설정
+    }
+}
+
 // 채팅 로그 출력
-const displayChatLog = function () {
+const displayChatLog = function (page) {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}`, true);
+    xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}?page=${page}&size=20`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onload = function () {
@@ -35,18 +53,32 @@ const displayChatLog = function () {
             const messages = JSON.parse(xhr.responseText); // JSON 응답을 객체로 변환
             console.log(messages);
 
-            // 마지맞 메시지 날짜 저장
-            for (const message of messages) {
-                const messageDate = formatCreatedAtToDateString(message.createdAt);
+            if (messages.length > 0) {
+                const prevHeight = $contentBody.scrollHeight;
+                for (const message of messages) {
+                    const messageDate = formatCreatedAtToDateString(message.createdAt);
 
-                if (lastDate !== messageDate) {
-                    displayDate(messageDate);
-                    lastDate = messageDate; // 마지막 날짜 업데이트
+                    if (lastDate !== messageDate) {
+                        // 날짜가 바뀌면 날짜를 메시지처럼 추가
+                        displayDate(messageDate);
+                        lastDate = messageDate;
+                    }
+                    // 새로운 메시지를 채팅 로그 상단에 추가
+                    $chatLogBox.insertBefore(createChatElement(message), $chatLogBox.firstChild);
                 }
-                $chatLogBox.appendChild(createChatElement(message));
+                // 스크롤 위치를 조정하여 사용자의 위치 유지
+                $contentBody.scrollTop = $contentBody.scrollHeight - prevHeight;
             }
-
-            scrollToBottom();
+            // 요청한 개수보다 적은 메시지가 반환되면 더 이상 불러올 데이터가 없음을 의미
+            if (messages.length < 20) {
+                isLoading = true; // 더 이상 로딩하지 않음
+            } else {
+                isLoading = false; // 더 많은 데이터를 로딩할 수 있음
+            }
+            // 최신 메시지까지 스크롤을 이동시킴
+            if (page === 0) {
+                scrollToBottom();
+            }
 
             // 마지막 메시지 내역 저장
             localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(messages));
@@ -65,14 +97,19 @@ const scrollToBottom = function () {
     $contentBody.scrollTop = $contentBody.scrollHeight;
 }
 
-// 채팅 날짜 표시
-const displayDate = function (dateString) {
+// 날짜 요소를 생성하는 함수
+const createDateElement = function (dateString) {
     const dateNoticeElement = document.createElement('li');
     dateNoticeElement.classList.add('date-notice');
     dateNoticeElement.innerHTML = `<span>${dateString}</span>`;
-    $chatLogBox.appendChild(dateNoticeElement);
+    return dateNoticeElement;
 }
 
+// 채팅 날짜 표시
+const displayDate = function (dateString) {
+    const dateElement = createDateElement(dateString);
+    $chatLogBox.appendChild(dateElement);
+}
 // 입장 표시
 const enterMessage = function () {
     const hasEnteredKey = `hasEntered_${chatroomId}_${memberId}`;
@@ -138,8 +175,6 @@ const sendMessage = function () {
         };
 
         stompClient.send(`/pub/chatroom/chat`, {}, JSON.stringify(msgData));
-
-        $chatLogBox.appendChild(createChatElement(msgData));
 
         const messageDate = formatCreatedAtToDateString(new Date().toISOString());
         if (lastDate !== messageDate) {
