@@ -25,9 +25,9 @@ public class MainController {
         // 실시간 최다 검색 상품
         List<ProductGroup> mostSearchedTop4 = this.service.findTop4ByOrderByViewCountDesc();
         log.debug("mostSearchedTop4: {}", mostSearchedTop4);
+
         model.addAttribute("mostSearchedTop4", mostSearchedTop4);
 
-        // 테마별 상품
         return "index";
     }
 }

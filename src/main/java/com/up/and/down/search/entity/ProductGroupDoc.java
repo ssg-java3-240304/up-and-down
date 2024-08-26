@@ -1,8 +1,6 @@
 package com.up.and.down.search.entity;
 
 import com.up.and.down.product.entity.Destination;
-import com.up.and.down.product.entity.ProductGroup;
-import com.up.and.down.product.entity.ProductInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.util.Map;
+import java.time.LocalDate;
 
 @Document(indexName = "product_group")
 @Data
@@ -25,25 +23,33 @@ public class ProductGroupDoc {
     private Long id;
 
     @Field(type = FieldType.Text, analyzer = "nori", searchAnalyzer = "nori")
-    private String searchKeywords;
+    private String searchKeywords; // 검색 키워드
 
     @Field(type = FieldType.Object)
-    private Destination destination;
-    @Field(type = FieldType.Integer)
-    private int nights;
+    private Destination destination; // 여행지
 
-    @Field(type = FieldType.Object)
-    private Map<Long, ProductInformation> productList;
     @Field(type = FieldType.Integer)
-    private int viewCount;
+    private int nights; // 숙박일
 
-    public ProductGroup toEntity() {
-        return ProductGroup.builder()
-                .id(id)
-                .destination(destination)
-                .nights(nights)
-                .productList(productList)
-                .viewCount(viewCount)
-                .build();
+    @Field(type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd")
+    private LocalDate startDate; // 여행 시작일
+
+    @Field(type = FieldType.Text)  // JSON 문자열을 저장하기 위한 필드
+    private String productListJson; // 상품목록
+
+    @Field(type = FieldType.Integer)
+    private int viewCount; // 조회수
+
+    @Field(type = FieldType.Integer)
+    private int likeCount; // 좋아요
+
+    public void increaseLikeCount() {
+        likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (likeCount > 0) {
+            likeCount--;
+        }
     }
 }

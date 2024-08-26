@@ -23,4 +23,8 @@ public enum TravelTheme {
         this.displayName = displayName;
         this.displayKorName = displayKorName;
     }
+
+    public String getLowerCase() {
+        return this.displayName.toLowerCase();
+    }
 }

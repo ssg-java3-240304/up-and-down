@@ -12,12 +12,12 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat/stomp").withSockJS(); // 서버에 접속할 url
+        registry.addEndpoint("/chat").withSockJS(); // 서버에 접속할 url
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setApplicationDestinationPrefixes("/pub"); // 보내고
-        config.enableSimpleBroker("/sub"); // 받는거
+        config.setApplicationDestinationPrefixes("/pub");
+        config.enableSimpleBroker("/sub");
     }
 }
