@@ -1,6 +1,6 @@
 package com.up.and.down.product.entity;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
@@ -12,6 +12,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class SearchKeyword {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "tbl_product_group_keyword",
+            joinColumns = @JoinColumn(name = "product_group_id")
+    )
     private Set<String> keywordSet;
 
     public String getSearchKeyword() {

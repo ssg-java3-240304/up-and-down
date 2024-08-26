@@ -1,14 +1,20 @@
 package com.up.and.down.product.controller;
 
+import com.up.and.down.auth.principal.AuthPrincipal;
+import com.up.and.down.product.entity.ProductGroup;
+import com.up.and.down.product.entity.TravelTheme;
+import com.up.and.down.product.response.LikeResponse;
+import com.up.and.down.product.response.LikeState;
 import com.up.and.down.product.service.ProductService;
+import com.up.and.down.search.entity.ProductGroupDoc;
+import com.up.and.down.search.service.SearchService;
+import com.up.and.down.user.member.entity.Member;
+import com.up.and.down.user.member.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final SearchService searchService;
+    private final UserService userService;
 
     @GetMapping
     public String productGroup() {
@@ -29,12 +37,19 @@ public class ProductController {
     @GetMapping("/{productGroupId}")
     public String productGroupById(
             @PathVariable Long productGroupId,
+            Authentication authentication,
             Model model
     ) {
         log.info("GET product - productGroupId: {}", productGroupId);
 
         // 상품 id로 조회
         ProductGroup productGroup = this.productService.findById(productGroupId);
+        // 사용자가 좋아요를 눌렀는지 확인
+        boolean isLiked = false;
+        if (authentication != null && authentication.isAuthenticated()) {
+            Member member = (Member) ((AuthPrincipal) authentication.getPrincipal()).getUser();
+            isLiked = member.getLikedProductGroup().contains(productGroupId);
+        }
         // 다른 고객이 함께 본 상품 조회
         List<ProductGroup> relatedProductGroups = this.productService.findRelatedProductsTop4(productGroup.getNights());
         // 카테고리 인기 상품 조회
@@ -43,6 +58,8 @@ public class ProductController {
 
         // 상품그룹 등록
         model.addAttribute("productGroup", productGroup);
+        model.addAttribute("isLiked", isLiked);
+
         // 다른 고객이 함께 본 상품 등록
         model.addAttribute("relatedProductGroups", relatedProductGroups);
         // 카테고리 인기 상품 등록
@@ -60,7 +77,7 @@ public class ProductController {
     ) {
         log.info("GET product - redirectUrl: {}", redirectUrl);
         return "redirect:" + redirectUrl;
-        }
+    }
 
     @GetMapping("/like/{productGroupId}")
     @ResponseBody
