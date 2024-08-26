@@ -62,23 +62,56 @@
 
             <!-- Nav Item - 회원관리 -->
             <li class="nav-item" id="sample">
-                <a class="nav-link" th:href="@{/admin/statistics}">
+                <a class="nav-link stat-link">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>통계</span></a>
+                    <span>통계</span>
+                    <i class='fas fa-angle-right' style="margin-left: 120px"></i>
+                </a>
+                <ul class="submenu" style="display: none; flex-direction: column;">
+                    <li style="list-style: none"><a class="nav-link" href="#" style="font-size: 14px;">커뮤니티 카테고리 통계</a></li>
+                    <li style="list-style: none"><a class="nav-link" th:href="@{/admin/stat/loginInfo}" style="font-size: 14px;">회원 접속 통계</a></li>
+                    <li style="list-style: none"><a class="nav-link" th:href="@{/admin/stat/productInfo}" style="font-size: 14px;">상품 통계</a></li>
+                    <li style="list-style: none"><a class="nav-link" href="#" style="font-size: 14px;">광고 통계</a></li>
+                </ul>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+<!--            <div class="text-center d-none d-md-inline">-->
+<!--                <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
+<!--            </div>-->
 
             <div class="text-center d-none d-md-block" style="margin-top: auto; margin-bottom: 30px">
                 <a class="btn btn-primary" th:href="@{/login/logout}">로그아웃</a>
             </div>
         </ul>
+        <script>
+            const statLinks = document.querySelectorAll(".stat-link");
+            const submenu = document.querySelector(".submenu");
+
+            statLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // 현재 클릭된 요소가 이미 active 상태인지 확인
+                    const isActive = this.classList.contains("active");
+
+                    // 모든 요소에서 active 클래스 제거
+                    statLinks.forEach(l => {
+                        l.classList.remove("active");
+                        l.parentElement.querySelector(".submenu").style.display = "none";
+                    });
+
+                    // 클릭된 요소가 이미 active가 아니었다면 active 클래스 추가, 이미 active였다면 제거
+                    if (!isActive) {
+                        this.classList.add("active");
+                        submenu.style.display = "flex";
+                    }
+                });
+            });
+        </script>
     </aside>
 </body>
 </html>

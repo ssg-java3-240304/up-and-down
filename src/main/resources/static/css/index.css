@@ -1,52 +1,51 @@
 /*베너*/
 main .banner-box {
     position: relative;
-    width: 100%; height: 450px;
+    width: 100%; height: 600px;
     min-width: 1400px;
     overflow: hidden;
 }
 main .banner-box .banner-img {
-    width: 100%; height: 450px;
+    width: 100%; height: 600px;
     object-fit: cover;
-}
-main .banner-box .layout {
-    position: absolute;
-    top: 0; right: 50%;
-    transform: translate(50%, 0);
-    width: 1400px; height: 450px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
 }
 /*검색창*/
 main .banner-box .search-box {
+    position: absolute;
+    bottom: 50px; left: 50%;
+    transform: translate(-50%, 0);
     box-sizing: border-box;
-    width: 350px; height: 350px;
-    padding: 30px;
+    width: 1000px; height: 100px;
+    padding: 20px;
     border-radius: 10px;
     background-color: #fff;
-    display: flex;
-    flex-direction: column;
 }
 main .banner-box .search-box .search-frm {
-    width: 100%; flex: 1;
     display: flex;
-    flex-direction: column;
+    gap: 20px;
 }
-main .banner-box .search-box .search-frm label {
-    display: block;
-    margin-left: 5px;
-    margin-bottom: 10px;
+main .banner-box .search-box .search-frm #searchKeyword {
+    box-sizing: border-box;
+    flex: 2;
+    height: 60px;
+    padding: 20px;
+    font-size: 16px;
 }
-main .banner-box .search-box .search-frm .destination {
-    margin-bottom: 20px;
+main .banner-box .search-box .search-frm #nights {
+    box-sizing: border-box;
+    height: 60px;
+    padding: 20px;
+    font-size: 16px;
 }
-main .banner-box .search-box .search-frm .nights {
-    margin-bottom: 50px;
+main .banner-box .search-box .search-frm #start-date {
+    box-sizing: border-box;
+    height: 60px;
+    padding: 20px;
+    font-size: 16px;
 }
 main .banner-box .search-box .search-frm button {
-    width: 100%; height: 40px;
     border-radius: 10px;
+    width: 100px;
     background-color: #265AB4;
     font-weight: bold; font-size: 16px;
     color: #fff;
@@ -73,8 +72,13 @@ main .most-searched .product-group .product {
 }
 main .most-searched .product-group .product .product-image {
     width: 300px; height: 300px;
+    border-radius: 10px;
     margin-bottom: 10px;
-    background-color: #D9D9D9;
+    overflow: hidden;
+}
+main .most-searched .product-group .product img {
+    width: 100%; height: 100%;
+    object-fit: cover;
 }
 main .most-searched .product-group p {
     margin-bottom: 10px;
@@ -130,13 +134,13 @@ main .theme-box .theme-group .theme {
     overflow: hidden;
 }
 main .theme-box .theme-group .theme.nature {
-    background-image: url(../images/index/nature.png);
+    background-image: url(https://kr.object.ncloudstorage.com/up-bucket/common/nature.png);
 }
 main .theme-box .theme-group .theme.relaxation {
-    background-image: url(../images/index/relaxation.png);
+    background-image: url(https://kr.object.ncloudstorage.com/up-bucket/common/relaxation.png);
 }
 main .theme-box .theme-group .theme.romantic {
-    background-image: url(../images/index/romantic.png);
+    background-image: url(https://kr.object.ncloudstorage.com/up-bucket/common/romantic.png);
 }
 main .theme-box .theme-group .theme .theme-text {
     position: absolute;
