@@ -39,17 +39,8 @@ public class MemberService {
         HashMap<String, String> params = new HashMap<>();
         params.put("to", to);
         params.put("from", "01021615694");
-//        params.put("type", "SMS");
         params.put("text", "[UpAndDown]" + "\n" + "인증번호[" + authorizationCode + "] 타인에게 절대 알려주지 마세요.");
 
-        // 임시 주석 처리
-//        try {
-//            coolsms.send(params);
-//            return authorizationCode;
-//        } catch (CoolsmsSystemException e) {
-//            e.printStackTrace();
-//            return "false";
-//        }
         return authorizationCode;
     }
 
@@ -67,5 +58,9 @@ public class MemberService {
         member.setMemberAuthority();
         log.info("member = {}", member);
         memberRepository.save(member);
+    }
+
+    public Optional<Member> findById(Long id){
+        return memberRepository.findById(id);
     }
 }

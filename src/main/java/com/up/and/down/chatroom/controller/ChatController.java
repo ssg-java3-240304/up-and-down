@@ -3,8 +3,8 @@ package com.up.and.down.chatroom.controller;
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.ChatDto;
 import com.up.and.down.chatroom.dto.ChatroomInfoDto;
-import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.chatroom.service.ChatService;
+import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.user.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class ChatController {
 
         chatroomService.addMemberToChatRoom(chatroomId, memberId);
         log.debug("채팅방id{}에 멤버{}추가", chatroomId, memberId);
-        ChatroomInfoDto chatroomInfo = this.chatroomService.getChatRoomInfoById(chatroomId);
+        ChatroomInfoDto chatroomInfo = this.chatroomService.getChatroomInfoById(chatroomId);
 
         model.addAttribute("chatroomName", chatroomInfo.getName());
         model.addAttribute("memberCount", chatroomInfo.getMemberCount());
