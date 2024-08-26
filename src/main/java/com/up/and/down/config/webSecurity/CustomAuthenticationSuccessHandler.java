@@ -39,7 +39,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
             // 로그인 로그 저장
             loginAttemptService.recordLoginAttempt(memberId, request);
-
+          
             String redirectUrl = (String) request.getSession().getAttribute("redirectUrl");
             log.debug(redirectUrl);
             if (redirectUrl != null) {

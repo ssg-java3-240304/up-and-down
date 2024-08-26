@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDate;
 
-@Document(indexName = "product_group")
+//@Document(indexName = "product_group")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

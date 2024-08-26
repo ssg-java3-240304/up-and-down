@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
-@Controller
+//@Controller
 @RequestMapping("search")
 @RequiredArgsConstructor
 public class SearchController {

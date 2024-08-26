@@ -3,6 +3,7 @@ package com.up.and.down.product.service;
 import com.up.and.down.product.entity.ProductGroup;
 import com.up.and.down.product.entity.SearchKeyword;
 import com.up.and.down.product.repository.ProductGroupRepository;
+
 import com.up.and.down.search.repository.ProductGroupDocRepository;
 import com.up.and.down.search.service.ProductGroupToEntityService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,6 @@ public class ProductService {
                 .orElse("");
         return this.productGroupDocRepo.findTop4BySearchKeywordsOrderByLikeCountDesc(theme).stream().map(this.productGroupToEntityService::toEntity).toList();
     }
-
     @Transactional
     public void update(ProductGroup productGroupId) {
         this.productGroupRepo.save(productGroupId);

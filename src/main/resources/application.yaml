@@ -24,7 +24,6 @@ spring:
     username: ${ELASTIC_USERNAME}
     password: ${ELASTIC_PASSWORD}
 
-
 logging:
   level:
     root: info
