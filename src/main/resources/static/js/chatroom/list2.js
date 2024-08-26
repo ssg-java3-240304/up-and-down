@@ -121,7 +121,7 @@ $(document).ready(function () {
             type: 'GET',
             success: function (data) {
                 console.log("Received data:", data);
-                updateChatRoomList(data.content, filter);
+                updateChatRoomList(data, filter);
                 updatePagination(data);
                 updateTotalCount(data.totalElements); // 전체 수를 갱신
             },

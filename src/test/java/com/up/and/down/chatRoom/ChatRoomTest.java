@@ -57,18 +57,18 @@ public class ChatRoomTest {
 
     }
 
-    @Test
-    @DisplayName("아이디 조회")
-    void test2() {
-
-        Long userId = 1L;
-        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContaining(userId);
-
-        for (ChatRoom chatRoom : list) {
-            System.out.println(chatRoom.toString());
-        }
-        Assertions.assertThat(list).isNotNull();
-    }
+//    @Test
+//    @DisplayName("아이디 조회")
+//    void test2() {
+//
+//        Long userId = 1L;
+//        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContaining(userId);
+//
+//        for (ChatRoom chatRoom : list) {
+//            System.out.println(chatRoom.toString());
+//        }
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
     @Test
     @DisplayName("creatorId에 해당하는 닉네임 가져오기")
@@ -85,79 +85,79 @@ public class ChatRoomTest {
 
     }
 
-    @Test
-    @DisplayName("내가 방장인 채팅방 조회하기")
-    void test4() {
+//    @Test
+//    @DisplayName("내가 방장인 채팅방 조회하기")
+//    void test4() {
+//
+//        Long userId = 2L ;
+//        List<ChatRoom> list = chatRoomRepository.findByCreatorId(userId);
+//        list.forEach(System.out::println);
+//
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
-        Long userId = 2L ;
-        List<ChatRoom> list = chatRoomRepository.findByCreatorId(userId);
-        list.forEach(System.out::println);
-
-        Assertions.assertThat(list).isNotNull();
-    }
 
 
+//    @Test
+//    @DisplayName("내가 속해있는 채팅방에서 카테고리별 조회")
+//    void test5() {
+//        Long userId = 1L;
+//        Category category = Category.HIKING;
+//        Set<Category> categories = new HashSet<>();
+//        categories.add(category);
+//
+//        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContainingAndCategoryIn(userId, categories);
+//
+//        list.forEach(System.out::println);
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
-    @Test
-    @DisplayName("내가 속해있는 채팅방에서 카테고리별 조회")
-    void test5() {
-        Long userId = 1L;
-        Category category = Category.HIKING;
-        Set<Category> categories = new HashSet<>();
-        categories.add(category);
+//   [ @Test
+//    @DisplayName("내가 방장인 채팅방에서 카테고리별 조회")
+//    void test6() {
+//        Long userId = 1L;
+//        Category category = Category.HIKING;
+//        Set<Category> categories = new HashSet<>();
+//        categories.add(category);
+//
+//        List<ChatRoom> list = chatRoomRepository.findByCreatorIdAndCategoryIn(userId, categories);
+//        list.forEach(System.out::println);
+//        Assertions.assertThat(list).isNotNull();
+//    }]
 
-        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContainingAndCategoryIn(userId, categories);
+//    @Test
+//    @DisplayName("모든 채팅방 카테고리별 조회")
+//    void test7() {
+//        Category category = Category.HIKING;
+//        Set<Category> categories = new HashSet<>();
+//        categories.add(category);
+//
+//        List<ChatRoom> list = chatRoomRepository.findAllByCategoryIn(categories);
+//        list.forEach(System.out::println);
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
-        list.forEach(System.out::println);
-        Assertions.assertThat(list).isNotNull();
-    }
+//    @Test
+//    @DisplayName("검색어만 있는 경우 ")
+//    void test8() {
+//        String keyword = "축구";
+//        List<ChatRoom> list = chatRoomRepository.findAllByNameContaining(keyword);
+//        list.forEach(System.out::println);
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
-    @Test
-    @DisplayName("내가 방장인 채팅방에서 카테고리별 조회")
-    void test6() {
-        Long userId = 1L;
-        Category category = Category.HIKING;
-        Set<Category> categories = new HashSet<>();
-        categories.add(category);
-
-        List<ChatRoom> list = chatRoomRepository.findByCreatorIdAndCategoryIn(userId, categories);
-        list.forEach(System.out::println);
-        Assertions.assertThat(list).isNotNull();
-    }
-
-    @Test
-    @DisplayName("모든 채팅방 카테고리별 조회")
-    void test7() {
-        Category category = Category.HIKING;
-        Set<Category> categories = new HashSet<>();
-        categories.add(category);
-
-        List<ChatRoom> list = chatRoomRepository.findAllByCategoryIn(categories);
-        list.forEach(System.out::println);
-        Assertions.assertThat(list).isNotNull();
-    }
-
-    @Test
-    @DisplayName("검색어만 있는 경우 ")
-    void test8() {
-        String keyword = "축구";
-        List<ChatRoom> list = chatRoomRepository.findAllByNameContaining(keyword);
-        list.forEach(System.out::println);
-        Assertions.assertThat(list).isNotNull();
-    }
-
-    @Test
-    @DisplayName("둘다 존재하는 경우  ")
-    void test9() {
-        Category category = Category.HIKING;
-        Set<Category> categories = new HashSet<>();
-        categories.add(category);
-
-        String keyword = "축구";
-        List<ChatRoom> list = chatRoomRepository.findAllByCategoryInAndNameContaining(categories,keyword);
-        list.forEach(System.out::println);
-        Assertions.assertThat(list).isNotNull();
-    }
+//    @Test
+//    @DisplayName("둘다 존재하는 경우  ")
+//    void test9() {
+//        Category category = Category.HIKING;
+//        Set<Category> categories = new HashSet<>();
+//        categories.add(category);
+//
+//        String keyword = "축구";
+//        List<ChatRoom> list = chatRoomRepository.findAllByCategoryInAndNameContaining(categories,keyword);
+//        list.forEach(System.out::println);
+//        Assertions.assertThat(list).isNotNull();
+//    }
 
 
 

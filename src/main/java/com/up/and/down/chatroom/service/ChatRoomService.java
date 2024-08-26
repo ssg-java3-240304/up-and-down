@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,32 +68,32 @@ public class ChatRoomService {
         return showChatRoomDtoList;
     }
     // 전체 채팅방 카테고리별 조회 - 비동기
-    public List<ShowChatRoomDto> findAllByAsync(Set<Category> categories,String keyword) {
+    public Page<ShowChatRoomDto> findAllByAsync(Pageable pageable,Set<Category> categories,String keyword) {
 
-        List<ChatRoom> list ;
+        Page<ChatRoom> list ;
 
         //둘다 값이 존재하는 경우 출력
         if (categories != null && !categories.isEmpty() && keyword != null && !keyword.isEmpty()) {
             log.debug("둘다 값이 존재하는 경우 출력");
-            list = chatRoomRepository.findAllByCategoryInAndNameContaining(categories,keyword);
+            list = chatRoomRepository.findAllByCategoryInAndNameContaining(categories,keyword,pageable);
         }
         //카테고리만 선택된 경우
         else if (categories != null && !categories.isEmpty()) {
             log.debug("카테고리만 선택된 경우");
-            list = chatRoomRepository.findAllByCategoryIn(categories);
+            list = chatRoomRepository.findAllByCategoryIn(categories,pageable);
         }
         // 검색어만 존재하는 경우
         else if (keyword != null && !keyword.isEmpty()) {
             log.debug("검색어만 존재하는 경우 ");
-            list = chatRoomRepository.findAllByNameContaining(keyword);
+            list = chatRoomRepository.findAllByNameContaining(keyword,pageable);
         }
         //둘다 존재하지 않을 경우
         else {
             log.debug("둘다 존재하지 않을 경우");
-            list = chatRoomRepository.findAll();
+            list = chatRoomRepository.findAll(pageable);
         }
 
-        List<ShowChatRoomDto> showChatRoomDtoList = list.stream()
+        List<ShowChatRoomDto> dtoList = list.stream()
                 .map(chatRoom -> {
                     ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
 
@@ -103,93 +104,91 @@ public class ChatRoomService {
                 })
                 .collect(Collectors.toList());
 
-        return showChatRoomDtoList;
-    }
-
-    //우리 채팅방 탭 클릭했을 때 내가 속한 채팅방 리스트 출력하기 - 비동기
-    public List<ShowChatRoomDto> findOurChatRoomList(Long userId) {
-        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContaining(userId);
-
-        List<ShowChatRoomDto> showChatRoomDtoList = list.stream()
-                .map(chatRoom -> {
-                    ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
-
-                    memberService.findById(chatRoom.getCreatorId()).ifPresent(member -> {
-                        dto.setNickName(member.getNickname());
-                    });
-                    return dto;
-                })
-                .collect(Collectors.toList());
+        Page<ShowChatRoomDto> showChatRoomDtoList = new PageImpl<>(dtoList, pageable, list.getTotalElements());
 
         return showChatRoomDtoList;
     }
+
+//    //우리 채팅방 탭 클릭했을 때 내가 속한 채팅방 리스트 출력하기 - 비동기
+//    public List<ShowChatRoomDto> findOurChatRoomList(Long userId) {
+//        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContaining(userId);
+//
+//        List<ShowChatRoomDto> showChatRoomDtoList = list.stream()
+//                .map(chatRoom -> {
+//                    ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
+//
+//                    memberService.findById(chatRoom.getCreatorId()).ifPresent(member -> {
+//                        dto.setNickName(member.getNickname());
+//                    });
+//                    return dto;
+//                })
+//                .collect(Collectors.toList());
+//
+//        return showChatRoomDtoList;
+//    }
 
     //우리 채팅방에서 카테고리를 선택했을 경우 - 비동기
-    public List<ShowChatRoomDto> findAllOurChatRoom(Set<Category> categories, String keyword, Long userId) {
+    public Page<ShowChatRoomDto> findAllOurChatRoom(Pageable pageable,Set<Category> categories, String keyword, Long userId) {
 
-        List<ChatRoom> list = chatRoomRepository.findByMemberIdListContainingAndCategoryIn(userId, categories);
-
-        // 카테고리와 검색어 둘 다 존재할 경우
-        if(categories != null && !categories.isEmpty() && keyword != null && !keyword.isEmpty()){
-            list = chatRoomRepository.findByMemberIdListContainingAndCategoryInAndNameContaining(userId, categories, keyword);
-        }
-        // 카테고리만 존재할 경우
-        else if(categories != null && !categories.isEmpty()) {
-            list = chatRoomRepository.findByMemberIdListContainingAndCategoryIn(userId, categories);
-        }
-        // 검색어만 존재할 경우
-        else if(keyword != null && !keyword.isEmpty()) {
-            list = chatRoomRepository.findByMemberIdListContainingAndNameContaining(userId, keyword);
-        }
-        // 카테고리와 검색어 둘 다 없을 경우
-        else{
-            list = chatRoomRepository.findByMemberIdListContaining(userId);
-        }
-
-        List<ShowChatRoomDto> mineList = list.stream()
-                .map(chatRoom -> {
-                    ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
-
-                    memberService.findById(chatRoom.getCreatorId()).ifPresent(member -> {
-                        dto.setNickName(member.getNickname());
-                    });
-                    return dto;
-                })
-                .collect(Collectors.toList());
-
-        return mineList;
-    }
-
-    //내모임 탭 클릭 - 비동기
-    public List<ShowChatRoomDto> findAllMineChatRoom(Set<Category> categories,String keyword, Long userId) {
-
-        List<ChatRoom> list = chatRoomRepository.findByCreatorId(userId);
+        Page<ChatRoom> list ;
 
         // 카테고리와 검색어 둘 다 존재할 경우
         if(categories != null && !categories.isEmpty() && keyword != null && !keyword.isEmpty()){
-            list = chatRoomRepository.findByCreatorIdAndCategoryInAndNameContaining(userId, categories, keyword);
+            list = chatRoomRepository.findByMemberIdListContainingAndCategoryInAndNameContaining(pageable,userId, categories, keyword);
         }
         // 카테고리만 존재할 경우
         else if(categories != null && !categories.isEmpty()) {
-            list = chatRoomRepository.findByCreatorIdAndCategoryIn(userId, categories);
+            list = chatRoomRepository.findByMemberIdListContainingAndCategoryIn(pageable,userId, categories);
         }
         // 검색어만 존재할 경우
         else if(keyword != null && !keyword.isEmpty()) {
-            list = chatRoomRepository.findByCreatorIdAndNameContaining(userId, keyword);
+            list = chatRoomRepository.findByMemberIdListContainingAndNameContaining(pageable,userId, keyword);
         }
         // 카테고리와 검색어 둘 다 없을 경우
         else{
-            list = chatRoomRepository.findByCreatorId(userId);
+            list = chatRoomRepository.findByMemberIdListContaining(pageable,userId);
+            log.debug("카테고리와 검색이 둘다 없는경우 ");
+            log.debug("리스트 출력드려용{}", list.toString());
         }
 
-        //카테고리가 선택된 경우
-        if (categories != null && !categories.isEmpty()) {
+        List<ShowChatRoomDto> dtoList = list.stream()
+                .map(chatRoom -> {
+                    ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
 
-        }
-        //카테고리가 선택되지 않은 경우
-        else {
+                    memberService.findById(chatRoom.getCreatorId()).ifPresent(member -> {
+                        dto.setNickName(member.getNickname());
+                    });
+                    return dto;
+                })
+                .collect(Collectors.toList());
 
+
+        Page<ShowChatRoomDto> showChatRoomDtoList = new PageImpl<>(dtoList, pageable, list.getTotalElements());
+        return showChatRoomDtoList;
+    }
+
+   // 내모임 탭 클릭 - 비동기
+    public Page<ShowChatRoomDto> findAllMineChatRoom(Pageable pageable,Set<Category> categories,String keyword, Long userId) {
+
+        Page<ChatRoom> list;
+
+        // 카테고리와 검색어 둘 다 존재할 경우
+        if(categories != null && !categories.isEmpty() && keyword != null && !keyword.isEmpty()){
+            list = chatRoomRepository.findByCreatorIdAndCategoryInAndNameContaining(pageable,userId, categories, keyword);
         }
+        // 카테고리만 존재할 경우
+        else if(categories != null && !categories.isEmpty()) {
+            list = chatRoomRepository.findByCreatorIdAndCategoryIn(pageable,userId, categories);
+        }
+        // 검색어만 존재할 경우
+        else if(keyword != null && !keyword.isEmpty()) {
+            list = chatRoomRepository.findByCreatorIdAndNameContaining(pageable,userId, keyword);
+        }
+        // 카테고리와 검색어 둘 다 없을 경우
+        else{
+            list = chatRoomRepository.findByCreatorId(pageable,userId);
+        }
+
 
         List<ShowChatRoomDto> mineList = list.stream()
                 .map(chatRoom -> {
@@ -202,27 +201,29 @@ public class ChatRoomService {
                 })
                 .collect(Collectors.toList());
 
-        return mineList;
+        Page<ShowChatRoomDto> showChatRoomDtoList = new PageImpl<>(mineList, pageable, list.getTotalElements());
+        return showChatRoomDtoList;
     }
 
-    // 내모임 탭 카테고리별  - 비동기 ,
-    public List<ShowChatRoomDto> findByCreatorIdAndCategoryIn(Long userId, Set<Category> categories) {
-
-        List<ChatRoom> list = chatRoomRepository.findByCreatorIdAndCategoryIn(userId, categories);
-
-        List<ShowChatRoomDto> mineList = list.stream()
-                .map(chatRoom -> {
-                    ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
-
-                    memberService.findById(chatRoom.getCreatorId()).ifPresent(member -> {
-                        dto.setNickName(member.getNickname());
-                    });
-                    return dto;
-                })
-                .collect(Collectors.toList());
-
-        return mineList;
-    }
+//    // 내모임 탭 카테고리별  - 비동기 ,
+//    public Page<ShowChatRoomDto> findByCreatorIdAndCategoryIn(Long userId, Set<Category> categories) {
+//
+//        Page<ChatRoom> list ;
+//
+//        List<ShowChatRoomDto> mineList = list.stream()
+//                .map(chatRoom -> {
+//                    ShowChatRoomDto dto = new ShowChatRoomDto().toDto(chatRoom);
+//
+//                    memberService.findById(chatRoom.getCreatorId()).ifPresent(member -> {
+//                        dto.setNickName(member.getNickname());
+//                    });
+//                    return dto;
+//                })
+//                .collect(Collectors.toList());
+//
+//        Page<ShowChatRoomDto> showChatRoomDtoList = new PageImpl<>(mineList, pageable, list.getTotalElements());
+//        return mineList;
+//    }
 
 
 

@@ -25,7 +25,7 @@ $(document).ready(function () {
             // 그 외의 탭은 바로 로드
             $('.nav-link').removeClass('active');
             $(this).addClass('active');
-            ourChatLoad(filter);
+            chatRoomUpdate(filter);
         }
     });
 
@@ -41,7 +41,7 @@ $(document).ready(function () {
                     console.log('로그인 상태 : ' +data)
                     $('.nav-link').removeClass('active');
                     $('.nav-link[data-tab="' + filter + '"]').addClass('active');
-                    ourChatLoad(filter);
+                    chatRoomUpdate(filter);
                 }
             },
             error: function (xhr) {
@@ -52,25 +52,55 @@ $(document).ready(function () {
         });
     }
 
-    //일단 우리 모임 탭만 눌렀을 때 채팅방 로드해주는 리스트 작성
-    function ourChatLoad(filter){
-        // let url = '/app/chat-rooms/chatRoomList/' + filter;
-        let url = '/app/chat-api-rooms/' + filter;
-        console.log('ourCHatLoad 시작');
+
+    // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색, 페이징 처리)
+    function chatRoomUpdate(filter, page = 0, size = 10) {
+
+        let baseUrl = '/app/chat-api-rooms/'
+        if (filter === 'our') {
+            baseUrl += filter;
+        }else if (filter === 'mine') {
+            baseUrl += filter;
+        }else {
+            baseUrl += filter;
+        }
+
+        // 페이지네이션 파라미터 추가
+        let url = `${baseUrl}?page=${page}&size=${size}`;
+
+        console.log('검색어 입력이 들어왔습니다.'+baseUrl);
+        //카테고리, 검색어 입력
+        // let url = `${baseUrl}`;
+        let keyword = $('#searchQuery').val();
+        console.log("검색어 : ", keyword);
+        let categories = selectedCategories.join(',');
+
+        //카테고리 URL에 연결
+        if (categories.length > 0) {
+            url += `&categories=${encodeURIComponent(categories)}`;
+        }
+        //검색어 URL에 연결
+        if (keyword) {
+            // 만약 categories가 추가되지 않았으면 `?`로 시작하고, 추가되었다면 `&`로 이어지도록 설정
+            url += (url.includes('?') ? '&' : '?') + `keyword=${encodeURIComponent(keyword)}`;
+        }
+
+        console.log("console URL : " + url);
         $.ajax({
             url: url,
             type: 'GET',
-            // 속한 채팅방이 존재할 때
-            success: function(data){
-                console.log("Data : ",data)
-                uploadData(data,filter)
-                updateTotalCount(data.length);
+            success: function (data) {
+                console.log("Received data:", data);
+                uploadData(data.content,filter)
+                updatePagination(data,filter)
+                updateTotalCount(data.totalElements)
+
             },
-            //속한 채팅방이 존재하지 않을 때
-            error: function (data){
-                console.log('데이터가 존재하지 않습니다.')
+            error: function (xhr, status, error) {
+                console.error('AJAX Request Error:', error);
             }
-        })
+        });
+
     }
 
     //채팅방을 보여주는 함수
@@ -112,89 +142,8 @@ $(document).ready(function () {
             });
         }
     }
-    // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색)
-    function chatRoomUpdate(filter) {
-        let baseUrl = '/app/chat-api-rooms/'
-        if (filter === 'our') {
-            baseUrl += filter;
-        }else if (filter === 'mine') {
-            baseUrl += filter;
-        }else {
-            baseUrl += filter;
-        }
 
-        console.log('검색어 입력이 들어왔습니다.'+baseUrl);
-        //카테고리, 검색어 입력
-        let url = `${baseUrl}`;
-        let keyword = $('#searchQuery').val();
-        console.log("검색어 : ", keyword);
-        let categories = selectedCategories.join(',');
 
-        //카테고리 URL에 연결
-        if (categories.length > 0) {
-            url += `?categories=${encodeURIComponent(categories)}`;
-        }
-        //검색어 URL에 연결
-        if (keyword) {
-            // 만약 categories가 추가되지 않았으면 `?`로 시작하고, 추가되었다면 `&`로 이어지도록 설정
-            url += (url.includes('?') ? '&' : '?') + `keyword=${encodeURIComponent(keyword)}`;
-        }
-
-        console.log("console URL : " + url);
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (data) {
-                console.log("Received data:", data);
-                uploadData(data,filter)
-            },
-            error: function (xhr, status, error) {
-                console.error('AJAX Request Error:', error);
-            }
-        });
-
-    }
-
-    // 채팅방 목록을 로드하는 함수 (탭 클릭, 검색, 필터링, 페이지네이션에 사용)
-    //
-
-    // 채팅방 목록을 업데이트하는 함수
-    function updateChatRoomList(chatRooms, filter) {
-        let listContainer = $('#list-container');
-        let noResultsContainer = $('#no-results');
-        listContainer.empty();
-
-        if (!Array.isArray(chatRooms) || chatRooms.length === 0) {
-            let noResultsText = '';
-            if (filter === 'our') {
-                noResultsText = '참여 중인 모임이 없습니다. 새로운 모임에 가입해보세요!';
-            } else if (filter === 'mine') {
-                noResultsText = '생성한 모임이 없습니다. 새로운 모임을 만들어보세요!';
-            } else {
-                noResultsText = '채팅방이 없습니다. 새로운 채팅방을 만들어보세요!';
-            }
-            noResultsContainer.text(noResultsText).removeClass('d-none');
-        } else {
-            noResultsContainer.addClass('d-none');
-
-            chatRooms.forEach(chatRoom => {
-                let chatRoomItem = `
-                        <div class="list-item" onclick="window.location.href='/app/chat-rooms/${chatRoom.chatRoomId}'">
-                            <div class="list-item-content d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center w-100">
-                                    <h3 class="list-title m-0">${chatRoom.name}</h3>
-                                    <span class="list-nickname ms-3">${chatRoom.nickname}</span>
-                                    <div class="list-categories ms-3">
-                                        ${chatRoom.category.map(category => `<span class="category-badge">${category}</span>`).join('')}
-                                    </div>
-                                    <div class="list-participants ms-auto">참여 인원수: ${chatRoom.memberCount}명</div>
-                                </div>
-                            </div>
-                        </div>`;
-                listContainer.append(chatRoomItem);
-            });
-        }
-    }
     // 검색에 값이 입력 할 때마다 실시간 변경
     $('#searchQuery').on('input', function () {
         chatRoomUpdate(getCurrentFilter());
@@ -238,8 +187,11 @@ $(document).ready(function () {
         e.preventDefault();
         let page = parseInt($(this).data('page'));
 
+        console.log("page 버튼이 클릭됐습니다.");
+
         if (!isNaN(page) && page >= 0) {
-            loadChatRooms(getCurrentFilter(), page);
+            console.log("page if문 작동")
+            chatRoomUpdate(getCurrentFilter(), page);
         }
     });
 
