@@ -36,27 +36,26 @@ public class ChatStompController {
 
         // 1. 사용자가 입력한 메시지를 처리
         if (chatDto.getMessage() != null && !chatDto.getMessage().trim().isEmpty()) {
-            // 사용자가 메시지를 입력한 경우
             chatDto.setCreatedAt(LocalDateTime.now());
-            this.chatService.save(chatDto); // 메시지를 DB에 저장
+            this.chatService.save(chatDto);
 
             // 채팅방 구독자들에게 메시지 전송
-            String destination = "/sub/chatroom/" + chatDto.getChatroomId();
+            String destination = "/sub/chatroom/chat";
             this.messagingTemplate.convertAndSend(destination, chatDto);
         } else {
             // 사용자가 메시지를 입력하지 않고 방에 들어온 경우 (입장 메시지 처리)
-            ChatDto entryMessage = new ChatDto();
-            entryMessage.setChatroomId(chatDto.getChatroomId());
-            entryMessage.setMemberId(chatDto.getMemberId());
-            entryMessage.setNickname(chatDto.getNickname());
-            entryMessage.setMessage(chatDto.getNickname() + "님이 들어왔습니다.");
-            entryMessage.setCreatedAt(LocalDateTime.now());
+            ChatDto chatdto = new ChatDto();
+            chatdto.setChatroomId(chatDto.getChatroomId());
+            chatdto.setMemberId(chatDto.getMemberId());
+            chatdto.setNickname(chatDto.getNickname());
+            chatdto.setMessage(chatDto.getNickname() + "님이 들어왔습니다.");
+            chatdto.setCreatedAt(LocalDateTime.now());
 
-            this.chatService.save(entryMessage); // 입장 메시지를 DB에 저장
+            this.chatService.save(chatdto); // 입장 메시지를 DB에 저장
 
             // 구독자들에게 입장 메시지 전송
-            String destination = "/sub/chatroom/" + chatDto.getChatroomId();
-            this.messagingTemplate.convertAndSend(destination, entryMessage);
+            String destination = "/sub/chatroom/chat";
+            this.messagingTemplate.convertAndSend(destination, chatdto);
         }
     }
 }
