@@ -44,7 +44,6 @@ const loadMoreChatLogs = function() {
 // 채팅 로그 출력
 const displayChatLog = function (page) {
     const xhr = new XMLHttpRequest();
-    // xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}`, true);
     xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}?page=${page}&size=20`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -61,8 +60,7 @@ const displayChatLog = function (page) {
 
                     if (lastDate !== messageDate) {
                         // 날짜가 바뀌면 날짜를 메시지처럼 추가
-                        const dateElement = createDateElement(messageDate);
-                        $chatLogBox.insertBefore(dateElement, $chatLogBox.firstChild);
+                        displayDate(messageDate);
                         lastDate = messageDate;
                     }
                     // 새로운 메시지를 채팅 로그 상단에 추가
