@@ -181,7 +181,7 @@ main > div > .description {
 }
 .relation-section .product-group .product .product-image img {
     width: 100%; height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 .relation-section .product-group .product .title {
     margin-bottom: 10px;
