@@ -52,11 +52,13 @@ public class ChatController {
     @GetMapping("/data/{chatroomId}")
     @ResponseBody
     public List<ChatDto> getChatLog(
-            @PathVariable Long chatroomId
+            @PathVariable Long chatroomId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
     ) {
-        log.info("GET chat log data - chatroomId: {}", chatroomId);
+        log.info("GET chat log data - chatroomId: {}, page: {}, size: {}", chatroomId, page, size);
 
-        List<ChatDto> chatDtoList = this.chatService.findByChatroomId(chatroomId);
+        List<ChatDto> chatDtoList = this.chatService.findByChatroomId(chatroomId, page, size);
         log.debug("chatDtoList: {}", chatDtoList);
 
         return chatDtoList;

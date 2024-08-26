@@ -6,6 +6,7 @@ const $chatContent = document.getElementById('chat-content');
 document.addEventListener("DOMContentLoaded", function() {
     displayChatLog();
     scrollToBottom();
+    enterMessage();
 });
 
 $chatInputFrm.addEventListener("submit", function (event) {
@@ -72,6 +73,25 @@ const displayDate = function (dateString) {
     $chatLogBox.appendChild(dateNoticeElement);
 }
 
+// 입장 표시
+const enterMessage = function () {
+    const hasEnteredKey = `hasEntered_${chatroomId}_${memberId}`;
+    const hasEntered = localStorage.getItem(hasEnteredKey);
+
+    if (!hasEntered) {
+        displayEnterMessage();  // 처음 입장 시에만 메시지를 표시
+        localStorage.setItem(hasEnteredKey, true);  // 입장 상태를 로컬 스토리지에 저장
+    }
+};
+// 입장 메시지를 화면에 표시하는 함수
+const displayEnterMessage = function () {
+    const entryMessageElement = document.createElement('li');
+    entryMessageElement.classList.add('enter-member');
+    entryMessageElement.innerHTML = `<span>${nickname} 님이 들어왔습니다.</span>`;
+    $chatLogBox.appendChild(entryMessageElement);
+    scrollToBottom();
+}
+
 // STOMP : 등록
 const stompRegister = function () {
     const ws = new SockJS('/app/chat/stomp');
@@ -119,6 +139,8 @@ const sendMessage = function () {
 
         stompClient.send(`/pub/chatroom/chat`, {}, JSON.stringify(msgData));
 
+        $chatLogBox.appendChild(createChatElement(msgData));
+
         const messageDate = formatCreatedAtToDateString(new Date().toISOString());
         if (lastDate !== messageDate) {
             displayDate(messageDate);
@@ -160,6 +182,7 @@ const createChatElement = function (msgData) {
 
 // createdAt -> 시간 표시로 변경
 const formatCreatedAtToTimeString = function (createdAt) {
+    if (!createdAt) return "";
     // Date 객체로 변환
     const date = new Date(createdAt);
 

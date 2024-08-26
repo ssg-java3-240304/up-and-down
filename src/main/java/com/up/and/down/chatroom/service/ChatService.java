@@ -28,8 +28,9 @@ public class ChatService {
         this.chatRepo.save(chat); // 저장후 반환된 엔티티 사용하기
     }
 
-    public List<ChatDto> findByChatroomId(Long chatroomId) {
-        List<Chat> chatList = this.chatRepo.findByChatroomId(chatroomId);
+    public List<ChatDto> findByChatroomId(Long chatroomId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        List<Chat> chatList = this.chatRepo.findByChatroomId(chatroomId, pageable);
         return chatList.stream().map(Chat::toDto).toList();
     }
 }
