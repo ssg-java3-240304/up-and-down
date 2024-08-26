@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URLEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,11 +47,11 @@ public class ProductController {
         log.info("GET product - productGroupId: {}", productGroupId);
 
         // 상품 id로 조회
-        ProductGroup productGroup = this.service.findById(productGroupId);
+        ProductGroup productGroup = this.productService.findById(productGroupId);
         // 다른 고객이 함께 본 상품 조회
-        List<ProductGroup> relatedProductGroups = this.service.findRelatedProductsTop4(productGroup.getNights());
+        List<ProductGroup> relatedProductGroups = this.productService.findRelatedProductsTop4(productGroup.getNights());
         // 카테고리 인기 상품 조회
-        List<ProductGroup> popularProductGroups = this.service.findByThemeTop4(productGroup.getSearchKeywords());
+        List<ProductGroup> popularProductGroups = this.productService.findByThemeTop4(productGroup.getSearchKeywords());
 
 
         // 상품그룹 등록
@@ -74,6 +73,7 @@ public class ProductController {
     ) {
         log.info("GET product - redirectUrl: {}", redirectUrl);
         return "redirect:" + redirectUrl;
+        }
 
     @GetMapping("/like/{productGroupId}")
     @ResponseBody

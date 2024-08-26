@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
-//@Service
+@Service
 @RequiredArgsConstructor
 public class SearchService {
     private final ProductGroupDocRepository repo;
