@@ -35,8 +35,8 @@ public class GoogleSNSService {
 
     public String reqSnsApi() {
         String clientId = googleKey;//애플리케이션 클라이언트 아이디값";
-        String redirectURI = "http://localhost:8080/app/member/google_login";
-//        String redirectURI = "http://211.188.54.220:8080/app/member/google_login";
+//        String redirectURI = "http://localhost:8080/app/member/google_login";
+        String redirectURI = "http://175.45.205.36:8080/app/member/google_login";
         String apiURL = "https://accounts.google.com/o/oauth2/v2/auth?";
         apiURL += "client_id=" + clientId;
         apiURL += "&redirect_uri=" + redirectURI;
@@ -50,8 +50,8 @@ public class GoogleSNSService {
                 .queryParam("client_id", googleKey)
                 .queryParam("client_secret", googleSecret)
                 .queryParam("code", code)
-                .queryParam("redirect_uri", "http://localhost:8080/app/member/google_login")
-//                .queryParam("redirect_uri", "http://211.188.54.220:8080/app/member/google_login")
+//                .queryParam("redirect_uri", "http://localhost:8080/app/member/google_login")
+                .queryParam("redirect_uri", "http://175.45.205.36:8080/app/member/google_login")
                 .build()
                 .toUri();
 

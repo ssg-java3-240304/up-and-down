@@ -24,7 +24,6 @@ public class Chatroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatroomId;
-
     private String name; // 채팅방이름
 
     @ElementCollection(
@@ -47,9 +46,10 @@ public class Chatroom {
             name = "tbl_chatroom_member_id",
             joinColumns = @JoinColumn(name = "chatroom_id")
     )
-    private Set<Long> memberIdList = new HashSet<>();
+    private Set<Long> memberIdList;
 
     @CreatedDate
+    private LocalDateTime createdAt; // 등록일시
     @LastModifiedDate
     private LocalDateTime updatedAt; // 수정일시
 
@@ -64,9 +64,5 @@ public class Chatroom {
         if (this.memberIdList == null) {
             this.memberIdList = new HashSet<>();
         }
-    }
-
-    public int getMemberCount() {
-        return memberIdList.size();
     }
 }

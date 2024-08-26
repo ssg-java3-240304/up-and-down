@@ -82,8 +82,4 @@ public class AuthPrincipal implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
-
-    public User getUser() {
-        return user;
-    }
 }

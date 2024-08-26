@@ -6,7 +6,6 @@ import com.up.and.down.user.member.entity.Member;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data

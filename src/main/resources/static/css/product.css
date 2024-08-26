@@ -1,21 +1,13 @@
 /* 상품이미지 */
-main > div > .product-image {
+main > .product-image {
     width: 100%; height: 400px;
     border-radius: 10px;
     background-color: #D9D9D9;
-    overflow: hidden;
-}
-main > div > .product-image img {
-    width: 100%; height: 100%;
-    object-fit: cover;
 }
 /* 상품배지 */
 .badge {
     margin: 20px;
     font-size: 0;
-
-    display: flex;
-    gap: 10px;
 }
 .badge p {
     display: inline-block;
@@ -23,15 +15,16 @@ main > div > .product-image img {
     padding: 5px;
     border: 1px solid #808080;
     border-radius: 10px;
+    margin-right: 10px;
     font-size: 16px;
     color: #808080;
 }
 /* 상품제목 */
-main > div > .title {
+main > .title {
     margin: 20px;
 }
 /* 상품설명 */
-main > div > .description {
+main > .description {
     margin: 20px;
     color: #808080;
 }
@@ -45,26 +38,11 @@ main > div > .description {
 .action button img {
     width: 30px; height: 30px;
 }
-.action .share-alert {
-    position: fixed;
-    bottom: 100px; left: 50%;
-    transform: translateX(-50%);
-
-    padding: 10px 20px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.3);
-    opacity: 0; /* 처음엔 숨겨진 상태 */
-    transition: opacity 1s; /* 서서히 사라지는 효과 */
-}
-.action .share-alert.notify {
-    opacity: 1; /* 나타날 때는 바로 보이도록 */
-}
 /* 구매하기 */
 .price-box {
     margin: 20px;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
     gap: 20px;
 }
 .price-box .price {
@@ -85,7 +63,7 @@ main > div > .description {
     box-sizing: border-box;
     border-bottom: 1px solid #808080;
     margin-top: 50px;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .tab-list li a {
     display: block;
@@ -102,9 +80,6 @@ main > div > .description {
     color: #265AB4;
 }
 /* 가격비교 */
-.price-compare {
-    margin-bottom: 50px;
-}
 .travel-agency {
     box-sizing: border-box;
     width: 100%;
@@ -117,15 +92,7 @@ main > div > .description {
     width: 100px; height: 100px;
     border-radius: 10px;
     margin-right: 10px;
-}
-.travel-agency .logo p.travel-agency-name {
-    width: 100%; height: 100%;
-    text-align: center;
-    line-height: 50px;
-}
-.travel-agency .logo img.travel-agency-name {
-    width: 100%; height: 100%;
-    object-fit: contain;
+    background-color: #D9D9D9;
 }
 .travel-agency .info {
     box-sizing: border-box;
@@ -137,7 +104,7 @@ main > div > .description {
     justify-content: space-between;
 }
 .travel-agency .info .title {
-    font-weight: 700; font-size: 16px;
+    font-size: 24px;
 }
 .travel-agency .info .description {
     font-size: 16px;
@@ -149,15 +116,135 @@ main > div > .description {
     font-weight: bold;
     color: #fff;
 }
-/* 연관상품 */
-.related-product {
-    margin-bottom: 50px;
+/* 상품의견 */
+.comment-area > h1,
+.related-product > h1 {
+    width: 100%; height: 50px;
+    margin-top: 50px;
+    border-bottom: 2px solid #808080;
+    line-height: 50px;
 }
-.related-product h1 {
+.comment-area .profile-image {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-right: 20px;
+    background-color: #D9D9D9;
+}
+.comment-area .star {
+    color: #FFC300;
+}
+/* 댓글 작성란 */
+.comment-input {
     box-sizing: border-box;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #808080;
+    width: 100%;
+    padding: 20px;
+    display: flex;
 }
+.comment-input .input-field {
+    flex: 1;
+}
+.comment-input .input-field .star {
+    margin-bottom: 10px;
+}
+.comment-input .input-field input {
+    width: 100%;
+}
+.comment-input .input-field .button-group {
+    float: right;
+    margin-top: 20px;
+}
+/* 정렬 및 필터 */
+.sort-filter-group {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sort-filter-group .sort-group {
+    display: flex;
+    gap: 20px;
+    font-size: 0;
+}
+.sort-filter-group .sort-group button {
+    font-size: 16px;
+    color: #808080;
+}
+.sort-filter-group .filter {
+    position: relative;
+}
+.sort-filter-group .filter input {
+    width: 200px; height: 30px;
+}
+.sort-filter-group .filter button {
+    position: absolute;
+    top: 5px; right: 5px;
+}
+.sort-filter-group .filter button img {
+    width: 20px; height: 20px;
+}
+/* 댓글목록 */
+/* 댓글 */
+.comment {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    border-top: 1px solid #808080;
+    display: flex;
+}
+.comment .content-group .content-top {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.comment .nickname {
+    font-weight: bold;
+}
+.comment .create-date {
+    color: #808080;
+}
+.comment .content-group .content-bottom {
+    margin-top: 20px;
+}
+.comment .content-group .content-bottom button {
+    font-size: 16px;
+}
+.comment .kebab-menu-icon {
+    position: absolute;
+    top: 30px; right: 20px;
+}
+.comment .kebab-menu-icon img {
+    width: 20px; height: 20px;
+}
+/* 답글 */
+.reply {
+    display: flex;
+    align-items: center;
+}
+.reply > img {
+    width: 20px; height: 20px;
+    padding: 20px;
+}
+/* 답글 작성란 */
+.reply-input {
+    display: flex;
+    align-items: center;
+}
+.reply-input > img {
+    width: 20px; height: 20px;
+    padding: 20px;
+}
+.reply-input .comment-input {
+    box-sizing: border-box;
+    border-top: 1px solid #808080;
+}
+.reply-input .input-field {
+    margin-top: 30px;
+}
+/* 연관상품 */
 .relation-section {
     box-sizing: border-box;
     padding: 20px 0;
@@ -177,15 +264,10 @@ main > div > .description {
     width: 200px; height: 200px;
     margin-bottom: 10px;
     border-radius: 10px;
-    overflow: hidden;
-}
-.relation-section .product-group .product .product-image img {
-    width: 100%; height: 100%;
-    object-fit: contain;
+    background-color: #D9D9D9;
 }
 .relation-section .product-group .product .title {
     margin-bottom: 10px;
-    font-weight: 700;
 }
 .relation-section .product-group .product .price {
     float: right;

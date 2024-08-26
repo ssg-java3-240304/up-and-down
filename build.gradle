@@ -52,9 +52,6 @@ dependencies {
 	// Elasticsearch 의존성
 	implementation 'org.springframework.data:spring-data-elasticsearch:5.3.2'
 
-	// Json 변환
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
 	// MySQL 연결 의존성
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
