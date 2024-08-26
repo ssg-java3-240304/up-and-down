@@ -21,7 +21,6 @@ public class ChatroomListResponseDto {
     private Set<Category> category; // 카테고리
     private String description; // 내용
     private Long creatorId; // 채팅방장
-    private Set<ChatroomMember> chatroomMember;
     private int memberCount; // 참여인원수
     private LocalDateTime createdAt;
     private String nickname;

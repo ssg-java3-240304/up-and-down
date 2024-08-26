@@ -26,7 +26,7 @@ import java.util.Set;
 @RequestMapping("/chatroom")
 @RequiredArgsConstructor
 public class ChatroomController {
-    private final ChatroomService chatRoomService;
+    private final ChatroomService chatroomService;
 
     // [커뮤니티] 메인페이지 보여주기
     @GetMapping("/list")
@@ -43,12 +43,12 @@ public class ChatroomController {
         }
 
         // 전체 채팅방 목록 가져오기
-        Page<ChatroomListResponseDto> chatRoomPage = chatRoomService.findAll(pageable, nickname);
+        Page<ChatroomListResponseDto> chatroomPage = chatroomService.findAll(pageable);
 
-        model.addAttribute("chatRooms", chatRoomPage.getContent());
-        model.addAttribute("currentPage", chatRoomPage.getNumber());
-        model.addAttribute("totalPages", chatRoomPage.getTotalPages());
-        model.addAttribute("totalCount", chatRoomPage.getTotalElements());
+        model.addAttribute("chatRooms", chatroomPage.getContent());
+        model.addAttribute("currentPage", chatroomPage.getNumber());
+        model.addAttribute("totalPages", chatroomPage.getTotalPages());
+        model.addAttribute("totalCount", chatroomPage.getTotalElements());
 
         return "chatroom/list";
     }
@@ -73,7 +73,7 @@ public class ChatroomController {
         }
         log.debug("nickname = {}", authentication);
 
-        Page<ChatroomListResponseDto> chatRoomPage = chatRoomService.findAllChatRooms(pageable, searchType, keywords, categories, nickname);
+        Page<ChatroomListResponseDto> chatRoomPage = chatroomService.findAllChatRooms(pageable, searchType, keywords, categories, nickname);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
         return chatRoomPage;
@@ -97,7 +97,7 @@ public class ChatroomController {
                 log.debug("Authenticated Member ID: {}", memberId);
             }
         }
-        Page<ChatroomListResponseDto> chatRoomPage = chatRoomService.findOurChatRooms(memberId, pageable, searchType, keywords, categories);
+        Page<ChatroomListResponseDto> chatRoomPage = chatroomService.findOurChatRooms(memberId, pageable, searchType, keywords, categories);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
         return chatRoomPage;
@@ -120,7 +120,7 @@ public class ChatroomController {
                 memberId = principal.getUser().getId();
             }
         }
-        Page<ChatroomListResponseDto> chatRoomPage = chatRoomService.findMyChatRooms(memberId, pageable, searchType, keywords, categories);
+        Page<ChatroomListResponseDto> chatRoomPage = chatroomService.findMyChatRooms(memberId, pageable, searchType, keywords, categories);
         log.debug("chatRoomPage = {}", chatRoomPage);
 
         return chatRoomPage;
@@ -135,9 +135,9 @@ public class ChatroomController {
         Long memberId = principal != null ? principal.getUser().getId() : null;
 
         // 채팅방 상세 정보와 멤버수 가져오기
-        ChatroomInfoDto chatRoomInfo = chatRoomService.getChatRoomInfoById(chatRoomId);
-        ChatroomResponseDto chatRoom = chatRoomService.findByChatRoom(chatRoomId, memberId);
-        int memberCount = chatRoomService.getChatRoomMemberCount(chatRoomId); // 멤버수 조회
+        ChatroomInfoDto chatRoomInfo = chatroomService.getChatRoomInfoById(chatRoomId);
+        ChatroomResponseDto chatRoom = chatroomService.findByChatRoom(chatRoomId, memberId);
+        int memberCount = chatroomService.getChatRoomMemberCount(chatRoomId); // 멤버수 조회
 
         log.info("GET /chatroom/detail");
         log.debug("chatRoom = {}", chatRoom);
@@ -164,7 +164,7 @@ public class ChatroomController {
         // 현재 로그인한 사용자 id
         Long creatorId = principal.getUser().getId();
         // 채팅방 등록
-        chatRoomService.registChatRoom(dto, creatorId);
+        chatroomService.registChatRoom(dto, creatorId);
         redirectAttributes.addFlashAttribute("message", "채팅방이 등록되었습니다");
         return "redirect:/chatroom/list"; // 등록후에 메인페이지로 리다이렉트
     }
@@ -174,7 +174,7 @@ public class ChatroomController {
     @GetMapping("/update/{chatRoomId}")
     public String update(@PathVariable("chatRoomId") Long chatRoomId, Model model){
         log.info("GET /chatroom/update");
-        ChatroomDetailResponseDto dto = chatRoomService.findById(chatRoomId); // ChatRoomDetailResponseDto 조회용도
+        ChatroomDetailResponseDto dto = chatroomService.findById(chatRoomId); // ChatRoomDetailResponseDto 조회용도
         log.debug("dto = {}", dto);
         model.addAttribute("chatRoom", dto);
         return "chatroom/update";
@@ -183,7 +183,7 @@ public class ChatroomController {
     public String update(@ModelAttribute ChatroomUpdateRequestDto dto,
                          RedirectAttributes redirectAttributes){
         log.debug("dto = {}", dto);
-        chatRoomService.update(dto);
+        chatroomService.update(dto);
         redirectAttributes.addFlashAttribute("message", "채팅방 소개글을 수정했습니다.");
         return "redirect:/chatroom/" + dto.getChatroomId();
     }
