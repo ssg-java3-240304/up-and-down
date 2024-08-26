@@ -20,4 +20,6 @@ public class ChatroomDto {
     private ChatroomMember chatRoomMember;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private String nickname;
 }
