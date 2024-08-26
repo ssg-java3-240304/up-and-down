@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDto {
-    private String empNum;
-    private String password;
-    private String phone;
+public class DateRangeDto {
+    private LocalDate startDate;
+    private LocalDate endDate;
 }
