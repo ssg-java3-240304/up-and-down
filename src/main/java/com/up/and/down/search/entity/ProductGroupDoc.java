@@ -42,4 +42,14 @@ public class ProductGroupDoc {
 
     @Field(type = FieldType.Integer)
     private int likeCount; // 좋아요
+
+    public void increaseLikeCount() {
+        likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (likeCount > 0) {
+            likeCount--;
+        }
+    }
 }

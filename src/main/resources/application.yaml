@@ -1,6 +1,6 @@
 spring:
   profiles:
-    default: test
+    default: prod
   application:
     name: up-and-down
   servlet:
@@ -24,9 +24,6 @@ spring:
     username: ${ELASTIC_USERNAME}
     password: ${ELASTIC_PASSWORD}
 
-
-
-
 logging:
   level:
     root: info
@@ -40,6 +37,7 @@ coolsms:
   api:
     key: ${SMS_KEY}
     secret: ${SMS_SECRET}
+
 sns:
   naver:
     key: ${NAVER_KEY}

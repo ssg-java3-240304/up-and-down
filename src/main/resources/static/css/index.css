@@ -78,7 +78,7 @@ main .most-searched .product-group .product .product-image {
 }
 main .most-searched .product-group .product img {
     width: 100%; height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 main .most-searched .product-group p {
     margin-bottom: 10px;

@@ -11,6 +11,11 @@
 
     <!-- css -->
     <link rel="stylesheet" th:href="@{/css/product.css}">
+    <!-- js -->
+    <script>
+        const productGroupId = [[${productGroupId}]];
+    </script>
+    <script defer th:src="@{/js/product.js}"></script>
 </head>
 <body>
     <main layout:fragment="main" class="mt-20">
@@ -32,13 +37,17 @@
             <p class="description" th:text="${productGroup.getContent}">패키지 여행 상품 설명</p>
             <div class="action">
                 <!-- 좋아요 -->
-                <button type="button">
-                    <img src="https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png" alt="좋아요 버튼">
+                <button type="button" class="like-btn">
+                    <img th:src="${isLiked ?
+                                 'https://kr.object.ncloudstorage.com/up-bucket/product/heart-fill.png' :
+                                 'https://kr.object.ncloudstorage.com/up-bucket/product/heart-outline.png'}"
+                         alt="좋아요 버튼">
                 </button>
                 <!-- 공유하기 -->
-                <button type="button">
+                <button type="button" class="share-btn">
                     <img src="https://kr.object.ncloudstorage.com/up-bucket/product/share.png" alt="공유 버튼">
                 </button>
+                <p class="share-alert">URL이 복사되었습니다!</p>
             </div>
             <div class="price-box">
                 <span class="price"><span th:text="${productGroup.getCheapestProductPrice()}">0</span>원</span>

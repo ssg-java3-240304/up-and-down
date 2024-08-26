@@ -1,20 +1,25 @@
 package com.up.and.down.auth.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
 public class AuthController {
     @GetMapping("/auth/login")
-    public String login() {
+    public String loginWithUrl(
+            @RequestParam(required = false) String url,
+            HttpServletRequest request
+    ) {
+        log.info("GET login with url {}", url);
+
+        if (url != null) {
+            request.getSession().setAttribute("redirectUrl", url);
+        }
+
         return "login/memberLogin";
     }
 
