@@ -1,11 +1,9 @@
 package com.up.and.down.chatroom.controller;
 
 import com.up.and.down.auth.principal.AuthPrincipal;
-import com.up.and.down.chatroom.dto.ChatroomDetailResponseDto;
-import com.up.and.down.chatroom.dto.ChatroomRegistRequestDto;
-import com.up.and.down.chatroom.dto.ChatroomUpdateRequestDto;
-import com.up.and.down.chatroom.dto.ShowChatroomDto;
+import com.up.and.down.chatroom.dto.*;
 import com.up.and.down.chatroom.entity.Category;
+import com.up.and.down.chatroom.repository.ChatroomRepository;
 import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.common.ImageImport;
 import lombok.RequiredArgsConstructor;
@@ -87,6 +85,24 @@ public class ChatroomController {
         chatroomService.registChatroom(dto, creatorId);
         redirectAttributes.addFlashAttribute("message", "채팅방이 등록되었습니다");
         return "redirect:/chatroom/list"; // 등록후에 메인페이지로 리다이렉트
+    }
+
+    // 상세페이지
+    @GetMapping("/{chatroomId}")
+    public String detail(
+            @PathVariable("chatroomId") Long chatroomId,
+            @AuthenticationPrincipal AuthPrincipal principal,
+            Model model
+    ){
+        log.info("GET /chatroom/detail");
+
+        ChatroomDto chatroomDto = chatroomService.findByChatroomId(chatroomId);
+        Long currentUserId = (principal != null) ? principal.getUser().getId() : null;
+
+        model.addAttribute("chatroomDto", chatroomDto);
+        model.addAttribute("currentUserId", currentUserId);
+
+        return "chatroom/detail";
     }
 
     // 수정페이지

@@ -69,7 +69,7 @@
         <!-- 목록 -->
         <ul id="list-container" class="list-container">
             <li th:each="chatroom : ${chatroomList}" class="list-item">
-                <a th:href="@{/chatroom/detail/{chatroomId}(chatroomId = ${chatroom.getId})}">
+                <a th:href="@{/chatroom/{chatroomId}(chatroomId = ${chatroom.getId})}">
                     <div class="list-item-content d-flex align-items-center justify-content-end">
                         <div class="d-flex align-items-center w-100">
                             <!-- 제목 -->

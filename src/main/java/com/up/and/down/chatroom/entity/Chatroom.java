@@ -1,5 +1,6 @@
 package com.up.and.down.chatroom.entity;
 
+import com.up.and.down.chatroom.dto.ChatroomDto;
 import com.up.and.down.chatroom.dto.ChatroomUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,7 @@ public class Chatroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatroomId;
+
     private String name; // 채팅방이름
 
     @ElementCollection(
@@ -52,6 +54,19 @@ public class Chatroom {
     private LocalDateTime createdAt; // 등록일시
     @LastModifiedDate
     private LocalDateTime updatedAt; // 수정일시
+
+    public ChatroomDto toChatroomDto() {
+        return ChatroomDto.builder()
+                .chatroomId(this.chatroomId)
+                .name(this.name)
+                .categories(this.category)
+                .description(this.description)
+                .creatorId(this.creatorId)
+                .memberIdList(this.memberIdList)
+                .createdAt(this.createdAt)
+                .updatedAt(this.updatedAt)
+                .build();
+    }
 
     public void update(ChatroomUpdateRequestDto dto) {
         this.name = dto.getName();

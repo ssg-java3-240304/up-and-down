@@ -218,6 +218,7 @@ public class ChatroomService {
     public ChatroomDetailResponseDto findById(Long chatroomId) {
         return ChatroomDetailResponseDto.fromChatroom(chatroomRepository.findById(chatroomId).orElseThrow());
     }
+
     public void update(ChatroomUpdateRequestDto dto) {
         Chatroom chatroom = chatroomRepository.findById(dto.getChatroomId()).orElseThrow();
         chatroom.update(dto); // 채팅방 정보 업데이트
@@ -233,5 +234,11 @@ public class ChatroomService {
         // 변경된 내용 db에 저장
         chatroomRepository.save(chatroom);
         log.debug("추가된 멤버id = {}, 해당 채팅방 = {}", memberId, chatroomId);
+    }
+
+    public ChatroomDto findByChatroomId(Long chatroomId) {
+        ChatroomDto chatroomDto = this.chatroomRepository.findByChatroomId(chatroomId).toChatroomDto();
+        chatroomDto.setCreatorNickname(this.memberService.findById(chatroomDto.getCreatorId()).orElseThrow().getNickname());
+        return chatroomDto;
     }
 }
