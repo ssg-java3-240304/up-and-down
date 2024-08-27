@@ -62,7 +62,7 @@ header .header-group ul {
     float: right;
     box-sizing: border-box;
     width: 200px; height: 400px;
-    margin: 0 20px 20px;
+    margin: 20px;
     background-color: #D9D9D9;
 }
 .left-side-nav .ads-box img {
