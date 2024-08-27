@@ -13,7 +13,7 @@ $(document).ready(function () {
         console.log(`탭이 클릭되었습니다. Filter: ${filter}`);
         // '전체' 탭 클릭 시 list 페이지로 리다이렉트
         // if (filter === 'all') {
-        //     window.location.href = '/app/chat-rooms/list';
+        //     window.location.href = '/app/chat-room/list';
         //     return;
         // }
 
@@ -25,14 +25,14 @@ $(document).ready(function () {
             // 그 외의 탭은 바로 로드
             $('.nav-link').removeClass('active');
             $(this).addClass('active');
-            chatRoomUpdate(filter);
+            chatroomUpdate(filter);
         }
     });
 
     // 로그인 상태를 확인하고 탭을 로드하는 함수
     function checkAuthenticationAndLoadTab(filter) {
         $.ajax({
-            url: '/app/chat-rooms/loginCheck', // 로그인 상태를 확인하는 API 엔드포인트
+            url: '/app/chat-room/loginCheck', // 로그인 상태를 확인하는 API 엔드포인트
             type: 'GET',
             success: function (data) {
                 console.log("로그인 확인을 완료했습니다!")
@@ -41,7 +41,7 @@ $(document).ready(function () {
                     console.log('로그인 상태 : ' +data)
                     $('.nav-link').removeClass('active');
                     $('.nav-link[data-tab="' + filter + '"]').addClass('active');
-                    chatRoomUpdate(filter);
+                    chatroomUpdate(filter);
                 }
             },
             error: function (xhr) {
@@ -54,9 +54,9 @@ $(document).ready(function () {
 
 
     // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색, 페이징 처리)
-    function chatRoomUpdate(filter, page = 0, size = 10) {
+    function chatroomUpdate(filter, page = 0, size = 10) {
 
-        let baseUrl = '/app/chat-api-rooms/'
+        let baseUrl = '/app/chat-api-room/'
         if (filter === 'our') {
             baseUrl += filter;
         }else if (filter === 'mine') {
@@ -100,18 +100,17 @@ $(document).ready(function () {
                 console.error('AJAX Request Error:', error);
             }
         });
-
     }
 
     //채팅방을 보여주는 함수
-    function uploadData(chatRooms, filter){
+    function uploadData(chatroom, filter){
         console.log('uploadData를 시작합니다.')
 
         let listContainer = $('#list-container');
         let noResultsContainer = $('#no-results');
         listContainer.empty();
 
-        if (!Array.isArray(chatRooms) || chatRooms.length === 0) {
+        if (!Array.isArray(chatroom) || chatroom.length === 0) {
             let noResultsText = '';
             if (filter === 'our') {
                 noResultsText = '참여 중인 모임이 없습니다. 새로운 모임에 가입해보세요!';
@@ -124,21 +123,21 @@ $(document).ready(function () {
         } else {
             noResultsContainer.addClass('d-none');
 
-            chatRooms.forEach(chatRoom => {
-                let chatRoomItem = `
-                <div class="list-item" onclick="window.location.href='/app/chat-rooms/${chatRoom.chatRoomId}'">
+            chatroom.forEach(chatroom => {
+                let chatroomItem = `
+                <div class="list-item" onclick="window.location.href='/app/chat-room/${chatroom.chatroomId}'">
                     <div class="list-item-content d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center w-100">
-                            <h3 class="list-title m-0">${chatRoom.name}</h3>
-                            <span class="list-nickname ms-3">${chatRoom.nickName}</span>
+                            <h3 class="list-title m-0">${chatroom.name}</h3>
+                            <span class="list-nickname ms-3">${chatroom.nickName}</span>
                             <div class="list-categories ms-3">
-                                ${chatRoom.categories.map(category => `<span class="category-badge">${category}</span>`).join('')}
+                                ${chatroom.categories.map(category => `<span class="category-badge">${category}</span>`).join('')}
                             </div>
-                            <div class="list-participants ms-auto">참여 인원수: ${chatRoom.memberCount}명</div>
+                            <div class="list-participants ms-auto">참여 인원수: ${chatroom.memberCount}명</div>
                         </div>
                     </div>
                 </div>`;
-                listContainer.append(chatRoomItem);
+                listContainer.append(chatroomItem);
             });
         }
     }
@@ -146,19 +145,19 @@ $(document).ready(function () {
 
     // 검색에 값이 입력 할 때마다 실시간 변경
     $('#searchQuery').on('input', function () {
-        chatRoomUpdate(getCurrentFilter());
+        chatroomUpdate(getCurrentFilter());
     });
 
     // 검색 버튼 클릭 이벤트
     $('#searchButton').on('click', function () {
-        chatRoomUpdate(getCurrentFilter());
+        chatroomUpdate(getCurrentFilter());
     });
 
     // 검색 입력 필드에서 Enter 키 눌렀을 때 검색
     $('#searchQuery').on('keypress', function (e) {
         if (e.which === 13) { // 13은 Enter 키의 코드
             e.preventDefault(); // 기본 동작 방지
-            chatRoomUpdate(getCurrentFilter());
+            chatroomUpdate(getCurrentFilter());
         }
     });
 
@@ -179,7 +178,7 @@ $(document).ready(function () {
         }
 
         // 선택된 카테고리로 필터링된 결과 로드
-        chatRoomUpdate(getCurrentFilter());
+        chatroomUpdate(getCurrentFilter());
     });
 
     // 페이지네이션 클릭 이벤트
@@ -191,7 +190,7 @@ $(document).ready(function () {
 
         if (!isNaN(page) && page >= 0) {
             console.log("page if문 작동")
-            chatRoomUpdate(getCurrentFilter(), page);
+            chatroomUpdate(getCurrentFilter(), page);
         }
     });
 

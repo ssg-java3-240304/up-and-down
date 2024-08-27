@@ -35,7 +35,7 @@ public class ChatController {
         Long memberId = principal.getUser().getId();
         String nickname = ((Member) principal.getUser()).getNickname();
 
-        chatroomService.addMemberToChatRoom(chatroomId, memberId);
+        chatroomService.addMemberToChatroom(chatroomId, memberId);
         log.debug("채팅방id{}에 멤버{}추가", chatroomId, memberId);
         ChatroomInfoDto chatroomInfo = this.chatroomService.getChatroomInfoById(chatroomId);
 

@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -52,7 +51,7 @@ public class ChatroomRestController {
         Long userId = user.getId();
 
         Page<ShowChatroomDto> chatroomList;
-        chatroomList = chatroomService.findAllOurChatRoom(pageable,categories,keyword,userId);
+        chatroomList = chatroomService.findAllOurChatroom(pageable,categories,keyword,userId);
         return chatroomList;
     }
 
@@ -69,7 +68,7 @@ public class ChatroomRestController {
 
         Page<ShowChatroomDto> chatroomList ;
         //카테고리가 선택된 경우
-        chatroomList = chatroomService.findAllMineChatRoom(pageable,categories,keyword,userId);
+        chatroomList = chatroomService.findAllMineChatroom(pageable,categories,keyword,userId);
 
         return chatroomList;
     }

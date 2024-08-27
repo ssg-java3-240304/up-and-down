@@ -15,15 +15,17 @@
             <h1><a th:href="@{/}"><span>Up</span> <span>Down</span></a></h1>
             <ul class="menu">
                 <li><a th:href="@{/}">메인</a></li>
-                <li><a th:href="@{/chat-rooms/list}">SPOT</a></li>
-                <div sec:authorize="isAnonymous()">
-                    <li><a th:href="@{/auth/login}">로그인</a></li>
-                </div>
-                <div sec:authorize="isAuthenticated()">
-                    <form id="logoutFrm" th:action="@{/auth/logout}" method="post">
-                        <li onclick="submit()">로그아웃</li>
-                    </form>
-                </div>
+                <li><a th:href="@{/chatroom/list}">SPOT</a></li>
+                <li>
+                    <div sec:authorize="isAnonymous()">
+                        <a th:href="@{/auth/login}">로그인</a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <form id="logoutFrm" th:action="@{/auth/logout}" method="post">
+                            <button type="button" onclick="submit()" style="font-size: 16px;">로그아웃</button>
+                        </form>
+                    </div>
+                </li>
             </ul>
         </div>
         <script>
