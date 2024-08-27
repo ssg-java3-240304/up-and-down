@@ -1,5 +1,6 @@
 package com.up.and.down.user.admin.service;
 
+import com.up.and.down.product.repository.ProductRepository;
 import com.up.and.down.user.admin.dto.*;
 import com.up.and.down.user.admin.entity.Admin;
 import com.up.and.down.user.admin.entity.Company;
@@ -28,6 +29,7 @@ public class AdminService {
     private final CompanyRepository companyRepository;
     private final LoginInfoRepository loginInfoRepository;
     private final ProductStatRepository productStatRepository;
+    private final ProductRepository productRepository;
 
     @Value("${coolsms.api.key}")
     private String apiKey;
@@ -106,5 +108,27 @@ public class AdminService {
 
     public List<ProductDestinationInfo> getDestinationNViewCount() {
         return productStatRepository.getDestinationNViewCount();
+    }
+
+    public List<ProductDestinationInfo> getDestinationInfo(ProdStatRequestDto prodStatRequestDto) {
+        if(prodStatRequestDto.getInfoType().equals("checkNum")) {
+            return getDestinationNViewCount();
+        } else if(prodStatRequestDto.getInfoType().equals("likeNum")) {
+            return productStatRepository.getDestinationNLikeCount();
+        } else {
+            return productRepository.getDestinationNProdQuantity();
+        }
+    }
+
+    public List<ProductTravelAgencyInfo> getTravelAgencyInfo(ProdStatRequestDto prodStatRequestDto) {
+        if(prodStatRequestDto.getInfoType().equals("checkNum")) {
+            return productStatRepository.getTravelAgencyNViewCount();
+        }
+//        else if(prodStatRequestDto.getInfoType().equals("likeNum")) {
+//            return productStatRepository.getTravelAgencyNLikeNum();
+//        }
+        else {
+            return productRepository.getTravelAgencyNProdQuantity();
+        }
     }
 }

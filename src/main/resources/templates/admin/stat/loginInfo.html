@@ -61,8 +61,8 @@
 </head>
 <body>
     <main layout:fragment="main">
-        <div style="margin: 20px;">
-            <input type="text" id="date-range" name="daterange" value="06/01/2024 - 08/31/2024" />
+        <div style="margin: 53px;">
+            <input type="text" id="date-range" name="daterange" value="2024/06/01 ~ 2024/08/31" />
             <button id="fetch-data-btn" class="btn btn-primary">조회</button>
         </div>
             <div class="card sameheight-item" data-exclude="xs" id="dashboard-history">
@@ -87,7 +87,7 @@
                             </p>
                             <div id="dashboard-dates-chart"></div>
                         </div>
-                        <div role="tabpanel" class="tab-pane active fade show" id="browsers">
+                        <div role="tabpanel" class="tab-pane fade" id="browsers">
                             <p class="title-description">
                                 Number of unique visits last 6 months
                             </p>
@@ -99,7 +99,7 @@
         <script>
             /* 6개월 회원 접속 통계 데이터 */
             const loginInfoList = `[[${loginInfoList}]]`;
-            console.log("6개월 데이터 loginInfoList: ", loginInfoList);
+            // console.log("6개월 데이터 loginInfoList: ", loginInfoList);
             let dataVisits = loginInfoList
                 .slice(1, -1) // 양쪽 끝의 대괄호 제거
                 .split(/,\s*VisitCountDto/) // 각 VisitCountDto로 분리
@@ -111,10 +111,10 @@
                 })
                 .filter(Boolean); // 유효한 객체만 필터링
 
-            console.log(dataVisits);
+            // console.log(dataVisits);
 
             const browserCounts = `[[${browserCounts}]]`;
-            console.log("6개월 데이터 browserCounts: ", loginInfoList);
+            // console.log("6개월 데이터 browserCounts: ", loginInfoList);
             let browsersVisits = browserCounts
                 .slice(1, -1) // 양쪽 끝의 대괄호 제거
                 .split(/,\s*BrowserCountDto/) // 각 VisitCountDto로 분리
@@ -125,7 +125,7 @@
                     }
                 })
                 .filter(Boolean); // 유효한 객체만 필터링
-            console.log(browsersVisits);
+            // console.log(browsersVisits);
 
 
             // 날짜 선택기 초기화
@@ -133,7 +133,7 @@
                 $('#date-range').daterangepicker({
                     opens: 'left',
                     locale: {
-                        format: 'MM/DD/YYYY' // 이 부분을 명시하여 날짜 형식을 확실하게 합니다.
+                        format: 'YYYY/MM/DD' // 이 부분을 명시하여 날짜 형식을 확실하게 합니다.
                     }
                 });
             });
@@ -141,8 +141,8 @@
             // 조회 버튼 클릭 이벤트 처리
             $('#fetch-data-btn').on('click', function() {
                 const dateRange = $('#date-range').val().split(' - ');
-                const startDate = moment(dateRange[0], 'MM/DD/YYYY').format('YYYY-MM-DD');
-                const endDate = moment(dateRange[1], 'MM/DD/YYYY').format('YYYY-MM-DD');
+                const startDate = moment(dateRange[0], 'YYYY/MM/DD').format('YYYY-MM-DD');
+                const endDate = moment(dateRange[1], 'YYYY/MM/DD').format('YYYY-MM-DD');
 
                 fetchDataAndUpdateCharts(startDate, endDate);
             });
@@ -166,12 +166,16 @@
                     contentType: 'application/json',
                     success: function(response) {
                         const {datesData, browsersData} = response;
-                        console.log("datesData:", datesData);
+                        // console.log("datesData:", datesData);
                         dataVisits = datesData;
-                        console.log("loginInfoList:", dataVisits);
-                        console.log("browsersData:", browsersData);
+                        // console.log("loginInfoList:", dataVisits);
+                        // console.log("browsersData:", browsersData);
                         browsersVisits = browsersData;
-                        console.log("browsersVisits:", browsersVisits);
+                        // console.log("browsersVisits:", browsersVisits);
+
+                        const newTitle = `${startDate} ~ ${endDate}`;
+                        $('.title-description').text(newTitle);
+
                         switchHistoryCharts("dates");
                     },
                     error: function(error) {

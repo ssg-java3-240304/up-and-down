@@ -9,7 +9,7 @@
             font-family: 'Open Sans', sans-serif;
         }
         section {
-            margin: 50px;
+            margin: 35px;
         }
         .section {
             margin-bottom: 15px;
@@ -21,13 +21,34 @@
                 margin-bottom: 25px;
             }
         }
+        .form-select {
+            border-radius: 0.35rem;
+            padding: 5px;
+        }
         .card {
             margin-bottom: 10px;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #d7dde4;
+        }
+        .header-block {
+            padding: 0.5rem 15px;
         }
         .dashboard-sales-breakdown-chart {
             margin: 100px auto;
             max-width: 500px;
             max-height: 500px;
+        }
+        .title {
+            color: #4f5f6f;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        h3 {
+            margin-bottom: 0px;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -39,30 +60,30 @@
     <main layout:fragment="main">
         <section class="section">
             <div>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" id="classificationType" aria-label="Default select example">
                     <option selected disabled>분류 타입</option>
-                    <option value="1">지역</option>
-                    <option value="2">여행사</option>
+                    <option value="destination">지역</option>
+                    <option value="travelAgency">여행사</option>
                 </select>
             </div>
             <div>
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" id="infoType" aria-label="Default select example">
                     <option selected disabled>확인할 정보</option>
-                    <option value="1">조회수</option>
-                    <option value="2">좋아요수</option>
-                    <option value="3">상품 수량</option>
+                    <option value="checkNum">조회수</option>
+                    <option id="likeNum" value="likeNum">좋아요수</option>
+                    <option value="prodQuantity">상품 수량</option>
                 </select>
             </div>
         </section>
         <section>
             <div class="card sameheight-item sales-breakdown" data-exclude="xs,sm,lg">
-<!--                <div class="card-header">-->
-<!--                    <div class="header-block">-->
-<!--                        <h3 class="title">-->
-<!--                            브랜드 별 상품-->
-<!--                        </h3>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="card-header">
+                    <div class="header-block">
+                        <h3 class="title">
+                            지역 별 상품 조회수
+                        </h3>
+                    </div>
+                </div>
                 <div class="card-block">
                     <div class="dashboard-sales-breakdown-chart" id="dashboard-sales-breakdown-chart"></div>
                 </div>
@@ -70,8 +91,10 @@
         </section>
         <script>
             const $dashboardSalesBreakdownChart = $('#dashboard-sales-breakdown-chart');
+
+            // 페이지 로드 시 처음 보여줄 그래프 데이터 (지역 별 조회수)
             const destinationNViewCount = `[[${destinationNViewCount}]]`;
-            console.log("destinationNViewCount: ", destinationNViewCount)
+            // console.log("destinationNViewCount: ", destinationNViewCount);
             let destinView = destinationNViewCount
                 .slice(1, -1) // 양쪽 끝의 대괄호 제거
                 .split(/\),\s*ProductDestinationInfo\(/) // 각 ProductDestinationInfo 객체로 분리
@@ -79,14 +102,156 @@
                     // 처음과 끝의 괄호를 제거
                     item = item.replace(/ProductDestinationInfo\(|\)/g, '');
                     // destination과 count 값을 정규식으로 추출
-                    const match = item.match(/destination=(\w+),\s*count=(\d+)/);
+                    const match = item.match(/destination=([^\s,]+),\s*count=(\d+)/);
                     if (match) {
                         return { label: match[1], value: parseInt(match[2], 10) }; // count 값을 숫자로 변환하여 반환
                     }
                 })
                 .filter(item => item && item.value > 0); // value가 0보다 큰 객체만 필터링
+            // console.log(destinView);
 
-            console.log(destinView);
+            // 분류 타입과 확인할 정보 변경 시
+            $('#classificationType, #infoType').on('change', function () {
+                // 선택된 값 가져오기
+                const classificationType = $('#classificationType').val();
+                console.log(classificationType);
+                const infoType = $('#infoType').val();
+                console.log(infoType);
+
+                if (classificationType === "travelAgency") {
+                    $('#likeNum').prop('disabled', true);
+                } else if (classificationType === "destination") {
+                    $('#likeNum').prop('disabled', false);
+                }
+
+                // 두 값이 모두 선택된 경우에만 비동기 요청 수행
+                if (classificationType && infoType) {
+                    fetchDataAndUpdateChart(classificationType, infoType);
+                }
+            });
+
+            function fetchDataAndUpdateChart(classificationType, infoType) {
+                // console.log("classificationType: ", classificationType);
+                // console.log("infoType: ", infoType);
+                const csrfHeader = "[[${_csrf.headerName}]]";
+                const csrfToken = "[[${_csrf.token}]]";
+                const headers = {
+                    [csrfHeader] : csrfToken
+                }
+                // 비동기 요청
+                $.ajax({
+                    url: '/app/admin/stat/changeProdInfo',
+                    type: 'POST',
+                    headers,
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        classificationType: classificationType,
+                        infoType: infoType
+                    }),
+                    success: function (response) {
+                        const { data } = response;  // 서버로부터 받은 데이터
+                        console.log("data: ", data);
+                        updateChart(data);  // 차트 업데이트 함수 호출
+
+                        // 타이틀 변경
+                        let classificationText = "";
+                        let infoText = "";
+
+                        switch (classificationType) {
+                            case 'destination':
+                                classificationText = "지역 별";
+                                break;
+                            case 'travelAgency':
+                                classificationText = "여행사 별";
+                                break;
+                        }
+
+                        switch (infoType) {
+                            case 'checkNum':
+                                infoText = "상품 조회수";
+                                break;
+                            case 'likeNum':
+                                infoText = "상품 좋아요수";
+                                break;
+                            case 'prodQuantity':
+                                infoText = "상품 수량";
+                                break;
+                        }
+
+                        const newTitle = `${classificationText} ${infoText}`;
+                        $('.header-block .title').text(newTitle);
+                    },
+                    error: function (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            function updateChart(data) {
+                console.log("updateChart");
+                // destinView를 새 데이터로 업데이트
+
+                const toKorTravelAgency = {
+                    'WEB957': '웹투어',
+                    'YBT440': '노랑풍선',
+                    'JBR165': '제주 1번가 버스투어',
+                    'MOD295': '모두투어',
+                    'JHP842': 'HOTPL TRIP',
+                    'DHG843': 'HILLGOLF',
+                    'TMC718': '테마캠프',
+                    '78K960': '퍼시즌투어',
+                    'GMT970': '굿모닝여행사',
+                    'BGT836': '보군여행사',
+                    'ART033': '아름여행사',
+                    'TRU501': '믿음여행사',
+                    'GTG206': 'GIANTGOLF',
+                    'DBT821': 'DAEBAK',
+                    'HIT532': '홍익여행사',
+                    'TNM836': '트립앤미',
+                    'GCT300': 'Gyeongju City Tour',
+                    'URT333': '울릉도로 가는 길',
+                    'SVT020': 'Save tour',
+                    'TSK583': '여행스케치',
+                    'PGT302': '풍경있는 여행',
+                    'RMT620': '로망스투어',
+                    'YAC374': 'YACHT HOLIC',
+                    'BBT250': 'BUSAN 여행특공대',
+                    'TDY980': '투데이여행사',
+                    'DBT103': '동백여행사',
+                    null: '인터파크'
+                };
+
+                // 데이터 매핑
+                destinView = data
+                    .map(item => {
+                        if('destination' in item) {
+                            return {label: item.destination, value: item.count};
+                        } else if('travelAgency' in item) {
+                            let korTravelAgency = toKorTravelAgency[item.travelAgency] || '기타 여행사'; // 매핑되지 않은 값은 '기타 여행사'
+                            return {label: korTravelAgency, value: item.count};
+                        } else {
+                            return null;
+                        }
+                    })
+                    .filter(item => item !== null && item.value > 0);  // value가 0보다 큰 데이터만 사용
+
+                console.log("updateChart destinView: ", destinView);
+
+                // 기타 여행사 합치기
+                const mergedDestinView = destinView.reduce((acc, curr) => {
+                    const existing = acc.find(item => item.label === curr.label);
+                    if (existing) {
+                        existing.value += curr.value;  // 기존 값에 더하기
+                    } else {
+                        acc.push(curr);  // 새 항목 추가
+                    }
+                    return acc;
+                }, []);
+                destinView = mergedDestinView;
+                console.log("updateChart mergedDestinView: ", mergedDestinView);
+
+                drawSalesChart();  // 차트 다시 그리기
+            }
 
             function drawSalesChart(){
 
