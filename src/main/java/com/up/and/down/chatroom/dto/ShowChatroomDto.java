@@ -15,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class ShowChatroomDto {
+    private Long id;
     private String name; // 채팅방 이름
     private Set<Category> categories; // 채팅방 카테고리
     private String nickName; // 채팅방 만든 사람의 닉네임
@@ -22,6 +23,7 @@ public class ShowChatroomDto {
 
     public ShowChatroomDto toDto(Chatroom chatroom) {
         return ShowChatroomDto.builder()
+                .id(chatroom.getChatroomId())
                 .name(chatroom.getName())
                 .categories(chatroom.getCategory())
                 .memberCount(chatroom.getMemberIdList().size())

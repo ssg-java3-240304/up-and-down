@@ -11,13 +11,8 @@ $(document).ready(function () {
         let filter = 'all'
         filter = $(this).data('tab');
         console.log(`탭이 클릭되었습니다. Filter: ${filter}`);
-        // '전체' 탭 클릭 시 list 페이지로 리다이렉트
-        // if (filter === 'all') {
-        //     window.location.href = '/app/chat-room/list';
-        //     return;
-        // }
 
-    // 로그인 체크가 필요한 탭에 대해서는 별도의 AJAX 요청 처리
+         // 로그인 체크가 필요한 탭에 대해서는 별도의 AJAX 요청 처리
         if (filter === 'our' || filter === 'mine') {
             console.log(filter + '탭이 클릭됐습니다.')
             checkAuthenticationAndLoadTab(filter);
@@ -32,7 +27,7 @@ $(document).ready(function () {
     // 로그인 상태를 확인하고 탭을 로드하는 함수
     function checkAuthenticationAndLoadTab(filter) {
         $.ajax({
-            url: '/app/chat-room/loginCheck', // 로그인 상태를 확인하는 API 엔드포인트
+            url: '/app/chatroom/loginCheck', // 로그인 상태를 확인하는 API 엔드포인트
             type: 'GET',
             success: function (data) {
                 console.log("로그인 확인을 완료했습니다!")
@@ -51,7 +46,6 @@ $(document).ready(function () {
             }
         });
     }
-
 
     // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색, 페이징 처리)
     function chatroomUpdate(filter, page = 0, size = 10) {
@@ -75,11 +69,11 @@ $(document).ready(function () {
         console.log("검색어 : ", keyword);
         let categories = selectedCategories.join(',');
 
-        //카테고리 URL에 연결
+        // 카테고리 URL에 연결
         if (categories.length > 0) {
             url += `&categories=${encodeURIComponent(categories)}`;
         }
-        //검색어 URL에 연결
+        // 검색어 URL에 연결
         if (keyword) {
             // 만약 categories가 추가되지 않았으면 `?`로 시작하고, 추가되었다면 `&`로 이어지도록 설정
             url += (url.includes('?') ? '&' : '?') + `keyword=${encodeURIComponent(keyword)}`;
@@ -131,7 +125,7 @@ $(document).ready(function () {
                             <h3 class="list-title m-0">${chatroom.name}</h3>
                             <span class="list-nickname ms-3">${chatroom.nickName}</span>
                             <div class="list-categories ms-3">
-                                ${chatroom.categories.map(category => `<span class="category-badge">${category}</span>`).join('')}
+                                ${chatroom.categories.map(category => `<span class="category-badge">${category.getDisplayKorName}</span>`).join('')}
                             </div>
                             <div class="list-participants ms-auto">참여 인원수: ${chatroom.memberCount}명</div>
                         </div>
@@ -141,7 +135,6 @@ $(document).ready(function () {
             });
         }
     }
-
 
     // 검색에 값이 입력 할 때마다 실시간 변경
     $('#searchQuery').on('input', function () {

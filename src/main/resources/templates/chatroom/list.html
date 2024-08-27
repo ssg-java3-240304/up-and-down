@@ -61,42 +61,41 @@
             <div class="total-chatroom-count">
                 전체 수 <span id="totalCount" th:text="${totalCount}">0</span>개
             </div>
-
             <div class="regist-button-container">
                 <a th:href="@{/chatroom/regist}" class="create-button">만들기</a>
             </div>
         </div>
 
         <!-- 목록 -->
-        <div id="list-container" class="list-container">
-            <!-- 결과 없음 메시지 컨테이너 추가 -->
-            <div class="no-results d-none" id="no-results"></div>
-            <div th:each="chatroom : ${chatrooms}" class="list-item">
-                <div class="list-item-content d-flex align-items-center justify-content-end">
-                    <div class="d-flex align-items-center w-100">
-                        <!-- 제목 -->
-                        <h3 class="list-title m-0" th:text="${chatroom.name}"><strong>Chatroom Name</strong></h3>
-                        <!-- 닉네임 -->
-                        <span class="list-nickname ms-3" th:text="${chatroom.nickName}">Nickname</span>
-                        <!-- 카테고리 -->
-                        <div class="list-categories ms-3">
-                            <span class="category-badge" th:each="category : ${chatroom.categories}" th:text="${category}">Category</span>
+        <ul id="list-container" class="list-container">
+            <li th:each="chatroom : ${chatroomList}" class="list-item">
+                <a th:href="@{/chatroom/detail/{chatroomId}(chatroomId = ${chatroom.getId})}">
+                    <div class="list-item-content d-flex align-items-center justify-content-end">
+                        <div class="d-flex align-items-center w-100">
+                            <!-- 제목 -->
+                            <h3 class="list-title m-0" th:text="${chatroom.name}"><strong>Chatroom Name</strong></h3>
+                            <!-- 닉네임 -->
+                            <span class="list-nickname ms-3" th:text="${chatroom.nickName}">Nickname</span>
+                            <!-- 카테고리 -->
+                            <div class="list-categories ms-3">
+                                <span class="category-badge" th:each="category : ${chatroom.categories}" th:text="${category.getDisplayKorName}">Category</span>
+                            </div>
+                        </div>
+                        <!-- 참여 인원수 (오른쪽 정렬) -->
+                        <div class="list-participants" style="margin-left:auto;">
+                            참여 인원수: <span th:text="${chatroom.memberCount}">참여인원수</span>
                         </div>
                     </div>
-                    <!-- 참여 인원수 (오른쪽 정렬) -->
-                    <div class="list-participants" style="margin-left:auto;">
-                        참여 인원수: <span th:text="${chatroom.memberCount}">참여인원수</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </a>
+            </li>
+        </ul>
 
         <!-- 페이지 -->
         <nav aria-label="Page navigation example" id="pagination">
             <ul class="pagination justify-content-center">
                 <!-- Previous 버튼 -->
                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="|@{/chat-rooms/list(page=${currentPage - 1}, size=${pageSize})}|" aria-label="Previous">
+                    <a class="page-link" th:href="|@{/chatroom/list(page=${currentPage - 1}, size=${pageSize})}|" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>

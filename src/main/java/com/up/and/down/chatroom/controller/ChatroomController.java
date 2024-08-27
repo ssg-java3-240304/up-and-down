@@ -51,15 +51,15 @@ public class ChatroomController {
         String imageUrl = imageImport.getImageUrl(directoryName, imageName);
 
         //페이징 정보 생성
-        Page<ShowChatroomDto> chatrooms = chatroomService.findAllChatroom(pageable);
+        Page<ShowChatroomDto> chatroomList = chatroomService.findAllChatroom(pageable);
 
         // Model에 데이터 전달
         model.addAttribute("imageUrl", imageUrl);
         model.addAttribute("themeList", Category.values());
-        model.addAttribute("chatrooms", chatrooms);  // 실제 데이터 리스트
-        model.addAttribute("currentPage", chatrooms.getNumber());
-        model.addAttribute("totalPages", chatrooms.getTotalPages());
-        model.addAttribute("totalCount", chatrooms.getTotalElements());
+        model.addAttribute("chatroomList", chatroomList);  // 실제 데이터 리스트
+        model.addAttribute("currentPage", chatroomList.getNumber());
+        model.addAttribute("totalPages", chatroomList.getTotalPages());
+        model.addAttribute("totalCount", chatroomList.getTotalElements());
 
         return "chatroom/list";
     }
@@ -75,9 +75,11 @@ public class ChatroomController {
     }
 
     @PostMapping("/regist")
-    public String postRegist(@ModelAttribute ChatroomRegistRequestDto dto,
-                         @AuthenticationPrincipal AuthPrincipal principal,
-                         RedirectAttributes redirectAttributes){
+    public String postRegist(
+            @ModelAttribute ChatroomRegistRequestDto dto,
+            @AuthenticationPrincipal AuthPrincipal principal,
+            RedirectAttributes redirectAttributes
+    ){
         log.debug("dto = {}", dto);
         // 현재 로그인한 사용자 id
         Long creatorId = principal.getUser().getId();
