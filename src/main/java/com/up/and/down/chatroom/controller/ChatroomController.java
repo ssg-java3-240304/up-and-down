@@ -110,7 +110,7 @@ public class ChatroomController {
     @GetMapping("/update/{chatroomId}")
     public String update(@PathVariable("chatroomId") Long chatroomId, Model model){
         log.info("GET /chatroom/update");
-        ChatroomDetailResponseDto dto = chatroomService.findById(chatroomId); // ChatroomDetailResponseDto 조회용도
+        ChatroomDto dto = chatroomService.findByChatroomId(chatroomId); // ChatroomDetailResponseDto 조회용도
         log.debug("dto = {}", dto);
 
         model.addAttribute("chatroom", dto);
