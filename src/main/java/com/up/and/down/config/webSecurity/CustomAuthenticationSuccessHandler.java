@@ -1,13 +1,7 @@
 package com.up.and.down.config.webSecurity;
 
-import com.up.and.down.user.member.dto.LoginInfoDto;
-import com.up.and.down.user.member.entity.LoginInfo;
-import com.up.and.down.user.member.repository.LoginInfoRepository;
-import com.up.and.down.user.member.repository.MemberRepository;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,7 +9,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Component

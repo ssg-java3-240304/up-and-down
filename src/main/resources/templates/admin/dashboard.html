@@ -41,6 +41,10 @@
                 max-width: 50%;
             }
         }
+        .stats-container {
+            max-height: 300px; /* 원하는 최대 높이 설정 */
+            overflow-y: scroll; /* 스크롤바 추가 */
+        }
         .stat-col {
             display: flex;
             flex-direction: column;
@@ -111,12 +115,17 @@
         h3 {
             margin-bottom: 0px;
         }
+        #dashboard-dates-chart svg, #dashboard-browsers-chart svg {
+            transition: none; /* SVG 자체에는 트랜지션 적용 안 함 */
+            width: 100%;
+            height: 220px;
+        }
 
-        /* 브랜드별 상품 수 */
+        /* 지역 별 조회수 */
         .dashboard-sales-breakdown-chart {
             margin: 0 auto;
-            max-width: 250px;
-            max-height: 250px;
+            width: 250px;
+            height: 250px;
         }
 
         /* 상품 별 좋아요 수 */
@@ -148,80 +157,197 @@
                                 <h4 class="title">
                                     커뮤니티 카테고리 분포율
                                 </h4>
-<!--                                <p class="title-description">-->
-<!--                                    Website metrics for-->
-<!--                                    <a href="https://modularcode.io/modular-admin-html/">-->
-<!--                                        your awesome project-->
-<!--                                    </a>-->
-<!--                                </p>-->
                             </div>
 
                             <div class="row row-sm stats-container">
                                 <div class="col-12 col-sm-6 stat-col">
                                     <div class="stat">
                                         <div class="stat-icon">
+                                            <i class="fas fa-binoculars"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                5
+                                            </div>
+                                            <div class="name">
+                                                모험
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 3.5%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-mug-hot"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                11
+                                            </div>
+                                            <div class="name">
+                                                휴식
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 7.69%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6  stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="fa fa-globe"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                2
+                                            </div>
+                                            <div class="name">
+                                                문화
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 1.4%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6  stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
                                             <i class="fa fa-leaf"></i>
                                         </div>
                                         <div>
                                             <div class="value">
-                                                5407
+                                                7
                                             </div>
                                             <div class="name">
-                                                등산
+                                                자연
                                             </div>
                                         </div>
                                     </div>
                                     <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 75%;"></div>
+                                        <div class="progress-bar" style="width: 4.9%;"></div>
                                     </div>
                                 </div>
-
+                                <div class="col-12 col-sm-6  stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-utensils"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                20
+                                            </div>
+                                            <div class="name">
+                                                맛집
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 13.99%;"></div>
+                                    </div>
+                                </div>
                                 <div class="col-12 col-sm-6 stat-col">
                                     <div class="stat">
                                         <div class="stat-icon">
-                                            <i class="bi bi-person-walking"></i>
+                                            <i class="fas fa-hourglass-end"></i>
                                         </div>
                                         <div>
                                             <div class="value">
-                                                78464
+                                                6
                                             </div>
                                             <div class="name">
-                                                산책
+                                                역사
                                             </div>
                                         </div>
                                     </div>
                                     <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 25%;"></div>
+                                        <div class="progress-bar" style="width: 4.2%;"></div>
                                     </div>
                                 </div>
-
-                                <div class="col-12 col-sm-6  stat-col">
-                                    <div class="stat">
-                                        <div class="stat-icon">
-                                            <i class='fas fa-campground'></i>
-                                        </div>
-                                        <div>
-                                            <div class="value">
-                                                $80.560
-                                            </div>
-                                            <div class="name">
-                                                캠핑
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 60%;"></div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-sm-6  stat-col">
+                                <div class="col-12 col-sm-6 stat-col">
                                     <div class="stat">
                                         <div class="stat-icon">
                                             <i class="bi bi-stars"></i>
                                         </div>
                                         <div>
                                             <div class="value">
-                                                359
+                                                12
+                                            </div>
+                                            <div class="name">
+                                                럭셔리
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 8.39%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                21
+                                            </div>
+                                            <div class="name">
+                                                가족
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 14.69%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6  stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="bi bi-hearts"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                34
+                                            </div>
+                                            <div class="name">
+                                                로맨틱
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 23.78%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6  stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-shopping-bag"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                9
+                                            </div>
+                                            <div class="name">
+                                                쇼핑
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress stat-progress">
+                                        <div class="progress-bar" style="width: 6.29%;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6  stat-col">
+                                    <div class="stat">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-music"></i>
+                                        </div>
+                                        <div>
+                                            <div class="value">
+                                                16
                                             </div>
                                             <div class="name">
                                                 축제
@@ -229,87 +355,14 @@
                                         </div>
                                     </div>
                                     <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 34%;"></div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-sm-6  stat-col">
-                                    <div class="stat">
-                                        <div class="stat-icon">
-                                            <i class="bi bi-tsunami"></i>
-                                        </div>
-                                        <div>
-                                            <div class="value">
-                                                59
-                                            </div>
-                                            <div class="name">
-                                                바다
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 80%;"></div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-sm-6 stat-col">
-                                    <div class="stat">
-                                        <div class="stat-icon">
-                                            <i class="fa fa-home"></i>
-                                        </div>
-                                        <div>
-                                            <div class="value">
-                                                $780.064
-                                            </div>
-                                            <div class="name">
-                                                힐링
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 15%;"></div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6 stat-col">
-                                    <div class="stat">
-                                        <div class="stat-icon">
-                                            <i class='fas fa-fish'></i>
-                                        </div>
-                                        <div>
-                                            <div class="value">
-                                                $780.064
-                                            </div>
-                                            <div class="name">
-                                                낚시
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 15%;"></div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6 stat-col">
-                                    <div class="stat">
-                                        <div class="stat-icon">
-                                            <i class="bi bi-hearts"></i>
-                                        </div>
-                                        <div>
-                                            <div class="value">
-                                                $780.064
-                                            </div>
-                                            <div class="name">
-                                                기타
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="progress stat-progress">
-                                        <div class="progress-bar" style="width: 15%;"></div>
+                                        <div class="progress-bar" style="width: 11.19%;"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- 회원 접속량 -->
                 <div class="col col-12 col-sm-12 col-md-6 col-xl-7 history-col">
                     <div class="card sameheight-item" data-exclude="xs" id="dashboard-history">
@@ -319,26 +372,26 @@
                             </div>
                             <ul class="nav nav-tabs pull-right" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#visits" role="tab" data-toggle="tab">Visits</a>
+                                    <a class="nav-link active" href="#dates" role="tab" data-toggle="tab">Dates</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#downloads" role="tab" data-toggle="tab">Downloads</a>
+                                    <a class="nav-link" href="#browsers" role="tab" data-toggle="tab">Browsers</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="card-block-visit">
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active fade show" id="visits">
+                                <div role="tabpanel" class="tab-pane active fade show" id="dates">
                                     <p class="title-description">
-                                        Number of unique visits last 30 days
+                                        Number of unique visits last 6 months
                                     </p>
-                                    <div id="dashboard-visits-chart"></div>
+                                    <div id="dashboard-dates-chart"></div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="downloads">
+                                <div role="tabpanel" class="tab-pane fade" id="browsers">
                                     <p class="title-description">
-                                        Number of downloads last 30 days
+                                        Number of unique visits last 6 months
                                     </p>
-                                    <div id="dashboard-downloads-chart"></div>
+                                    <div id="dashboard-browsers-chart"></div>
                                 </div>
                             </div>
                         </div>
@@ -353,7 +406,7 @@
                         <div class="card-header">
                             <div class="header-block">
                                 <h3 class="title">
-                                    브랜드 별 상품
+                                    지역 별 상품 조회수
                                 </h3>
                             </div>
                         </div>
@@ -383,161 +436,180 @@
         </section>
         <script>
             document.querySelector('.card-header').style.padding = '0';
-            $(function() {
-                if (!$('#dashboard-visits-chart').length) {
-                    return false;
-                }
+            const $dashboardSalesBreakdownChart = $('#dashboard-sales-breakdown-chart');
 
-                var config = {
-                    chart: {
-                        colorPrimary: '#5865F2',  // 원하는 기본 색상
-                        colorSecondary: '#3B67FF' // 원하는 보조 색상
+            const loginInfoList = `[[${loginInfoList}]]`;
+            let dataVisits = loginInfoList
+                .slice(1, -1) // 양쪽 끝의 대괄호 제거
+                .split(/,\s*VisitCountDto/) // 각 VisitCountDto로 분리
+                .map(item => {
+                    const match = item.match(/visitMonth=(\d{4}-\d{2}), visitCount=(\d+)/);
+                    if (match) {
+                        return { visitMonth: match[1], visitCount: parseInt(match[2], 10) };
                     }
-                };
+                })
+                .filter(Boolean); // 유효한 객체만 필터링
 
-                drawVisitsChart();
-
-                var el = null;
-                var item = 'visits';
-
-                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                    el = e.target;
-                    item = $(el).attr('href').replace('#', '');
-                    switchHistoryCharts(item);
-                });
-
-                $(document).on("themechange", function(){
-                    switchHistoryCharts(item);
-                });
-
-                function switchHistoryCharts(item){
-                    var chartSelector = "#dashboard-" + item + "-chart";
-
-                    if ($(chartSelector).has('svg').length) {
-                        $(chartSelector).empty();
+            const browserCounts = `[[${browserCounts}]]`;
+            let browsersVisits = browserCounts
+                .slice(1, -1) // 양쪽 끝의 대괄호 제거
+                .split(/,\s*BrowserCountDto/) // 각 VisitCountDto로 분리
+                .map(item => {
+                    const match = item.match(/browserInfo=(\w+), visitCount=(\d+)/); // 정규식으로 매칭
+                    if (match) {
+                        return { browserInfo: match[1], visitCount: parseInt(match[2], 10) };
                     }
+                })
+                .filter(Boolean); // 유효한 객체만 필터링
 
-                    switch(item){
-                        case 'visits':
-                            drawVisitsChart();
-                            break;
-                        case 'downloads':
-                            drawDownloadsChart();
-                            break;
-                    }
+            var config = {
+                chart: {
+                    colorPrimary: '#5865F2',  // 원하는 기본 색상
+                    colorSecondary: '#3B67FF' // 원하는 보조 색상
                 }
+            };
 
-                function drawVisitsChart(){
-                    var dataVisits = [
-                        { x: '2015-09-01', y: 70},
-                        { x: '2015-09-02', y: 75 },
-                        { x: '2015-09-03', y: 50},
-                        { x: '2015-09-04', y: 75 },
-                        { x: '2015-09-05', y: 50 },
-                        { x: '2015-09-06', y: 75 },
-                        { x: '2015-09-07', y: 86 }
-                    ];
+            drawDatesChart();
 
-                    Morris.Line({
-                        element: 'dashboard-visits-chart',
-                        data: dataVisits,
-                        xkey: 'x',
-                        ykeys: ['y'],
-                        ymin: 'auto 40',
-                        labels: ['Visits'],
-                        xLabels: "day",
-                        hideHover: 'auto',
-                        // yLabelFormat: function (y) {
-                        //     if (y === parseInt(y, 10)) {
-                        //         return y;
-                        //     } else {
-                        //         return '';
-                        //     }
-                        // },
-                        resize: true,
-                        lineColors: [
-                            config.chart.colorSecondary,
-                        ],
-                        pointFillColors: [
-                            config.chart.colorPrimary,
-                        ]
-                    });
-                }
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                e.preventDefault();  // 기본 동작 방지 (탭 전환 동작)
 
-                function drawDownloadsChart(){
-                    var dataDownloads = [
-                        { year: '2006', downloads: 1300 },
-                        { year: '2007', downloads: 1526 },
-                        { year: '2008', downloads: 2000 },
-                        { year: '2009', downloads: 1800 },
-                        { year: '2010', downloads: 1650 },
-                        { year: '2011', downloads: 620 },
-                        { year: '2012', downloads: 1000 },
-                        { year: '2013', downloads: 1896 },
-                        { year: '2014', downloads: 850 },
-                        { year: '2015', downloads: 1500 }
-                    ];
+                // 현재 활성화된 탭과 컨텐츠를 비활성화
+                $('a[data-toggle="tab"]').removeClass('active');
+                $('.tab-pane').removeClass('active show');
 
-                    Morris.Bar({
-                        element: 'dashboard-downloads-chart',
-                        data: dataDownloads,
-                        xkey: 'year',
-                        ykeys: ['downloads'],
-                        labels: ['Downloads'],
-                        hideHover: 'auto',
-                        resize: true,
-                        barColors: [
-                            config.chart.colorPrimary,
-                            '#444'
-                        ],
-                    });
-                }
+                // 클릭된 탭을 활성화
+                $(this).addClass('active');
+
+                // 해당 탭의 컨텐츠를 활성화
+                const item = $(this).attr('href').replace('#', '');
+                $('#' + item).addClass('active show');
+
+                // 차트 전환 함수 호출
+                switchHistoryCharts(item);
             });
 
-            $(function() {
+            $(document).on("themechange", function(){
+                switchHistoryCharts(item);
+            });
 
-                var $dashboardSalesBreakdownChart = $('#dashboard-sales-breakdown-chart');
+            function switchHistoryCharts(item){
+                let chartSelector = "#dashboard-" + item + "-chart";
 
-                if (!$dashboardSalesBreakdownChart.length) {
-                    return false;
+                if ($(chartSelector).has('svg').length) {
+                    $(chartSelector).empty();
                 }
 
-                function drawSalesChart(){
-
-                    $dashboardSalesBreakdownChart.empty();
-
-                    // 기본 색상 정의
-                    var primaryColor = '#5865F2';  // 기본 색상
-                    var lightColor = '#8FA9FF';    // 기본 색상보다 밝은 색상
-                    var darkColor = '#3A4CB2';     // 기본 색상보다 어두운 색상
-
-                    Morris.Donut({
-                        element: 'dashboard-sales-breakdown-chart',
-                        data: [
-                            { label: "Download Sales", value: 12 },
-                            { label: "In-Store Sales", value: 30 },
-                            { label: "Mail-Order Sales", value: 20 }
-                        ],
-                        resize: true,
-                        colors: [
-                            lightColor,  // 수동으로 밝은 색상 지정
-                            darkColor,   // 수동으로 어두운 색상 지정
-                            primaryColor // 기본 색상
-                        ],
-                    });
-
-                    // var $sameheightContainer = $dashboardSalesBreakdownChart.closest(".sameheight-container");
-                    //
-                    // setSameHeights($sameheightContainer);
+                if(item === "dates") {
+                    document.getElementById("dashboard-browsers-chart").style.opacity = 0; // 투명하게 설정
+                    setTimeout(() => {
+                        document.getElementById("dashboard-browsers-chart").style.display = 'none'; // 요소를 숨김
+                    }, 500); // 트랜지션 지속 시간과 일치시킴
+                } else {
+                    document.getElementById("dashboard-dates-chart").style.opacity = 0; // 투명하게 설정
+                    setTimeout(() => {
+                        document.getElementById("dashboard-dates-chart").style.display = 'none'; // 요소를 숨김
+                    }, 500); // 트랜지션 지속 시간과 일치시킴
                 }
 
-                drawSalesChart();
+                // 선택한 차트를 보이게 함
+                const chartToShow = document.getElementById("dashboard-" + item + "-chart");
+                if (chartToShow) {
+                    chartToShow.style.display = 'block'; // 요소를 표시
+                    setTimeout(() => {
+                        chartToShow.style.opacity = 1; // 투명도 설정
+                    }, 10); // 브라우저가 display 변경을 인식한 후에 opacity 적용
+                }
 
-                $(document).on("themechange", function(){
-                    drawSalesChart();
+                setTimeout(() => {
+                    switch (item) {
+                        case 'dates':
+                            drawDatesChart();
+                            break;
+                        case 'browsers':
+                            drawBrowsersChart();
+                            break;
+                    }
+                }, 0);
+            }
+
+            function drawDatesChart(){
+                Morris.Line({
+                    element: 'dashboard-dates-chart',
+                    data: dataVisits,
+                    xkey: 'visitMonth',
+                    ykeys: ['visitCount'],
+                    ymin: 'auto 40',
+                    labels: ['Dates'],
+                    xLabels: "month",
+                    hideHover: 'auto',
+                    resize: true,
+                    lineColors: [
+                        config.chart.colorSecondary,
+                    ],
+                    pointFillColors: [
+                        config.chart.colorPrimary,
+                    ]
                 });
+                document.getElementById("dashboard-dates-chart").style.opacity = 1;
+            }
 
-            })
+            function drawBrowsersChart(){
+                Morris.Bar({
+                    element: 'dashboard-browsers-chart',
+                    data: browsersVisits,
+                    xkey: 'browserInfo',
+                    ykeys: ['visitCount'],
+                    labels: ['Browsers'],
+                    hideHover: 'auto',
+                    resize: true,
+                    barColors: [
+                        config.chart.colorPrimary,
+                        '#444'
+                    ],
+                });
+                document.getElementById("dashboard-browsers-chart").style.opacity = 1;
+            }
+
+            /* 지역 별 조회수(도넛 차트) */
+            const destinationNViewCount = `[[${destinationNViewCount}]]`;
+            let destinView = destinationNViewCount
+                .slice(1, -1) // 양쪽 끝의 대괄호 제거
+                .split(/\),\s*ProductDestinationInfo\(/) // 각 ProductDestinationInfo 객체로 분리
+                .map(item => {
+                    // 처음과 끝의 괄호를 제거
+                    item = item.replace(/ProductDestinationInfo\(|\)/g, '');
+                    // destination과 count 값을 정규식으로 추출
+                    const match = item.match(/destination=([^\s,]+),\s*count=(\d+)/);
+                    if (match) {
+                        return { label: match[1], value: parseInt(match[2], 10) }; // count 값을 숫자로 변환하여 반환
+                    }
+                })
+                .filter(item => item && item.value > 0);
+
+            drawSalesChart();
+
+            function drawSalesChart(){
+
+                $dashboardSalesBreakdownChart.empty();
+
+                // 기본 색상 정의
+                const primaryColor = '#5865F2';  // 기본 색상
+                const lightColor = '#8FA9FF';    // 기본 색상보다 밝은 색상
+                const darkColor = '#3A4CB2';     // 기본 색상보다 어두운 색상
+
+                Morris.Donut({
+                    element: 'dashboard-sales-breakdown-chart',
+                    data: destinView,
+                    resize: true,
+                    colors: [
+                        lightColor,  // 수동으로 밝은 색상 지정
+                        darkColor,   // 수동으로 어두운 색상 지정
+                        primaryColor // 기본 색상
+                    ],
+                });
+            }
+
 
             /* 상품 별 좋아요 수 */
             const ctx = document.getElementById('barChart').getContext('2d');

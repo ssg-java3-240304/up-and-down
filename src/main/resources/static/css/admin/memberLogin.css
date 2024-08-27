@@ -18,25 +18,26 @@ body {
     font-weight: bold;
 }
 .login-box {
-    width: 300px;
+    width: 400px;
+    height: 350px;
     align-items: center;
     text-align: center;
 }
 .login-box h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 30px;
+    font-size: 31px;
     color: #1e3a8a;
     font-weight: bold;
 }
 .login-box input {
-    width: 100%;
+    width: 400px;
     padding: 10px;
     margin-bottom: 10px;
     border: 2px solid #1e3a8a;
     border-radius: 5px;
 }
 .login-box button {
-    width: 48%;
+    width: 49%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -54,7 +55,7 @@ body {
 .social-login {
     display: flex;
     justify-content: center;
-    gap: 80px;
+    gap: 110px;
     margin-top: 20px;
 }
 .social-login img {
