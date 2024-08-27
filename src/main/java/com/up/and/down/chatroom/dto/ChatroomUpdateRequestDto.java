@@ -5,13 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomInfoDto {
-    private String name; // 채팅방 이름
-    private Set<Category> categories; // 카테고리
-    private int memberCount; // 참여 인원수
+public class ChatroomUpdateRequestDto {
+    private Long chatroomId;
+    private String name;
+    private Set<Category> category;
+    private String description;
+    private LocalDateTime updatedAt;
 }

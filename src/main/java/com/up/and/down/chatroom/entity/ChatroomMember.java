@@ -8,6 +8,6 @@ import lombok.*;
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomMember {
+public class ChatroomMember {
     private Long chatRoomMemberId; // 채팅방에 속한 사람
 }

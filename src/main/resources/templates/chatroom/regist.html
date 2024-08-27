@@ -12,9 +12,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
-    <script layout:fragment="js"></script>
-    <script th:src="@{/js/chatroom/list.js}"></script>
 
+    <script th:src="@{/js/chatroom/list.js}"></script>
 </head>
 <body>
     <main layout:fragment="main" id="chatroom-container" class="mt-20">
@@ -24,52 +23,38 @@
             <li class="nav-item flex-fill">
                 <a class="nav-link text-center d-flex justify-content-center align-items-center" data-tab="all"
                    th:classappend="${param.tab == 'all'} ? 'active' : ''"
-                   th:href="@{/chat-rooms/list}">전체</a>
+                   th:href="@{/chatroom/list}">전체</a>
             </li>
             <li class="nav-item flex-fill">
                 <a class="nav-link text-center d-flex justify-content-center align-items-center" data-tab="our"
                    th:classappend="${param.tab == 'our'} ? 'active' : ''"
-                   th:href="@{/chat-rooms/our}">우리모임</a>
+                   th:href="@{/chatroom/our}">우리모임</a>
             </li>
             <li class="nav-item flex-fill">
                 <a class="nav-link text-center d-flex justify-content-center align-items-center" data-tab="mine"
                    th:classappend="${param.tab == 'mine'} ? 'active' : ''"
-                   th:href="@{/chat-rooms/my}">내모임</a>
+                   th:href="@{/chatroom/my}">내모임</a>
             </li>
         </ul>
 
-        <form th:action="@{/chat-rooms/regist}" method="post">
+        <form th:action="@{/chatroom/regist}" method="post">
             <!-- 제목 -->
             <div class="form-group mt-3">
                 <input name="name" type="text" class="form-control" placeholder="제목을 입력하세요"/>
             </div>
 
             <!-- 카테고리 -->
-            <div class="category-buttons">
-                <input class="category-button" type="checkbox" id="hiking" name="categories" value="HIKING">
-                <label for="hiking">등산</label>
-
-                <input class="category-button" type="checkbox" id="walking" name="categories" value="WALKING">
-                <label for="walking">산책</label>
-
-                <input class="category-button" type="checkbox" id="camping" name="categories" value="CAMPING">
-                <label for="camping">캠핑</label>
-
-                <input class="category-button" type="checkbox" id="festival" name="categories" value="FESTIVAL">
-                <label for="festival">축제</label>
-
-                <input class="category-button" type="checkbox" id="beach" name="categories" value="BEACH">
-                <label for="beach">바다</label>
-
-                <input class="category-button" type="checkbox" id="healing" name="categories" value="HEALING">
-                <label for="healing">힐링</label>
-
-                <input class="category-button" type="checkbox" id="fishing" name="categories" value="FISHING">
-                <label for="fishing">낚시</label>
-
-                <input class="category-button" type="checkbox" id="others" name="categories" value="OTHERS">
-                <label for="others">기타</label>
-            </div>
+            <ul class="category-buttons">
+                <li th:each="theme : ${themeList}">
+                    <input
+                            class="category-button"
+                            type="checkbox"
+                            name="categories"
+                            th:id="${theme.getName}"
+                            th:value="${theme.getName}">
+                    <label th:for="${theme.getName}" th:text="${theme.getDisplayKorName}"></label>
+                </li>
+            </ul>
 
             <!-- 본문 내용 -->
             <div class="form-group mt-3">
@@ -81,14 +66,6 @@
                 <button type="submit" class="custom-btn-success">등록</button>
             </div>
         </form>
-
-        <script>
-            document.querySelector('h1').style.fontSize = '2rem';
-            document.querySelector('h1').style.fontWeight = '700';
-            document.querySelector('body').style.fontFamily = 'Noto Sans KR, sans-serif';
-            document.querySelector('body').style.color = '#252525';
-            document.querySelector('body').style.lineHeight = '1';
-        </script>
     </main>
 </body>
 </html>

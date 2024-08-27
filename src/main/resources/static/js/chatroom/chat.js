@@ -1,177 +1,245 @@
-document.addEventListener('DOMContentLoaded', function() {
-    let page = 0;
-    const size = 50; // 페이지당 메시지 수
-    let loadingMessages = false; // 메시지 로딩 상태를 추적
+const $contentBody = document.querySelector('.content-body');
+const $chatLogBox = document.querySelector('.chat-log-box');
+const $chatInputFrm = document.querySelector(".chat-input-frm");
+const $chatContent = document.getElementById('chat-content');
 
-    const ws = new SockJS('/app/chat');
-    const stompClient = Stomp.over(ws);
+let currentPage = 0;
+let isLoading = false;
 
-    stompClient.connect({}, (frame) => {
+document.addEventListener("DOMContentLoaded", function() {
+    displayChatLog(currentPage);
+    scrollToBottom();
+    enterMessage();
+});
+
+$chatInputFrm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    sendMessage();
+    $chatContent.value = "";
+});
+// beforeunload 이벤트 리스너 추가
+window.addEventListener('beforeunload', function (event) {
+    if (stompClient) {
+        stompClient.disconnect(() => {
+            console.log('Disconnected');
+        });
+    }
+});
+
+// 무한스크롤 이벤트 리스너 추가
+$contentBody.addEventListener("scroll", function() {
+    if ($contentBody.scrollTop <= 100 && !isLoading) { // 스크롤이 맨 위에 가까워지고, 로딩 중이 아닐 때
+        loadMoreChatLogs();
+    }
+});
+const loadMoreChatLogs = function() {
+    if (!isLoading) { // 로딩 중이 아닐 때만 로드
+        isLoading = true;
+        currentPage++;
+        displayChatLog(currentPage);
+        isLoading = false; // 로드 후 다시 false로 설정
+    }
+}
+
+// 채팅 로그 출력
+const displayChatLog = function (page) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}?page=${page}&size=20`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {  // 성공적으로 응답을 받았을 경우
+            console.log("response success!!!");
+            const messages = JSON.parse(xhr.responseText); // JSON 응답을 객체로 변환
+            console.log(messages);
+
+            if (messages.length > 0) {
+                const prevHeight = $contentBody.scrollHeight;
+                for (const message of messages) {
+                    const messageDate = formatCreatedAtToDateString(message.createdAt);
+
+                    if (lastDate !== messageDate) {
+                        // 날짜가 바뀌면 날짜를 메시지처럼 추가
+                        displayDate(messageDate);
+                        lastDate = messageDate;
+                    }
+                    // 새로운 메시지를 채팅 로그 상단에 추가
+                    $chatLogBox.insertBefore(createChatElement(message), $chatLogBox.firstChild);
+                }
+                // 스크롤 위치를 조정하여 사용자의 위치 유지
+                $contentBody.scrollTop = $contentBody.scrollHeight - prevHeight;
+            }
+            // 요청한 개수보다 적은 메시지가 반환되면 더 이상 불러올 데이터가 없음을 의미
+            if (messages.length < 20) {
+                isLoading = true; // 더 이상 로딩하지 않음
+            } else {
+                isLoading = false; // 더 많은 데이터를 로딩할 수 있음
+            }
+            // 최신 메시지까지 스크롤을 이동시킴
+            if (page === 0) {
+                scrollToBottom();
+            }
+
+            // 마지막 메시지 내역 저장
+            localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(messages));
+        } else {
+            console.error('Failed to load chat log');
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Request error');
+    }
+    xhr.send();
+}
+
+// 채팅 화면 스크롤 하단으로 이동
+const scrollToBottom = function () {
+    $contentBody.scrollTop = $contentBody.scrollHeight;
+}
+
+// 날짜 요소를 생성하는 함수
+const createDateElement = function (dateString) {
+    const dateNoticeElement = document.createElement('li');
+    dateNoticeElement.classList.add('date-notice');
+    dateNoticeElement.innerHTML = `<span>${dateString}</span>`;
+    return dateNoticeElement;
+}
+
+// 채팅 날짜 표시
+const displayDate = function (dateString) {
+    const dateElement = createDateElement(dateString);
+    $chatLogBox.appendChild(dateElement);
+}
+// 입장 표시
+const enterMessage = function () {
+    const hasEnteredKey = `hasEntered_${chatroomId}_${memberId}`;
+    const hasEntered = localStorage.getItem(hasEnteredKey);
+
+    if (!hasEntered) {
+        displayEnterMessage();  // 처음 입장 시에만 메시지를 표시
+        localStorage.setItem(hasEnteredKey, true);  // 입장 상태를 로컬 스토리지에 저장
+    }
+};
+// 입장 메시지를 화면에 표시하는 함수
+const displayEnterMessage = function () {
+    const entryMessageElement = document.createElement('li');
+    entryMessageElement.classList.add('enter-member');
+    entryMessageElement.innerHTML = `<span>${nickname} 님이 들어왔습니다.</span>`;
+    $chatLogBox.appendChild(entryMessageElement);
+    scrollToBottom();
+}
+
+// STOMP : 등록
+const stompRegister = function () {
+    const ws = new SockJS('/app/chat/stomp');
+    const client = Stomp.over(ws);
+
+    client.connect({}, (frame) => {
         console.log("Connected: ", frame);
 
-        // 3. 채팅방 메시지 구독
-        stompClient.subscribe(`/sub/chat-rooms/${chatRoomId}`, (message) => {
+        // 채팅방 메시지 구독
+        client.subscribe(`/sub/chatroom/chat`, (message) => {
             const data = JSON.parse(message.body);
-            console.log('Received message: ', data);
+            console.log('Parsed message: ', data);
+            const messageDate = formatCreatedAtToDateString(data.createdAt);
 
-            // ID가 제대로 포함되어 있는지 확인
-            console.log("서버에서 받은 memberId:", data.memberId);
-            console.log("내 memberId:", memberId);
+            if (lastDate !== messageDate) {
+                displayDate(messageDate);
+                lastDate = messageDate; // 마지막 날짜 업데이트
+            }
 
             // 메시지를 채팅 창에 추가
-            const messagesElement = document.getElementById('messages');
-            const messageElement = createMessageElement(data);
-            messagesElement.appendChild(messageElement);
+            $chatLogBox.appendChild(createChatElement(data));
 
-            // 스크롤을 맨 아래로 이동
-            messagesElement.scrollTop = messagesElement.scrollHeight;
+            scrollToBottom();
 
             // 마지막 메시지 내역 저장
-            localStorage.setItem(`lastMessage_${chatRoomId}`, JSON.stringify(data));
-        });
-
-        // member 입장 메시지 구독 신청 (새로운 member가 들어왔을 때)
-        stompClient.subscribe(`/sub/${chatRoomId}/join`, (message) => {
-            const data = JSON.parse(message.body);
-            console.log('Member joined: ', data.nickname);
-            addMemberJoinMessage(data.nickname);
+            localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(data));
         });
     });
 
-    // 메시지 전송
-    const sendMessage = () => {
-        console.log('Send button clicked');  // 버튼 클릭 로그
-        const messageInput = document.getElementById('message-input');
-        const messageContent = messageInput.innerText.trim();
-        if (messageContent && stompClient) {
-            const chatMessage = {
-                chatRoomId: chatRoomId,
-                nickname: username,
-                memberId: memberId,
-                message: messageContent,
-                now: new Date().toISOString()
-            };
-            console.log('Sending message:', chatMessage);  // 메시지 전송 로그
-            stompClient.send(`/pub/chat-rooms/chat/${chatRoomId}`, {}, JSON.stringify(chatMessage));
-            messageInput.innerText = '';  // 전송 후 내용 초기화
+    return client;
+}
+const stompClient = stompRegister();
 
-            // 스크롤을 맨 아래로 이동
-            const messagesElement = document.getElementById('messages');
-            setTimeout(() => {
-                messagesElement.scrollTop = messagesElement.scrollHeight;
-            }, 100); // 잠시 지연 후 스크롤 이동
+// STOMP : 메세지 전송
+const sendMessage = function () {
+    const msg = $chatContent.value.trim();
 
-            // 마지막 메시지 내역 저장
-            localStorage.setItem(`lastMessage_${chatRoomId}`, JSON.stringify(chatMessage));
+    if (msg) {
+        const msgData = {
+            chatroomId: chatroomId,
+            memberId: memberId,
+            nickname: nickname,
+            message: msg,
+        };
+
+        stompClient.send(`/pub/chatroom/chat`, {}, JSON.stringify(msgData));
+
+        const messageDate = formatCreatedAtToDateString(new Date().toISOString());
+        if (lastDate !== messageDate) {
+            displayDate(messageDate);
+            lastDate = messageDate; // 마지막 날짜 업데이트
         }
-    };
+        scrollToBottom();
 
-    // member 입장 시 메시지 추가
-    const addMemberJoinMessage = (nickname) => {
-        const messagesElement = document.getElementById('messages');
-        const messageElement = document.createElement('div');
-        messageElement.className = 'member-join-message';
-        messageElement.textContent = `${nickname}님이 들어왔습니다.`;
-        messagesElement.appendChild(messageElement);
+        // 마지막 메시지 내역 저장
+        localStorage.setItem(`lastMessage_${chatroomId}`, JSON.stringify(msgData));
+    }
+}
 
-        // 스크롤을 맨 아래로 이동
-        messagesElement.scrollTop = messagesElement.scrollHeight;
-    };
+let lastDate = null;
+// chat 요소 생성
+const createChatElement = function (msgData) {
 
-    // 스크롤 이벤트 리스너 설정
-    const messagesElement = document.getElementById('messages');
-    messagesElement.addEventListener('scroll', () => {
-        if (messagesElement.scrollTop === 0 && !loadingMessages) {
-            loadingMessages = true;
-            page++;
+    // li 요소 생성
+    const chatElement = document.createElement('li');
+    chatElement.classList.add('chat');
 
-            // AJAX 요청을 통해 이전 메시지 로드
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/chat-rooms/${chatRoomId}/messages?page=${page}&size=${size}`, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const messages = JSON.parse(xhr.responseText);
-                    const fragment = document.createDocumentFragment();
-                    messages.forEach(data => {
-                        const messageElement = createMessageElement(data);
-                        fragment.appendChild(messageElement);
-                    });
-                    messagesElement.insertBefore(fragment, messagesElement.firstChild);
-                    loadingMessages = false;
-                } else {
-                    console.error('Failed to load messages');
-                    loadingMessages = false;
-                }
-            };
-
-            xhr.onerror = function() {
-                console.error('Request error');
-                loadingMessages = false;
-            };
-
-            xhr.send();
-        }
-    });
-
-    // 메시지 요소를 생성하는 함수
-    function createMessageElement(data) {
-        const messageElement = document.createElement('div');
-        messageElement.className = 'message';
-        // 메시지의 발신자에 따라 위치 설정
-        if (data.memberId === memberId) {
-            console.log(memberId);
-            console.log(data.memberId);
-            messageElement.classList.add('sent-message'); // 내 메시지
-        } else {
-            messageElement.classList.add('other-message'); // 다른 사람의 메시지
-        }
-
-        const nicknameElement = document.createElement('p');
-        nicknameElement.className = 'member-name';
-        nicknameElement.textContent = data.nickname;
-
-        const contentElement = document.createElement('div');
-        contentElement.className = 'content';
-        contentElement.textContent = data.message;
-
-        const timeElement = document.createElement('p');
-        timeElement.className = 'sent-time';
-
-        const utcDate = new Date(data.now);
-        timeElement.textContent = utcDate.toLocaleString('ko-KR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-
-        messageElement.appendChild(nicknameElement);
-        messageElement.appendChild(contentElement);
-        messageElement.appendChild(timeElement);
-        return messageElement;
+    // 사용자가 보낸 메시지인지 확인
+    if (msgData.memberId === memberId) {
+        chatElement.classList.add('mine'); // 자신이 보낸 메시지인 경우
+    } else {
+        chatElement.classList.add('other'); // 다른 사용자가 보낸 메시지인 경우
     }
 
-    // 버튼 클릭 이벤트 리스너 설정
-    document.getElementById('send-button').addEventListener('click', sendMessage);
+    // innerHTML로 요소 내용 설정
+    chatElement.innerHTML = `
+        <div class="chat-top">
+            <p class="username">${msgData.nickname}</p>
+            <p class="chat-time">${formatCreatedAtToTimeString(msgData.createdAt)}</p>
+        </div>
+        <p class="chat-content">${msgData.message}</p>
+    `;
 
-    // Enter 키 이벤트 리스너 설정
-    document.getElementById('message-input').addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();  // 폼 제출 방지
-            if (event.isComposing) {
-                return;
-            }
-            sendMessage();
-        }
-    });
+    return chatElement; // 완성된 li 요소 반환
+}
 
-    // beforeunload 이벤트 리스너 추가
-    window.addEventListener('beforeunload', (event) => {
-        if (stompClient) {
-            stompClient.disconnect(() => {
-                console.log('Disconnected');
-            });
-        }
-    });
-});
+// createdAt -> 시간 표시로 변경
+const formatCreatedAtToTimeString = function (createdAt) {
+    if (!createdAt) return "";
+    // Date 객체로 변환
+    const date = new Date(createdAt);
+
+    // 시간을 HH:mm:ss 형식으로 추출
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    // 시간 문자열 조합
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+// createdAt -> 날짜 표시로 변경
+const formatCreatedAtToDateString = function (createdAt) {
+    // Date 객체로 변환
+    const date = new Date(createdAt);
+
+    // 날짜 yyyy년MM월dd일 형식으로 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // 날짜 문자열 조합
+    return `${year}년 ${month}월 ${day}일`;
+}
