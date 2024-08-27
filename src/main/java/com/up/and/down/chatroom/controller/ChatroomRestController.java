@@ -19,12 +19,12 @@ import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping("/chat-api-rooms")
+@RequestMapping("/chat-api-room")
 @RequiredArgsConstructor
 public class ChatroomRestController {
     private final ChatroomService chatroomService;
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public Page<ShowChatroomDto> allChatRoomListByCategory(
             @RequestParam(required = false) Set<Category> categories,
             @RequestParam(required = false) String keyword,
@@ -38,13 +38,13 @@ public class ChatroomRestController {
         return chatroomList;
     }
 
-    @GetMapping("our")
+    @GetMapping("/our")
     public Page<ShowChatroomDto> ourChatRoomListByCategory(
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             @RequestParam(required = false) Set<Category> categories,
             @RequestParam(required = false) String keyword
     ) {
-
+        log.info("GET our chat room list by category : {} ", categories);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthPrincipal authPrincipal = (AuthPrincipal) authentication.getPrincipal();
         User user = authPrincipal.getUser();
@@ -55,12 +55,14 @@ public class ChatroomRestController {
         return chatroomList;
     }
 
-    @GetMapping("mine")
+    @GetMapping("/mine")
     public Page<ShowChatroomDto> mineChatRoomListByCategory(
             @PageableDefault(page = 0, size = 10) Pageable pageable,
             @RequestParam(required = false) Set<Category> categories,
             @RequestParam(required = false) String keyword
     ){
+        log.info("GET mine chat room list by category : {} ", categories);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthPrincipal authPrincipal = (AuthPrincipal) authentication.getPrincipal();
         User user = authPrincipal.getUser();
@@ -69,6 +71,9 @@ public class ChatroomRestController {
         Page<ShowChatroomDto> chatroomList ;
         //카테고리가 선택된 경우
         chatroomList = chatroomService.findAllMineChatroom(pageable,categories,keyword,userId);
+        for (ShowChatroomDto showChatroomDto : chatroomList.getContent()) {
+            log.debug("categories : {}", showChatroomDto.getCategories());
+        }
 
         return chatroomList;
     }

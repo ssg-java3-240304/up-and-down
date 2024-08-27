@@ -43,6 +43,7 @@ public class WebSecurityConfig {
                             "/search/**",
                             "/product/**",
                             "/chatroom/*",
+                            "/chat-api-room/all",
                             "/member/**",
                             "/sns_api",
                             "/admin/dashboard",

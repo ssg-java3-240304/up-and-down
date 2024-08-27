@@ -68,6 +68,7 @@
 
         <!-- 목록 -->
         <ul id="list-container" class="list-container">
+            <li class="no-results d-none" id="no-results"></li>
             <li th:each="chatroom : ${chatroomList}" class="list-item">
                 <a th:href="@{/chatroom/{chatroomId}(chatroomId = ${chatroom.getId})}">
                     <div class="list-item-content d-flex align-items-center justify-content-end">
@@ -78,7 +79,7 @@
                             <span class="list-nickname ms-3" th:text="${chatroom.nickName}">Nickname</span>
                             <!-- 카테고리 -->
                             <div class="list-categories ms-3">
-                                <span class="category-badge" th:each="category : ${chatroom.categories}" th:text="${category.getDisplayKorName}">Category</span>
+                                <span class="category-badge" th:each="category : ${chatroom.categories}" th:text="${category}">Category</span>
                             </div>
                         </div>
                         <!-- 참여 인원수 (오른쪽 정렬) -->

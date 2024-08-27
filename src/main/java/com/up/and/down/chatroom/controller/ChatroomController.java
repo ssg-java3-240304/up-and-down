@@ -3,7 +3,6 @@ package com.up.and.down.chatroom.controller;
 import com.up.and.down.auth.principal.AuthPrincipal;
 import com.up.and.down.chatroom.dto.*;
 import com.up.and.down.chatroom.entity.Category;
-import com.up.and.down.chatroom.repository.ChatroomRepository;
 import com.up.and.down.chatroom.service.ChatroomService;
 import com.up.and.down.common.ImageImport;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,9 @@ public class ChatroomController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return "NoPermission";
-        } else return "Permission";
+        } else{
+            return "Permission";
+        }
     }
 
     //메인 페이지 조회 -> 동기처리

@@ -1,7 +1,6 @@
 // 선택된 카테고리 저장을 위한 배열
 let selectedCategories = [];
 
-
 $(document).ready(function () {
     console.log('js가 로드됐습니다.')
     // 탭 클릭 이벤트
@@ -33,7 +32,7 @@ $(document).ready(function () {
                 console.log("로그인 확인을 완료했습니다!")
                 // 사용자가 로그인되어 있다면 해당 탭 로드
                 if (data === "Permission") {
-                    console.log('로그인 상태 : ' +data)
+                    console.log('로그인 상태 : ' + data)
                     $('.nav-link').removeClass('active');
                     $('.nav-link[data-tab="' + filter + '"]').addClass('active');
                     chatroomUpdate(filter);
@@ -62,7 +61,7 @@ $(document).ready(function () {
         // 페이지네이션 파라미터 추가
         let url = `${baseUrl}?page=${page}&size=${size}`;
 
-        console.log('검색어 입력이 들어왔습니다.'+baseUrl);
+        console.log('검색어 입력이 들어왔습니다.'+ baseUrl);
         //카테고리, 검색어 입력
         // let url = `${baseUrl}`;
         let keyword = $('#searchQuery').val();
@@ -85,6 +84,14 @@ $(document).ready(function () {
             type: 'GET',
             success: function (data) {
                 console.log("Received data:", data);
+
+                // 응답이 HTML 페이지인 경우, 로그인 페이지로 리다이렉트
+                if (typeof data === 'string' && data.includes('<title>Up Down | memberLogin</title>')) {
+                    window.location.href = '/app/auth/login'; // 로그인 페이지 URL로 리다이렉트
+                } else {
+                    // 여기서 데이터가 올바른 경우 처리
+                }
+
                 uploadData(data.content,filter)
                 updatePagination(data,filter)
                 updateTotalCount(data.totalElements)
@@ -119,20 +126,29 @@ $(document).ready(function () {
 
             chatroom.forEach(chatroom => {
                 let chatroomItem = `
-                <div class="list-item" onclick="window.location.href='/app/chat-room/${chatroom.chatroomId}'">
-                    <div class="list-item-content d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center w-100">
-                            <h3 class="list-title m-0">${chatroom.name}</h3>
-                            <span class="list-nickname ms-3">${chatroom.nickName}</span>
-                            <div class="list-categories ms-3">
-                                ${chatroom.categories.map(category => `<span class="category-badge">${category.getDisplayKorName}</span>`).join('')}
+                    <li class="list-item">
+                        <a href="/app/chatroom/${chatroom.id}">
+                            <div class="list-item-content d-flex align-items-center justify-content-end">
+                                <div class="d-flex align-items-center w-100">
+                                    <!-- 제목 -->
+                                    <h3 class="list-title m-0"><strong>${chatroom.name}</strong></h3>
+                                    <!-- 닉네임 -->
+                                    <span class="list-nickname ms-3">${chatroom.nickName}</span>
+                                    <!-- 카테고리 -->
+                                    <div class="list-categories ms-3">
+                                        ${chatroom.categories.map(category => `<span class="category-badge">${category}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <!-- 참여 인원수 (오른쪽 정렬) -->
+                                <div class="list-participants" style="margin-left:auto;">
+                                    참여 인원수: ${chatroom.memberCount}명
+                                </div>
                             </div>
-                            <div class="list-participants ms-auto">참여 인원수: ${chatroom.memberCount}명</div>
-                        </div>
-                    </div>
-                </div>`;
+                        </a>
+                    </li>`;
                 listContainer.append(chatroomItem);
             });
+
         }
     }
 
@@ -193,25 +209,7 @@ $(document).ready(function () {
         let pagination = $('#pagination');
         let paginationList = pagination.find('.pagination');
         paginationList.empty();
-
-        // 전체 탭에서는 페이지바를 무조건 보여줌
-        if (currentTab === 'all') {
-            pagination.show();
-        }
-        // 카테고리, 검색 결과 탭에서는 데이터가 10개를 초과할 때만 페이지바를 보여줌
-        else if (pageData.totalElements > 10) {
-            pagination.show();
-        }
-        // 우리모임/내모임 탭에서는 조건에 따라 페이지바를 숨김 또는 표시
-        else if ((currentTab === 'myGroup' || currentTab === 'myChats') && pageData.isUserInvolved) {
-            if (pageData.totalElements > 10) {
-                pagination.show();
-            } else {
-                pagination.hide();
-            }
-        } else {
-            pagination.hide();
-        }
+        pagination.show()
 
         // 페이지바를 표시하는 경우에만 버튼 생성
         if (pagination.is(':visible')) {
