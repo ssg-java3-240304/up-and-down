@@ -50,7 +50,10 @@
         <ul th:if="${searchResultCount > 0}" class="search-result-list">
             <li th:each="productGroup : ${searchResult}">
                 <a th:href="@{/product/{id}(id = ${productGroup.getId})}">
-                    <img class="product-image" th:attr="src=${productGroup.cheapestProductImage}" src="" alt="상품 이미지"/>
+                    <div class="product-image">
+                        <h1 class="notify-text">이미지 없음</h1>
+                        <img th:src="${productGroup.cheapestProductImage}" alt="상품 이미지"/>
+                    </div>
                     <div class="product-info">
                         <h2 class="title" th:text="${productGroup.getTitle()}">패키지 여행 상품 제목</h2>
                         <div class="info-main">
