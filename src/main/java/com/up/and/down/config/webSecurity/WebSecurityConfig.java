@@ -38,20 +38,26 @@ public class WebSecurityConfig {
          */
         http.authorizeHttpRequests((registry) -> {
             registry
-                    .requestMatchers(
+                    .requestMatchers( // permitAll
                             "/",
                             "/search/**",
                             "/product/**",
-                            "/chat-rooms/chat",
+                            "/chatroom/chat",
+                            "/chatroom/list",
                             "/chat/**",
-                            "/api/public",
                             "/member/**",
                             "/sns_api",
-                            "/chat-rooms/list",
                             "/admin/dashboard",
                             "/admin/stat/**"
-                    ).permitAll() // 누구나 허용
-                    .requestMatchers("/auth/login/**", "/join/**", "/admin/login", "/admin/register", "/admin/sign/send", "/admin/check").anonymous()
+                    ).permitAll()
+                    .requestMatchers( // anonymous
+                            "/auth/login/**",
+                            "/join/**",
+                            "/admin/login",
+                            "/admin/register",
+                            "/admin/sign/send",
+                            "/admin/check"
+                    ).anonymous()
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
         });
