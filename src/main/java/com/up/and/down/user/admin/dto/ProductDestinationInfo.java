@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductDestinationInfo {
-    private Destination destination;
+    private String destination;
     private Long count;
+
+    public ProductDestinationInfo(Destination destination, Long count) {
+        this.destination = destination.getKorName(); // 한글명을 사용
+        this.count = count;
+    }
 }

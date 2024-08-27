@@ -79,7 +79,18 @@ public class AdminController {
 
     // 대시보드 페이지 호출
     @GetMapping("/dashboard")
-    public void dashboard() {}
+    public String dashboard(Model model) {
+        // 회원 접속량 데이터 조회
+        List<VisitCountDto> loginInfoList = adminService.getVisitCountsForLastSixMonths();
+        List<BrowserCountDto> browserCounts = adminService.findBrowserCounts();
+        model.addAttribute("loginInfoList", loginInfoList);
+        model.addAttribute("browserCounts", browserCounts);
+        // 지역 별 조회수 데이터 조회
+        List<ProductDestinationInfo> destinationNViewCount = adminService.getDestinationNViewCount();
+        log.info("destinationNViewCount = {}", destinationNViewCount);
+        model.addAttribute("destinationNViewCount", destinationNViewCount);
+        return "admin/dashboard";
+    }
 
     // 관리자 정보 관리 페이지 호출
     @GetMapping("/accountManagement/adminInfo")
@@ -139,5 +150,29 @@ public class AdminController {
         log.info("destinationNViewCount = {}", destinationNViewCount);
         model.addAttribute("destinationNViewCount", destinationNViewCount);
         return "admin/stat/productInfo";
+    }
+
+    @PostMapping("/stat/changeProdInfo")
+    public ResponseEntity<?> changeProdInfo(@RequestBody ProdStatRequestDto prodStatRequestDto) {
+        log.info("------------------------- changeProdInfo ------------------------------------");
+        log.info("classificationType = {}", prodStatRequestDto);
+        if(prodStatRequestDto.getClassificationType().equals("destination")) {
+            List<ProductDestinationInfo> destinationInfo = adminService.getDestinationInfo(prodStatRequestDto);
+            log.info("----- destinationInfo = {}", destinationInfo);
+            return ResponseEntity.ok(Map.of(
+                    "data", destinationInfo
+            ));
+        } else {
+            List<ProductTravelAgencyInfo> travelAgencyInfo = adminService.getTravelAgencyInfo(prodStatRequestDto);
+            log.info("----- travelAgencyInfo = {}", travelAgencyInfo);
+            return ResponseEntity.ok(Map.of(
+                "data", travelAgencyInfo
+            ));
+        }
+    }
+
+    @GetMapping("/stat/advertisement")
+    public String advertisement() {
+        return "admin/stat/advertisement";
     }
 }
