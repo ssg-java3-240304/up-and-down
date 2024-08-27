@@ -57,6 +57,9 @@ public class WebSecurityConfig {
                             "/admin/sign/send",
                             "/admin/check"
                     ).anonymous()
+                    .requestMatchers( // authenticated
+                            "/chat/stomp/**"
+                    ).authenticated()
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
         });
