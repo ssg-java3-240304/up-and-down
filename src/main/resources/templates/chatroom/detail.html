@@ -81,7 +81,11 @@
                 <!-- 채팅방장인 경우 -->
                 <div sec:authorize="isAuthenticated()">
                     <th:block th:if="${chatRoom.isCreator}">
-                        <a th:href="@{/chatroom/update/{chatRoomId}(chatRoomId=${chatRoom.getChatroomId})}" class="btn btn-update">수정하기</a>
+                        <a th:href="@{/chatroom/update/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-update">수정하기</a>
+                        <!-- isMember가 아니더라도 생성자에게는 채팅방 버튼을 보여주기 -->
+                        <th:block th:if="${!chatRoom.isMember}">
+                            <a th:href="@{/chatroom/chat/{chatRoomId}(chatRoomId=${chatRoom.chatRoomId})}" class="btn btn-chat">채팅방</a>
+                        </th:block>
                     </th:block>
                 </div>
 
