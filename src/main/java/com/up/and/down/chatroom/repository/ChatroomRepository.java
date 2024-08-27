@@ -1,5 +1,6 @@
 package com.up.and.down.chatroom.repository;
 
+import com.up.and.down.chatroom.dto.ChatroomDto;
 import com.up.and.down.chatroom.entity.Category;
 import com.up.and.down.chatroom.entity.Chatroom;
 import org.springframework.data.domain.Page;
@@ -53,4 +54,6 @@ public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
 
     //내가 방장인 방에서 검색어만 있는 경우
     Page<Chatroom> findByCreatorIdAndNameContaining(Pageable pageable,Long userId, String keyword);
+
+    Chatroom findByChatroomId(Long chatroomId);
 }

@@ -29,7 +29,7 @@
 <body>
     <main layout:fragment="main">
         <div class="chat-box">
-            <header class="content-header">
+            <div class="content-header">
                 <!-- 제목 -->
                 <div class="header-top">
                     <h1 th:text="${chatroomName}">채팅방 이름</h1>
@@ -37,19 +37,12 @@
                 </div>
                 <!-- 카테고리 -->
                 <ul class="chat-category-box">
-                    <li th:each="category : ${chatRoomCategories}" class="chat-category-badge" th:text="${category.getDisplayName}">카테고리</li>
+                    <li th:each="category : ${chatRoomCategories}" class="chat-category-badge" th:text="${category.getDisplayKorName}">카테고리</li>
                 </ul>
-            </header>
+            </div>
             <div class="content-body scroll-hidden">
                 <ul class="chat-log-box">
-<!--                    &lt;!&ndash; 채팅 날짜 표시 &ndash;&gt;-->
-<!--                    <li class="date-notice">-->
-<!--                        <span>2024년 7월 30일 화요일</span>-->
-<!--                    </li>-->
-<!--                    &lt;!&ndash; 입장 표시 &ndash;&gt;-->
-<!--                    <li class="enter-member">-->
-<!--                        <span>ㅇㅇ 님이 들어왔습니다</span>-->
-<!--                    </li>-->
+                    <!-- 채팅 로그 목록 -->
                 </ul>
             </div>
             <footer class="content-footer">
