@@ -26,7 +26,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         if (roles.contains("ADMIN")) {
-            response.sendRedirect("/app/admin/dashboard");
+            response.sendRedirect("/admin/dashboard");
         } else if (roles.contains("MEMBER")) {
             String memberId = authentication.getName();
 
@@ -39,10 +39,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 request.getSession().removeAttribute("redirectUrl");
                 response.sendRedirect(redirectUrl);
             } else {
-                response.sendRedirect("/app/");
+                response.sendRedirect("/");
             }
         } else {
-            response.sendRedirect("/app"); // 기본 경로 설정
+            response.sendRedirect("/"); // 기본 경로 설정
         }
     }
 }
