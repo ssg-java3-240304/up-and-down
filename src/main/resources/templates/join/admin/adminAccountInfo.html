@@ -256,7 +256,7 @@
                 }
 
                 $.ajax({
-                    url: '/app/admin/sign/send',
+                    url: '/admin/sign/send',
                     type: 'POST',
                     headers,
                     data: { phoneNum : phoneNumber },
@@ -324,7 +324,7 @@
             }
 
             $.ajax({
-                url: '/app/admin/check',
+                url: '/admin/check',
                 type: 'POST',
                 headers,
                 data: { empNum : empNumber },
@@ -334,7 +334,7 @@
                         alert("등록 가능합니다🎈");
                     } else if(response.result === "registered") {
                         alert("이미 등록되어 있습니다🏡 로그인 화면으로 이동합니다🎈");
-                        location.href="/app/admin/login";
+                        location.href="/admin/login";
                     } else {
                         alert("등록된 사번이 없습니다. 사번의 정보가 일치한지 다시 확인해주세요.");
                     }

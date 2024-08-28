@@ -20,7 +20,7 @@ $shareBtn.addEventListener('click', function (event) {
 });
 
 const like = function () {
-    const rootUrl = `/app`;
+    const rootUrl = `/`;
 
     fetch(rootUrl + `/product/like/${productGroupId}`, {
         method: 'GET', // 좋아요 기능은 간단한 GET 요청으로 처리
