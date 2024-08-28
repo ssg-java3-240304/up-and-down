@@ -10,6 +10,7 @@
     <img src="https://img.shields.io/github/issues/ssg-java3-240304/up-and-down" alt="issues"/>
     <img src="https://img.shields.io/github/contributors/ssg-java3-240304/up-and-down" alt="GitHub contributors"/>
 </p>
+<br>
 
 ---
 
@@ -35,11 +36,14 @@
 [10. 컨벤션 설정](#컨벤션-설정)
 
 [11. 프로젝트 후기](#프로젝트-후기)
+<br>
 
 ---
 
 <h2 align="center">🧳 프로젝트 소개 🧳</h2>
 > UpDown은 국내 여행 패키지를 저렴하게 검색하고 비교할 수 있는 플랫폼입니다. 사용자는 다양한 여행사의 패키지를 실시간으로 비교하여 최저가를 찾을 수 있습니다. 또한 테마별 채팅방을 통해 여행지에 대한 리뷰와 팁을 실시간으로 공유하며, 만족스러운 여행 경험을 제공합니다.
+
+<br>
 
 ---
 
@@ -54,6 +58,8 @@
 > 사용자 맞춤형 
 * 사용자가 선택한 테마와 관련된 최저가 패키지 여행을 추천합니다.
 * 실시간 소통을 통해 패키지 여행의 정보를 빠르게 공유하고, 사용자들의 즉각적인 의견을 교환함으로써 최적의 선택을 할 수 있도록 돕습니다.
+
+<br>
 
 ---
 
@@ -81,15 +87,16 @@
 </table>
 
 <h3 align="center">🗓️ 개발 기간 🗓️</h3>
-* 전체 개발 기간 : 2024.07.19 ~ 2024.08.30
-* UI 구현 : 2024.08.05 ~ 2024.08.28
+* 전체 개발 기간 : 2024.07.19 ~ 2024.08.30<br>
+* UI 구현 : 2024.08.05 ~ 2024.08.28<br>
 * 기능 구현 : 2024.08.05 ~ 2024.08.28
+
+<br>
 
 ---
 
 <h2 align="center">🔧 수행 도구 🔧</h2>
-**programming** : 
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+**programming** : ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -116,10 +123,13 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
+<br>
+
 ---
 
 <h2 align="center">🔨 프로젝트 구조 🔨</h2>
 
+<br>
 
 <h2 align="center">📂디렉토리 구조 📂</h2>
 
@@ -163,6 +173,7 @@ UpProject/
 ├── 📜Dockerfile                          
 └── 📜README.md
 </pre>
+<br>
 
 ---
 
@@ -170,6 +181,8 @@ UpProject/
 * github action을 활용해서 지속적인 통합 및 배포
 * `feature` 브랜치에서 `develop`으로 Pull Request를 보내면 CI가 동작된다.
 * `develop`에서 `master`에서 Pull Request를 보내면, CI가 동작되고, Merge가 되면 운영 리소스에 배포된다.
+
+<br>
 
 ---
 Demo - 시연영상 url
@@ -182,6 +195,8 @@ Demo - 시연영상 url
 * **로그인/회원가입**
 * **관리자**
 
+<br>
+
 ---
 
 <h2 align="center">💡 기대 효과 💡</h2>
@@ -191,6 +206,8 @@ Demo - 시연영상 url
 * UpDown 플랫폼의 포괄적인 정보 제공과 실시간 소통 기능은 사용자에게 더 나은 여행 선택을 지원합니다. 이는 전반적인 여행 만족도를 높이고, 사용자들의 재방문율을 증가시키며, 플랫폼의 신뢰성을 한층 강화하는데 기여합니다.
 * 서로의 여행 경험과 팁을 공유함으로써 커뮤니티가 활성화되고, 플랫폼에 대한 신뢰성과 유용성이 증가합니다. 이는 사용자들 간의 정보 교류를 촉진하고, 최신 여행 정보를 지속적으로 업데이트하는데 기여합니다.
 
+<br>
+
 ---
 
 <h2 align="center">📝 컨벤션 설정 📝</h2>
@@ -199,6 +216,8 @@ Demo - 시연영상 url
 * [git 브랜치 전략 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/git-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5-%EC%A0%95%EC%9D%98)
 
 * [git 커밋 컨벤션 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%A0%95%EC%9D%98)
+
+<br>
 
 ---
 
