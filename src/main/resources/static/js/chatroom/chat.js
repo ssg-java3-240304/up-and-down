@@ -44,7 +44,7 @@ const loadMoreChatLogs = function() {
 // 채팅 로그 출력
 const displayChatLog = function (page) {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `/app/chatroom/chat/data/${chatroomId}?page=${page}&size=20`, true);
+    xhr.open('GET', `/chatroom/chat/data/${chatroomId}?page=${page}&size=20`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onload = function () {
@@ -131,7 +131,7 @@ const displayEnterMessage = function () {
 
 // STOMP : 등록
 const stompRegister = function () {
-    const ws = new SockJS('/app/chat/stomp');
+    const ws = new SockJS('/chat/stomp');
     const client = Stomp.over(ws);
 
     client.connect({}, (frame) => {

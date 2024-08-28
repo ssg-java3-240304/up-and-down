@@ -45,9 +45,7 @@ public class WebSecurityConfig {
                             "/chatroom/*",
                             "/chat-api-room/all",
                             "/member/**",
-                            "/sns_api",
-                            "/admin/dashboard",
-                            "/admin/stat/**"
+                            "/sns_api"
                     ).permitAll()
                     .requestMatchers( // anonymous
                             "/auth/login/**",
@@ -57,6 +55,7 @@ public class WebSecurityConfig {
                             "/admin/sign/send",
                             "/admin/check"
                     ).anonymous()
+                    .requestMatchers("/admin/**").authenticated()
                     .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있는 사용자만 허용
                     .anyRequest().authenticated();
         });

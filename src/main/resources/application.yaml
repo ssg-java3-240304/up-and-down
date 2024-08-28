@@ -31,4 +31,4 @@ logging:
 
 server:
   servlet:
-    context-path: /app
+    context-path: /

@@ -26,7 +26,7 @@ $(document).ready(function () {
     // 로그인 상태를 확인하고 탭을 로드하는 함수
     function checkAuthenticationAndLoadTab(filter) {
         $.ajax({
-            url: '/app/chatroom/loginCheck', // 로그인 상태를 확인하는 API 엔드포인트
+            url: '/chatroom/loginCheck', // 로그인 상태를 확인하는 API 엔드포인트
             type: 'GET',
             success: function (data) {
                 console.log("로그인 확인을 완료했습니다!")
@@ -49,7 +49,7 @@ $(document).ready(function () {
     // 채팅방 목록을 로드하는 함수 (카테고리 선택, 검색, 페이징 처리)
     function chatroomUpdate(filter, page = 0, size = 10) {
 
-        let baseUrl = '/app/chat-api-room/'
+        let baseUrl = '/chat-api-room/'
         if (filter === 'our') {
             baseUrl += filter;
         }else if (filter === 'mine') {
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
                 // 응답이 HTML 페이지인 경우, 로그인 페이지로 리다이렉트
                 if (typeof data === 'string' && data.includes('<title>Up Down | memberLogin</title>')) {
-                    window.location.href = '/app/auth/login'; // 로그인 페이지 URL로 리다이렉트
+                    window.location.href = '/auth/login'; // 로그인 페이지 URL로 리다이렉트
                 } else {
                     // 여기서 데이터가 올바른 경우 처리
                 }
@@ -127,7 +127,7 @@ $(document).ready(function () {
             chatroom.forEach(chatroom => {
                 let chatroomItem = `
                     <li class="list-item">
-                        <a href="/app/chatroom/${chatroom.id}">
+                        <a href="/chatroom/${chatroom.id}">
                             <div class="list-item-content d-flex align-items-center justify-content-end">
                                 <div class="d-flex align-items-center w-100">
                                     <!-- 제목 -->
