@@ -277,13 +277,12 @@
                         headers,
                         data: { to : phoneInputVal },
                         success: function (response) {
-                            console.log("POST response:", response);
                             const {result, resultNum} = response;
                             if(result === 'success')
                                 certificationNumber = resultNum;
                         },
                         error: function (error) {
-                            console.error("Error with POST request:", error);
+                            alert("Error가 발생했습니다. 다시 인증 요청을 보내주세요.");
                         }
                     });
                 }

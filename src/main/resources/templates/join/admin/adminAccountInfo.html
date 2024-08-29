@@ -201,7 +201,6 @@
     <script>
         let timerInterval; // 타이머를 제어하기 위한 변수
         let timerExpired = false;
-        const phoneNumber = document.getElementById("phone").value.trim();
         let certificationNumber; // 인증 번호
         let completeYn = false;
         const registerButton = document.getElementById("registerButton");
@@ -233,6 +232,7 @@
         });
 
         document.getElementById("verifyButton").addEventListener("click", function() {
+            const phoneNumber = document.getElementById("phone").value.trim();
             if(!timerExpired) {
                 timerExpired = false;
                 completeYn = false;
@@ -261,13 +261,12 @@
                     headers,
                     data: { phoneNum : phoneNumber },
                     success: function (response) {
-                        console.log("POST response:", response);
                         const {result, resultNum} = response;
                         if(result === 'success')
                             certificationNumber = resultNum;
                     },
                     error: function (error) {
-                        console.error("Error with POST request:", error);
+                        alert("Error가 발생했습니다. 다시 인증 요청을 보내주세요. Error 내용: " + error);
                     }
                 });
             }
@@ -329,7 +328,6 @@
                 headers,
                 data: { empNum : empNumber },
                 success: function (response) {
-                    // console.log("POST response:", response);
                     if(response.result === "empty") {
                         alert("등록 가능합니다🎈");
                     } else if(response.result === "registered") {
@@ -340,7 +338,7 @@
                     }
                 },
                 error: function (error) {
-                    console.error("Error with POST request:", error);
+                    alert("Error가 발생했습니다. 다시 등록 확인 요청해주세요. Error 내용: " + error);
                 }
             });
         });
