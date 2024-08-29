@@ -38,7 +38,7 @@ public class ChatStompController {
 
         // 1. 사용자가 입력한 메시지를 처리
         if (chatDto.getMessage() != null && !chatDto.getMessage().trim().isEmpty()) {
-            chatDto.setCreatedAt(LocalDateTime.now());
+            chatDto.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime());
             this.chatService.save(chatDto);
 
             // 채팅방 구독자들에게 메시지 전송
