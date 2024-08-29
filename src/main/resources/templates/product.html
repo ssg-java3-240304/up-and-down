@@ -89,7 +89,7 @@
             <div class="related-product" id="related-product-area">
                 <h1>연관상품</h1>
                 <div class="relation-section">
-                    <p class="title">다른 고객이 함께 본 상품</p>
+                    <p class="title">비슷한 인기 상품</p>
                     <ul class="product-group">
                         <li th:each="productGroup : ${relatedProductGroups}" class="product">
                             <a th:href="@{/product/{id}(id = ${productGroup.getId})}">

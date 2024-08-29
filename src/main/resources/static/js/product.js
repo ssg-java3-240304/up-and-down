@@ -20,9 +20,7 @@ $shareBtn.addEventListener('click', function (event) {
 });
 
 const like = function () {
-    const rootUrl = `/`;
-
-    fetch(rootUrl + `/product/like/${productGroupId}`, {
+    fetch(`/product/like/${productGroupId}`, {
         method: 'GET', // 좋아요 기능은 간단한 GET 요청으로 처리
     })
         .then(response => {
@@ -41,8 +39,9 @@ const like = function () {
             } else {
                 if (confirm("로그인이 필요한 서비스입니다. 로그인하시겠습니까?")) {
                     const url = encodeURIComponent(window.location.href);
-                    console.log(rootUrl + `/auth/login?url=${url}`);
-                    window.location.href = rootUrl + `/auth/login?url=${url}`;              }
+                    console.log(`/auth/login?url=${url}`);
+                    window.location.href = `/auth/login?url=${url}`;
+                }
             }
         })
         .catch(error => {
