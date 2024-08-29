@@ -8,58 +8,9 @@
     
 </div>
 
-
-
-<br>
-
-# 📚 목차
-
-[1. 프로젝트 소개](#프로젝트-소개)
-
-[2. 프로젝트 목표](#프로젝트-목표)
-
-[3. 팀 소개](#팀소개)
-
-[4. 수행 도구](#수행-도구)
-
-[5. 프로젝트 아키텍쳐](#)
-
-[6. 프로젝트 디렉토리](#디렉토리-구조)
-
-[7. CI/CD](#cicd)
-
-[8. 주요기능](#주요기능)
-
-[9. 기대효과](#기대-효과)
-
-[10. 컨벤션 설정](#컨벤션-설정)
-
-[11. 프로젝트 후기](#프로젝트-후기)
-
 <br>
 
 # 🧳 프로젝트 소개
-
-> UpDown은 국내 여행 패키지를 저렴하게 검색하고 비교할 수 있는 플랫폼입니다. 사용자는 다양한 여행사의 패키지를 실시간으로 비교하여 최저가를 찾을 수 있습니다. 또한 테마별 채팅방을 통해 여행지에 대한 리뷰와 팁을 실시간으로 공유하며, 만족스러운 여행 경험을 제공합니다.
-
-<br>
-
-# 🔍 프로젝트 목표
-
-> 최저가 여행 패키지 제공
-* 최저가 국내 여행 패키지를 제공함으로써 상품의 가격을 비교하여 여행 비용을 최소화합니다.
-* 패키지 여행의 상세 정보를 제공하여, 각 여행 상품의 특징을 명확히 파악하고, 비교할 수 있는 환경을 제공합니다.
-* 이를 통해 사용자는 패키지 여행이 제공하는 편리함과 가성비를 활용하여 여행의 전반적인 만족도를 높입니다.
-> 채팅방 기반의 커뮤니티 서비스
-* 여행 패키지와 관련된 정보와 경험을 실시간으로 공유할 수 있는 채팅방 기반 커뮤니티 서비스를 제공합니다.
-* 사용자들은 관심있는 테마에 따라 생성된 채팅방에 참여하여, 여행 패키지에 대한 질문과 후기를 공유할 수 있습니다.
-> 사용자 맞춤형 
-* 사용자가 선택한 테마와 관련된 최저가 패키지 여행을 추천합니다.
-* 실시간 소통을 통해 패키지 여행의 정보를 빠르게 공유하고, 사용자들의 즉각적인 의견을 교환함으로써 최적의 선택을 할 수 있도록 돕습니다.
-
-<br>
-
-# 🎈 팀소개
 
 저희 비전은 영화 UP에서 영감을 받아, 고객들이 꿈꿔온 여행을 현실로 만들어 드리는 것입니다.  
 
@@ -71,15 +22,22 @@
 
 "**Up Down**" 프로젝트와 함께, 여러분의 여행은 기분 좋게 떠나고, 더 큰 만족을 안고 돌아오게 될 것입니다.
 
-## 👩‍💻 팀원 구성
+<br>
 
-<div align="center">
+# 🔍 프로젝트 목표
 
-| **김연찬** | **오형동** | **박수빈** | **전현선** |
-| :------: |  :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/u/93385959?v=4" height=150 width=150> <br/> @hurryduck](https://github.com/hurryduck) | [<img src="https://avatars.githubusercontent.com/u/97084827?v=4" height=150 width=150> <br/> @dhgudehd98](https://github.com/dhgudehd98) | [<img src="https://avatars.githubusercontent.com/u/95676035?v=4" height=150 width=150> <br/> @subkka](https://github.com/subkka) | [<img src="https://avatars.githubusercontent.com/u/162237209?v=4" height=150 width=150> <br/> @jeonhyeonseon](https://github.com/jeonhyeonseon) |
+> 최저가 여행 패키지 제공
+* 최저가 국내 여행 패키지를 제공함으로써 상품의 가격을 비교하여 여행 비용을 최소화합니다.
+* 패키지 여행의 상세 정보를 제공하여, 각 여행 상품의 특징을 명확히 파악하고, 비교할 수 있는 환경을 제공합니다.
+* 이를 통해 사용자는 패키지 여행이 제공하는 편리함과 가성비를 활용하여 여행의 전반적인 만족도를 높입니다.
 
-</div>
+> 채팅방 기반의 커뮤니티 서비스
+* 여행 패키지와 관련된 정보와 경험을 실시간으로 공유할 수 있는 채팅방 기반 커뮤니티 서비스를 제공합니다.
+* 사용자들은 관심있는 테마에 따라 생성된 채팅방에 참여하여, 여행 패키지에 대한 질문과 후기를 공유할 수 있습니다.
+  
+> 사용자 맞춤형 
+* 사용자가 선택한 테마와 관련된 최저가 패키지 여행을 추천합니다.
+* 실시간 소통을 통해 패키지 여행의 정보를 빠르게 공유하고, 사용자들의 즉각적인 의견을 교환함으로써 최적의 선택을 할 수 있도록 돕습니다.
 
 <br>
 
@@ -113,6 +71,23 @@
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
 <br>
+ 
+# 🌵 브랜치 전략 
+
+- Git-flow 전략을 기반으로 main, develop 브랜치와 feature 보조 브랜치를 운용했습니다.
+- main, develop, feature 브랜치로 나누어 개발을 하였습니다.
+    - **main** 브랜치는 배포 단계에서만 사용하는 브랜치입니다.
+    - **develop** 브랜치는 개발 단계에서 git-flow의 master 역할을 하는 브랜치입니다.
+    - **feature** 브랜치는 기능 단위로 독립적인 개발 환경을 위하여 사용하고 merge 후 각 브랜치를 삭제해주었습니다.
+
+<br>
+
+# 🚀 CI/CD
+
+* github action을 활용해서 지속적인 통합 및 배포
+* `develop`에서 `master`에서 Pull Request를 보내면, CI가 동작되고, Merge가 되면 운영 리소스에 배포된다.
+
+<br>
 
 # 🔨 프로젝트 구조
 
@@ -128,7 +103,10 @@ UpProject/
 │   │   ├── 📂java/           
 │   │   │   ├── 📂auth/
 │   │   │   ├── 📂chatroom/
-│   │   │   ├── 📂product/
+│   │   │   ├── 📂common/
+│   │   │   ├── 📂config/
+│   │   │   ├── 📂main/
+│   │   │   ├── 📂product/    
 │   │   │   ├── 📂search/
 │   │   │   └── 📂user/
 │   │   └── 📂resources/
@@ -150,16 +128,6 @@ UpProject/
 
 <br>
 
-# 🔄 CI/CD
-
-* github action을 활용해서 지속적인 통합 및 배포
-* `feature` 브랜치에서 `develop`으로 Pull Request를 보내면 CI가 동작된다.
-* `develop`에서 `master`에서 Pull Request를 보내면, CI가 동작되고, Merge가 되면 운영 리소스에 배포된다.
-
-<br>
-
-Demo - 시연영상 url
-
 # ⭐ 주요기능
 
 * **최저가 검색**
@@ -180,17 +148,18 @@ Demo - 시연영상 url
 
 <br>
 
-# 📝 컨벤션 설정
+# 🎈 팀소개
+## 👩‍💻 팀원 구성
 
-* [코드 컨벤션 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/%EC%BD%94%EB%93%9C-%EC%BB%A8%EB%B0%B4%EC%85%98-%EC%A0%95%EC%9D%98#%EC%BD%94%EB%93%9C-%EC%BB%A8%EB%B0%B4%EC%85%98-%EC%A0%95%EC%9D%98)
+<div align="center">
 
-* [git 브랜치 전략 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/git-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5-%EC%A0%95%EC%9D%98)
+| **김연찬** | **오형동** | **박수빈** | **전현선** |
+| :------: |  :------: | :------: | :------: |
+| [<img src="https://avatars.githubusercontent.com/u/93385959?v=4" height=150 width=150> <br/> @hurryduck](https://github.com/hurryduck) | [<img src="https://avatars.githubusercontent.com/u/97084827?v=4" height=150 width=150> <br/> @dhgudehd98](https://github.com/dhgudehd98) | [<img src="https://avatars.githubusercontent.com/u/95676035?v=4" height=150 width=150> <br/> @subkka](https://github.com/subkka) | [<img src="https://avatars.githubusercontent.com/u/162237209?v=4" height=150 width=150> <br/> @jeonhyeonseon](https://github.com/jeonhyeonseon) |
 
-* [git 커밋 컨벤션 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/git-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98-%EC%A0%95%EC%9D%98)
+</div>
 
-<br>
-
-# 💬 프로젝트 후기
+## 💬 프로젝트 후기
 
 > 김연찬
 
