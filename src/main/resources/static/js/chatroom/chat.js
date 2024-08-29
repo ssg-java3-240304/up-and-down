@@ -58,11 +58,11 @@ const displayChatLog = function (page) {
                 for (const message of messages) {
                     const messageDate = formatCreatedAtToDateString(message.createdAt);
 
-                    if (lastDate !== messageDate) {
-                        // 날짜가 바뀌면 날짜를 메시지처럼 추가
-                        displayDate(messageDate);
-                        lastDate = messageDate;
-                    }
+                    // if (lastDate !== messageDate) {
+                    //     // 날짜가 바뀌면 날짜를 메시지처럼 추가
+                    //     displayDate(messageDate);
+                    //     lastDate = messageDate;
+                    // }
                     // 새로운 메시지를 채팅 로그 상단에 추가
                     $chatLogBox.insertBefore(createChatElement(message), $chatLogBox.firstChild);
                 }
@@ -143,10 +143,10 @@ const stompRegister = function () {
             console.log('Parsed message: ', data);
             const messageDate = formatCreatedAtToDateString(data.createdAt);
 
-            if (lastDate !== messageDate) {
-                displayDate(messageDate);
-                lastDate = messageDate; // 마지막 날짜 업데이트
-            }
+            // if (lastDate !== messageDate) {
+            //     displayDate(messageDate);
+            //     lastDate = messageDate; // 마지막 날짜 업데이트
+            // }
 
             // 메시지를 채팅 창에 추가
             $chatLogBox.appendChild(createChatElement(data));

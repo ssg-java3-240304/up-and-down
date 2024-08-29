@@ -80,12 +80,12 @@
                     </th:block>
                     <!-- 로그인된 경우, 채팅방에 참여하지 않은 경우 -->
                     <th:block th:if="${!chatroomDto.isMember(currentUserId)}">
-                        <a th:href="@{/chatroom/chat/{chatroomId}(chatroomId=${chatroomDto.chatroomId})}" class="btn btn-join">참여하기</a>
+                        <a th:href="@{/chatroom/chat/{chatroomId}(chatroomId=${chatroomDto.chatroomId})}" class="btn btn-join">채팅방 참여하기</a>
                     </th:block>
                 </div>
                 <!-- 비회원일 경우 -->
                 <div sec:authorize="isAnonymous()">
-                    <a th:href="@{/auth/login}" class="btn btn-join">참여하기</a>
+                    <a th:href="@{/auth/login}" class="btn btn-join">채팅방 참여하기</a>
                 </div>
             </div>
         </div>
