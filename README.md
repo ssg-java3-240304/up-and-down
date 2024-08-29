@@ -72,15 +72,14 @@
 "**Up Down**" 프로젝트와 함께, 여러분의 여행은 기분 좋게 떠나고, 더 큰 만족을 안고 돌아오게 될 것입니다.
 
 <h3 align="center">👩‍💻 팀원 구성 👩‍💻</h3>
-<table>
-  <tbody>
-    <tr>
-      <td align="center"><a href="https://github.com/hurryduck"><img src="https://avatars.githubusercontent.com/u/93385959?v=4"width="50px;" alt=""/><br /><sub><b>팀장 : 김연찬</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/dhgudehd98"><img src="https://avatars.githubusercontent.com/u/97084827?v=4" width="50px;" alt=""/><br /><sub><b>팀원 : 오형동</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/subkka"><img src="https://avatars.githubusercontent.com/u/95676035?v=4" width="50px;" alt=""/><br /><sub><b>팀원 : 박수빈</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/jeonhyeonseon"><img src="https://avatars.githubusercontent.com/u/162237209?v=4" width="50px;" alt=""/><br /><sub><b>팀원 : 전현선</b></sub></a><br /></td>
-  </tbody>
-</table>
+
+<div align="center">
+
+| **김연찬** | **오형동** | **박수빈** | **전현선** |
+| :------: |  :------: | :------: | :------: |
+| [<img src="https://avatars.githubusercontent.com/u/93385959?v=4" height=150 width=150> <br/> @hurryduck](https://github.com/hurryduck) | [<img src="https://avatars.githubusercontent.com/u/97084827?v=4" height=150 width=150> <br/> @dhgudehd98](https://github.com/dhgudehd98) | [<img src="https://avatars.githubusercontent.com/u/95676035?v=4" height=150 width=150> <br/> @subkka](https://github.com/subkka) | [<img src="https://avatars.githubusercontent.com/u/162237209?v=4" height=150 width=150> <br/> @jeonhyeonseon](https://github.com/jeonhyeonseon) |
+
+</div>
 
 <h3 align="center">🗓️ 개발 기간 🗓️</h3>
 
@@ -168,6 +167,7 @@ UpProject/
 Demo - 시연영상 url
 
 <h2 align="center">⭐ 주요기능 ⭐</h2>
+
 * **최저가 검색**
 * **좋아요**
 * **실시간 채팅**
