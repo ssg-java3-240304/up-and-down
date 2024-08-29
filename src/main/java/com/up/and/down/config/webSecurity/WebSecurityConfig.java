@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -80,7 +81,9 @@ public class WebSecurityConfig {
          */
         http.logout(configurer -> {
             configurer.logoutUrl("/auth/logout")
-                    .logoutSuccessUrl("/"); // 로그아웃 후 리다이렉트 url (기본값은 로그인페이지)
+                    .logoutSuccessHandler(customLogoutSuccessHandler())
+                    .permitAll();
+//                    .logoutSuccessUrl("/"); // 로그아웃 후 리다이렉트 url (기본값은 로그인페이지)
         });
 
         return http.build();
@@ -96,5 +99,10 @@ public class WebSecurityConfig {
     @Bean
     public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler(loginAttemptService);
+    }
+
+    @Bean
+    public LogoutSuccessHandler customLogoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
     }
 }

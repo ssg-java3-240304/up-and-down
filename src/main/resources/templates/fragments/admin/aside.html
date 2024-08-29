@@ -76,7 +76,10 @@
 <!--            </div>-->
 
             <div class="text-center d-none d-md-block" style="margin-top: auto; margin-bottom: 30px">
-                <a class="btn btn-primary" th:href="@{/login/logout}">로그아웃</a>
+<!--                <a class="btn btn-primary" th:href="@{/login/logout}">로그아웃</a>-->
+                <form id="logoutFrm" th:action="@{/auth/logout}" method="post">
+                    <a class="btn btn-primary" onclick="submit()">로그아웃</a>
+                </form>
             </div>
         </ul>
         <script>
@@ -103,6 +106,10 @@
                     }
                 });
             });
+
+            function submit() {
+                document.getElementById("logoutFrm").submit();
+            }
         </script>
     </aside>
 </body>
