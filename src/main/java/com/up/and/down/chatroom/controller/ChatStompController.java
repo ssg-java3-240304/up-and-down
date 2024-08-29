@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 
 @Controller
@@ -49,7 +51,7 @@ public class ChatStompController {
             chatdto.setMemberId(chatDto.getMemberId());
             chatdto.setNickname(chatDto.getNickname());
             chatdto.setMessage(chatDto.getNickname() + "님이 들어왔습니다.");
-            chatdto.setCreatedAt(LocalDateTime.now());
+            chatdto.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime());
 
             this.chatService.save(chatdto); // 입장 메시지를 DB에 저장
 
