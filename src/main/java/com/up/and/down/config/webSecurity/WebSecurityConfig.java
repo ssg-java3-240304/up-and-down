@@ -50,6 +50,7 @@ public class WebSecurityConfig {
                     ).permitAll()
                     .requestMatchers( // anonymous
                             "/login/**",
+                            "/auth/login/**",
                             "/join/**",
                             "/admin/login",
                             "/admin/register",
