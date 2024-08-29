@@ -38,6 +38,7 @@ public class AdminService {
 
     // SMS 인증번호 요청
     public String sendAuthorizationCode(String phoneNumber) {
+        log.info("phoneNumber = {}", phoneNumber);
         // 인증 번호 생성
         String authorizationCode = Integer.toString((int)(Math.random() * (999999 - 100000 + 1)) + 100000);
 
