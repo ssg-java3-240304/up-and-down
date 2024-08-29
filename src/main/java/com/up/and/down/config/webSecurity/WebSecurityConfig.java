@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                             "/sns_api"
                     ).permitAll()
                     .requestMatchers( // anonymous
-                            "/auth/login/**",
+                            "/login/**",
                             "/join/**",
                             "/admin/login",
                             "/admin/register",
