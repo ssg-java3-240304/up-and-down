@@ -1,8 +1,8 @@
 <p align="middle">
     <img width="200px" src="https://github.com/user-attachments/assets/dd04af34-9198-4a8a-bc60-4db3b97beb54"/>
 </p>
-배포 url 
 
+배포 url 
 
 <p align="center">
     <img src="https://hits.sh/github.com/ssg-java3-240304/up-and-down.svg?style=flat-square" alt="Visitor Count"/>
@@ -10,9 +10,8 @@
     <img src="https://img.shields.io/github/issues/ssg-java3-240304/up-and-down" alt="issues"/>
     <img src="https://img.shields.io/github/contributors/ssg-java3-240304/up-and-down" alt="GitHub contributors"/>
 </p>
-<br>
 
----
+<br>
 
 ## 목차
 [1. 프로젝트 소개](#프로젝트-소개)
@@ -36,18 +35,17 @@
 [10. 컨벤션 설정](#컨벤션-설정)
 
 [11. 프로젝트 후기](#프로젝트-후기)
+
 <br>
 
----
-
 <h2 align="center">🧳 프로젝트 소개 🧳</h2>
+
 > UpDown은 국내 여행 패키지를 저렴하게 검색하고 비교할 수 있는 플랫폼입니다. 사용자는 다양한 여행사의 패키지를 실시간으로 비교하여 최저가를 찾을 수 있습니다. 또한 테마별 채팅방을 통해 여행지에 대한 리뷰와 팁을 실시간으로 공유하며, 만족스러운 여행 경험을 제공합니다.
 
 <br>
 
----
-
 <h2 align="center">🔍 프로젝트 목표 🔍</h2>
+
 > 최저가 여행 패키지 제공
 * 최저가 국내 여행 패키지를 제공함으로써 상품의 가격을 비교하여 여행 비용을 최소화합니다.
 * 패키지 여행의 상세 정보를 제공하여, 각 여행 상품의 특징을 명확히 파악하고, 비교할 수 있는 환경을 제공합니다.
@@ -60,8 +58,6 @@
 * 실시간 소통을 통해 패키지 여행의 정보를 빠르게 공유하고, 사용자들의 즉각적인 의견을 교환함으로써 최적의 선택을 할 수 있도록 돕습니다.
 
 <br>
-
----
 
 <h2 align="center">🎈 팀소개 🎈</h2>
 
@@ -87,15 +83,15 @@
 </table>
 
 <h3 align="center">🗓️ 개발 기간 🗓️</h3>
+
 * 전체 개발 기간 : 2024.07.19 ~ 2024.08.30<br>
 * UI 구현 : 2024.08.05 ~ 2024.08.28<br>
 * 기능 구현 : 2024.08.05 ~ 2024.08.28
 
 <br>
 
----
-
 <h2 align="center">🔧 수행 도구 🔧</h2>
+
 **programming** : ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -125,8 +121,6 @@
 
 <br>
 
----
-
 <h2 align="center">🔨 프로젝트 구조 🔨</h2>
 
 <br>
@@ -141,21 +135,8 @@ UpProject/
 │   │   ├── 📂java/           
 │   │   │   ├── 📂auth/
 │   │   │   ├── 📂chatroom/
-│   │   │   │   ├── 📂controller/
-│   │   │   │   ├── 📂dto/
-│   │   │   │   ├── 📂entity/
-│   │   │   │   ├── 📂repository/
-│   │   │   │   └── 📂service/
 │   │   │   ├── 📂product/
-│   │   │   │   ├── 📂controller/
-│   │   │   │   ├── 📂entity/
-│   │   │   │   ├── 📂repository/
-│   │   │   │   └── 📂service/
 │   │   │   ├── 📂search/
-│   │   │   │   ├── 📂controller/
-│   │   │   │   ├── 📂entity/
-│   │   │   │   ├── 📂repository/
-│   │   │   │   └── 📂service/
 │   │   │   └── 📂user/
 │   │   └── 📂resources/
 │   │       ├── 📂static/
@@ -173,33 +154,30 @@ UpProject/
 ├── 📜Dockerfile                          
 └── 📜README.md
 </pre>
+
 <br>
 
----
-
 <h2 align="center">🔄 CI/CD 🔄</h2>
+
 * github action을 활용해서 지속적인 통합 및 배포
 * `feature` 브랜치에서 `develop`으로 Pull Request를 보내면 CI가 동작된다.
 * `develop`에서 `master`에서 Pull Request를 보내면, CI가 동작되고, Merge가 되면 운영 리소스에 배포된다.
 
 <br>
 
----
 Demo - 시연영상 url
 
 <h2 align="center">⭐ 주요기능 ⭐</h2>
 * **최저가 검색**
 * **좋아요**
-* **댓글**
 * **실시간 채팅**
 * **로그인/회원가입**
 * **관리자**
 
 <br>
 
----
-
 <h2 align="center">💡 기대 효과 💡</h2>
+
 > 비용 절감 및 경제적 여행
 * 사용자는 UpDown 플랫폼을 통해 최저가 국내 여행 패키지를 테마별로 검색하고 비교할 수 있어, 여행 비용을 효과적으로 절감할 수 있습니다.
 > 사용자 만족도 향상
@@ -208,9 +186,8 @@ Demo - 시연영상 url
 
 <br>
 
----
-
 <h2 align="center">📝 컨벤션 설정 📝</h2>
+
 * [코드 컨벤션 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/%EC%BD%94%EB%93%9C-%EC%BB%A8%EB%B0%B4%EC%85%98-%EC%A0%95%EC%9D%98#%EC%BD%94%EB%93%9C-%EC%BB%A8%EB%B0%B4%EC%85%98-%EC%A0%95%EC%9D%98)
 
 * [git 브랜치 전략 정의](https://github.com/ssg-java3-240304/up-and-down/wiki/git-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5-%EC%A0%95%EC%9D%98)
@@ -219,9 +196,8 @@ Demo - 시연영상 url
 
 <br>
 
----
-
 <h2 align="center">💬 프로젝트 후기 💬</h2>
+
 > 김연찬
 
 > 오형동
