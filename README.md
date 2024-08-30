@@ -4,8 +4,8 @@
 
 <div align="center">
     
-[🌐 웹페이지](http://updown.website/)    
-    
+[🌐 웹페이지](http://updown.website/)   
+[🌐 up-data-server](https://github.com/dhgudehd98/up-data-server)
 </div>
 
 <br>
