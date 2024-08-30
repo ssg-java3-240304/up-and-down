@@ -88,15 +88,21 @@
             <!-- 페이지네이션 -->
             <div class="pagination" th:if="${totalPages > 1}">
                 <ul>
+                    <!-- 이전 버튼 -->
                     <li th:if="${currentPage > 0}">
                         <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort=${searchSort}, page=${currentPage - 1})}">이전</a>
                     </li>
                     <li th:if="${currentPage == 0}" class="disabled">
                         <span>이전</span>
                     </li>
-                    <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active' : ''">
+                    <!-- 페이지 목록 -->
+                    <li th:each="pageNum : ${#numbers.sequence(
+                            currentPage < 5 ? 0 : currentPage - 4,
+                            currentPage < 5 ? (totalPages < 10 ? totalPages - 1 : 9) : (currentPage + 5 >= totalPages ? totalPages - 1 : currentPage + 5))}"
+                        th:classappend="${pageNum == currentPage} ? 'active' : ''">
                         <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort=${searchSort}, page=${pageNum})}" th:text="${pageNum + 1}"></a>
                     </li>
+                    <!-- 다음 버튼 -->
                     <li th:if="${currentPage < totalPages - 1}">
                         <a th:href="@{/search(searchKeyword=${searchKeyword}, nights=${nights}, startDate=${startDate}, searchSort=${searchSort}, page=${currentPage+1})}">다음</a>
                     </li>
