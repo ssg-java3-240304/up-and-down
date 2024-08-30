@@ -134,11 +134,14 @@ UpProject/
 * **좋아요**
 * **실시간 채팅**
 * **로그인/회원가입**
+#### [회원가입]
+![회원가입gif](https://github.com/user-attachments/assets/0fb002fa-acf8-44d8-bb8b-81b964438d8b)
 
 #### [소셜로그인_네이버]
 ![네이버 로그인-최종gif](https://github.com/user-attachments/assets/a7e9bfff-860b-4121-8ebd-7d2a255a5e03)
 
 #### [소셜로그인_구글]
+![구글 로그인](https://github.com/user-attachments/assets/f5a0a329-83d1-4bf0-9de3-382e9661baf1)
 
 * **관리자**
 
